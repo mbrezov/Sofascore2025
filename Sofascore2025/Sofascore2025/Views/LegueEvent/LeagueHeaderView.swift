@@ -12,11 +12,13 @@ import UIKit
 class LeagueHeaderView: BaseView {
 
     private enum Padding {
+
         static let horizontal: CGFloat = 16
         static let vertical: CGFloat = 12
     }
 
     private enum Constants {
+
         static let leagueLogoSize: CGFloat = 32
         static let pointerRightIconSize: CGFloat = 24
         static let leagueLogoSpacing: CGFloat = 32

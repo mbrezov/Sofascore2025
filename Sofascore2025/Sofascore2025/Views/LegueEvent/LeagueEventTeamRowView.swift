@@ -12,20 +12,34 @@ import UIKit
 class LeagueEventTeamRowView: BaseView {
 
     private enum Padding {
+
         static let horizontal: CGFloat = 16
         static let vertical: CGFloat = 10
     }
 
     private enum Constants {
+
         static let teamImageSize: CGFloat = 16
         static let scoreLabelWidth: CGFloat = 32
         static let teamNameSpacing: CGFloat = 8
         static let lineHeight: CGFloat = 16
     }
 
+    var teamNameLabelTextColor: UIColor? {
+        didSet {
+            teamNameLabel.textColor = teamNameLabelTextColor
+        }
+    }
+
+    var teamScoreLabelTextColor: UIColor? {
+        didSet {
+            teamScoreLabel.textColor = teamScoreLabelTextColor
+        }
+    }
+
     private let teamImageView = UIImageView()
-    let teamNameLabel = UILabel()
-    let teamScoreLabel = UILabel()
+    private let teamNameLabel = UILabel()
+    private let teamScoreLabel = UILabel()
 
     override func addViews() {
         addSubview(teamImageView)

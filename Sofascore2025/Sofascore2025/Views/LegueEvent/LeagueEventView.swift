@@ -12,6 +12,7 @@ import UIKit
 class LeagueEventView: BaseView {
 
     private enum Padding {
+
         static let horizontal: CGFloat = 16
         static let vertical: CGFloat = 10
         static let matchStatusHorizontal: CGFloat = 4
@@ -19,6 +20,7 @@ class LeagueEventView: BaseView {
     }
 
     private enum Constants {
+
         static let separatorWidth: CGFloat = 1
         static let statusLabelWidth: CGFloat = 56
         static let verticalSpacing: CGFloat = 4
@@ -97,17 +99,17 @@ class LeagueEventView: BaseView {
         switch event.status {
         case .inProgress:
             statusLabel.textColor = .live
-            homeTeamRowView.teamScoreLabel.textColor = .live
-            awayTeamRowView.teamScoreLabel.textColor = .live
+            homeTeamRowView.teamScoreLabelTextColor = .live
+            awayTeamRowView.teamScoreLabelTextColor = .live
 
         case .finished:
             if let homeScore = event.homeScore, let awayScore = event.awayScore {
                 if homeScore > awayScore {
-                    awayTeamRowView.teamNameLabel.textColor = .surfaceLv2
-                    awayTeamRowView.teamScoreLabel.textColor = .surfaceLv2
+                    awayTeamRowView.teamNameLabelTextColor = .surfaceLv2
+                    awayTeamRowView.teamScoreLabelTextColor = .surfaceLv2
                 } else {
-                    homeTeamRowView.teamNameLabel.textColor = .surfaceLv2
-                    homeTeamRowView.teamScoreLabel.textColor = .surfaceLv2
+                    homeTeamRowView.teamNameLabelTextColor = .surfaceLv2
+                    homeTeamRowView.teamScoreLabelTextColor = .surfaceLv2
                 }
             }
 
