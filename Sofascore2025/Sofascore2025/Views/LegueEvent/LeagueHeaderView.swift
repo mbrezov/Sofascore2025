@@ -29,6 +29,14 @@ class LeagueHeaderView: BaseView {
     private let leagueCountryLabel = UILabel()
     private let leagueNameLabel = UILabel()
 
+    var viewModel: LeagueViewModel? {
+        didSet {
+            if let league = viewModel {
+                setupUI(league)
+            }
+        }
+    }
+
     override func addViews() {
         addSubview(leagueLogoImageView)
         addSubview(leagueCountryLabel)
@@ -76,14 +84,10 @@ class LeagueHeaderView: BaseView {
         }
     }
 
-    func setupBinding(with league: LeagueViewModel) {
+    private func setupUI(_ league: LeagueViewModel) {
         leagueNameLabel.text = league.leagueName
         leagueCountryLabel.text = league.country?.name
 
-        league.fetchLeagueLogo { [weak self] data in
-            if let data {
-                self?.leagueLogoImageView.image = UIImage(data: data)
-            }
-        }
+        leagueLogoImageView.setImageURL(league.leagueLogoUrl)
     }
 }

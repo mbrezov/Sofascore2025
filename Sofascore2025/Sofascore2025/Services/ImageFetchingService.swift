@@ -9,8 +9,8 @@ import Foundation
 
 class ImageFetchingService {
 
-    static func fetchImage(from imageUrl: String?, completion: @escaping (Data?) -> Void) {
-        guard let imageUrl, let url = URL(string: imageUrl) else {
+    static func fetchImage(from imageUrl: String, completion: @escaping (Data?) -> Void) {
+        guard let url = URL(string: imageUrl) else {
             completion(nil)
             return
         }

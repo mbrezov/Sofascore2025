@@ -33,6 +33,14 @@ class LeagueEventView: BaseView {
     private let homeTeamRowView = LeagueEventTeamRowView()
     private let awayTeamRowView = LeagueEventTeamRowView()
 
+    var viewModel: EventViewModel? {
+        didSet {
+            if let event = viewModel {
+                setupUI(event)
+            }
+        }
+    }
+
     override func addViews() {
         addSubview(startTimeLabel)
         addSubview(statusLabel)
@@ -85,16 +93,16 @@ class LeagueEventView: BaseView {
             $0.bottom.equalTo(statusLabel.snp.bottom)
         }
     }
-    
-    func setupBinding(with event: EventViewModel) {
+
+    private func setupUI(_ event: EventViewModel) {
         startTimeLabel.text = event.startTimestamp
         startTimeLabel.setLineHeight(Constants.lineHeight)
         statusLabel.text = event.matchStatusDescription
         statusLabel.setLineHeight(Constants.lineHeight)
 
-        homeTeamRowView.setupBinding(teamName: event.homeTeamName, teamScore: event.homeScore, teamLogoUrl: event.homeTeamLogoUrl, fetchImage: event.fetchTeamLogo)
+        homeTeamRowView.setupUI(teamName: event.homeTeamName, teamScore: event.homeScore, teamLogoUrl: event.homeTeamLogoUrl)
 
-        awayTeamRowView.setupBinding(teamName: event.awayTeamName, teamScore: event.awayScore, teamLogoUrl: event.awayTeamLogoUrl, fetchImage: event.fetchTeamLogo)
+        awayTeamRowView.setupUI(teamName: event.awayTeamName, teamScore: event.awayScore, teamLogoUrl: event.awayTeamLogoUrl)
 
         switch event.status {
         case .inProgress:

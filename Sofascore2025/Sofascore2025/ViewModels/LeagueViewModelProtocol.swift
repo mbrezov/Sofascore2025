@@ -11,7 +11,6 @@ import SofaAcademic
 protocol LeagueViewModelProtocol {
 
     var leagueName: String { get}
+    var leagueLogoUrl: String? { get }
     var country: Country? { get }
-
-    func fetchLeagueLogo(completion: @escaping (Data?) -> Void)
 }

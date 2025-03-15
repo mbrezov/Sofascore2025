@@ -41,8 +41,4 @@ class EventViewModel: EventViewModelProtocol {
     init(event: Event) {
         self.event = event
     }
-
-    func fetchTeamLogo(from logoUrl: String?, completion: @escaping (Data?) -> Void) {
-        ImageFetchingService.fetchImage(from: logoUrl, completion: completion)
-    }
 }

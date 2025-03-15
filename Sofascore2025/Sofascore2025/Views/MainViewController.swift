@@ -22,6 +22,7 @@ class MainViewController: UIViewController, BaseViewProtocol {
     }
 
     func addViews() {
+        addChild(eventsViewController)
         view.addSubview(eventsViewController.view)
     }
 

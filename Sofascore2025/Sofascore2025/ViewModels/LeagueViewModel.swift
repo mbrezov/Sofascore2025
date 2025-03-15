@@ -13,13 +13,10 @@ class LeagueViewModel: LeagueViewModelProtocol {
     private let league: League
 
     var leagueName: String { league.name }
+    var leagueLogoUrl: String? { league.logoUrl }
     var country: Country? { league.country }
 
     init(league: League) {
         self.league = league
-    }
-
-    func fetchLeagueLogo(completion: @escaping (Data?) -> Void) {
-        ImageFetchingService.fetchImage(from: league.logoUrl, completion: completion)
     }
 }

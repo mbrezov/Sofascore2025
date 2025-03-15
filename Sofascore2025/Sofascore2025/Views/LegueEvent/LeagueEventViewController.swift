@@ -21,12 +21,12 @@ class LeagueEventViewController: UIViewController, BaseViewProtocol {
         view.backgroundColor = .surface1
 
         let leagueViewModel = LeagueViewModel(league: data.laLigaLeague())
-        leagueHeaderView.setupBinding(with: leagueViewModel)
+        leagueHeaderView.viewModel = leagueViewModel
 
         for event in data.laLigaEvents() {
             let leagueEventView = LeagueEventView()
             let eventViewModel = EventViewModel(event: event)
-            leagueEventView.setupBinding(with: eventViewModel)
+            leagueEventView.viewModel = eventViewModel
             eventsStackView.addArrangedSubview(leagueEventView)
         }
 

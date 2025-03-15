@@ -9,7 +9,7 @@ import Foundation
 import SofaAcademic
 
 protocol EventViewModelProtocol {
-    
+
     var homeTeamLogoUrl: String? { get}
     var awayTeamLogoUrl: String? { get }
     var homeTeamName: String { get }
@@ -21,6 +21,4 @@ protocol EventViewModelProtocol {
     var awayScore: Int? { get}
 
     var matchStatusDescription: String { get }
-
-    func fetchTeamLogo(from logoUrl: String?, completion: @escaping (Data?) -> Void)
 }

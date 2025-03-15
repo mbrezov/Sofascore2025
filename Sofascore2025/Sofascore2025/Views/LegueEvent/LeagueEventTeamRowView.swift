@@ -78,16 +78,12 @@ class LeagueEventTeamRowView: BaseView {
         }
     }
 
-    func setupBinding(teamName: String, teamScore: Int?, teamLogoUrl: String?, fetchImage: @escaping (String?, @escaping (Data?) -> Void) -> Void) {
+    func setupUI(teamName: String, teamScore: Int?, teamLogoUrl: String?) {
         teamNameLabel.text = teamName
         teamNameLabel.setLineHeight(Constants.lineHeight)
         teamScoreLabel.text = teamScore?.description
         teamScoreLabel.setLineHeight(Constants.lineHeight)
 
-        fetchImage(teamLogoUrl) { [weak self] data in
-            if let data {
-                self?.teamImageView.image = UIImage(data: data)
-            }
-        }
+        teamImageView.setImageURL(teamLogoUrl)
     }
 }
