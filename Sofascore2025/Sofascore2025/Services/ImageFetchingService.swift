@@ -9,13 +9,9 @@ import Foundation
 
 class ImageFetchingService {
 
-    static func fetchImage(from imageUrl: String, completion: @escaping (Data?) -> Void) {
-        guard let url = URL(string: imageUrl) else {
-            completion(nil)
-            return
-        }
+    static func fetchImage(from imageUrl: URL, completion: @escaping (Data?) -> Void) {
 
-        URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, _ in
+        URLSession.shared.dataTask(with: URLRequest(url: imageUrl)) { data, _, _ in
             if let data {
                 DispatchQueue.main.async {
                     completion(data)

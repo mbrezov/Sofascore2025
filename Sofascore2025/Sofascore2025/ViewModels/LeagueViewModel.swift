@@ -13,7 +13,7 @@ class LeagueViewModel: LeagueViewModelProtocol {
     private let league: League
 
     var leagueName: String { league.name }
-    var leagueLogoUrl: String? { league.logoUrl }
+    var leagueLogoUrl: URL? { StringFormatterService.stringToURL(league.logoUrl) }
     var country: Country? { league.country }
 
     init(league: League) {

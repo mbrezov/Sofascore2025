@@ -12,8 +12,8 @@ class EventViewModel: EventViewModelProtocol {
 
     private let event: Event
 
-    var homeTeamLogoUrl: String? { event.homeTeam.logoUrl }
-    var awayTeamLogoUrl: String? { event.awayTeam.logoUrl }
+    var homeTeamLogoUrl: URL? { StringFormatterService.stringToURL(event.homeTeam.logoUrl) }
+    var awayTeamLogoUrl: URL? { StringFormatterService.stringToURL(event.awayTeam.logoUrl) }
     var homeTeamName: String { event.homeTeam.name }
     var awayTeamName: String { event.awayTeam.name }
     var leagueName: String? { event.league?.name }

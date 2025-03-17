@@ -11,6 +11,6 @@ import SofaAcademic
 protocol LeagueViewModelProtocol {
 
     var leagueName: String { get}
-    var leagueLogoUrl: String? { get }
+    var leagueLogoUrl: URL? { get }
     var country: Country? { get }
 }

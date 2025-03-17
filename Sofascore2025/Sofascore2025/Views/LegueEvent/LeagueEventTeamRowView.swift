@@ -78,7 +78,7 @@ class LeagueEventTeamRowView: BaseView {
         }
     }
 
-    func setupUI(teamName: String, teamScore: Int?, teamLogoUrl: String?) {
+    func setupUI(teamName: String, teamScore: Int?, teamLogoUrl: URL?) {
         teamNameLabel.text = teamName
         teamNameLabel.setLineHeight(Constants.lineHeight)
         teamScoreLabel.text = teamScore?.description

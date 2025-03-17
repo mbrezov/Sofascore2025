@@ -9,7 +9,7 @@ import UIKit
 
 extension UIImageView {
 
-    func setImageURL(_ url: String?) {
+    func setImageURL(_ url: URL?) {
         guard let url = url else { return }
 
         ImageFetchingService.fetchImage(from: url) { [weak self] data in
