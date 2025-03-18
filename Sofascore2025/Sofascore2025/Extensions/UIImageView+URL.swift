@@ -13,9 +13,11 @@ extension UIImageView {
         guard let url = url else { return }
 
         ImageFetchingService.fetchImage(from: url) { [weak self] data in
-            if let data {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if let data {
                     self?.image = UIImage(data: data)
+                } else {
+                    self?.image = nil
                 }
             }
         }
