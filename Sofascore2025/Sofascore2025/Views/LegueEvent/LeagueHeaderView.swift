@@ -85,9 +85,9 @@ class LeagueHeaderView: BaseView {
     }
 
     private func setupUI(_ league: LeagueViewModel) {
-        leagueNameLabel.text = league.leagueName
+        leagueNameLabel.text = league.name
         leagueCountryLabel.text = league.country?.name
 
-        leagueLogoImageView.setImageURL(league.leagueLogoUrl)
+        leagueLogoImageView.setImageURL(league.logoURL)
     }
 }

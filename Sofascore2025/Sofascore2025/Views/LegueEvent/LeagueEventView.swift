@@ -70,7 +70,7 @@ class LeagueEventView: BaseView {
 
         statusLabel.snp.makeConstraints {
             $0.width.equalTo(startTimeLabel.snp.width)
-            $0.horizontalEdges.equalTo(startTimeLabel)
+            $0.leading.trailing.equalTo(startTimeLabel)
             $0.top.equalTo(startTimeLabel.snp.bottom).offset(Constants.verticalSpacing)
             $0.bottom.equalToSuperview().inset(Padding.vertical)
         }
@@ -89,7 +89,7 @@ class LeagueEventView: BaseView {
 
         awayTeamRowView.snp.makeConstraints {
             $0.top.equalTo(homeTeamRowView.snp.bottom).offset(Constants.verticalSpacing)
-            $0.horizontalEdges.equalTo(homeTeamRowView)
+            $0.leading.trailing.equalTo(homeTeamRowView)
             $0.bottom.equalTo(statusLabel.snp.bottom)
         }
     }
@@ -100,9 +100,9 @@ class LeagueEventView: BaseView {
         statusLabel.text = event.matchStatusDescription
         statusLabel.setLineHeight(Constants.lineHeight)
 
-        homeTeamRowView.setupUI(teamName: event.homeTeamName, teamScore: event.homeScore, teamLogoUrl: event.homeTeamLogoUrl)
+        homeTeamRowView.setupUI(teamName: event.homeTeamName, teamScore: event.homeScore, teamLogoUrl: event.homeTeamLogoURL)
 
-        awayTeamRowView.setupUI(teamName: event.awayTeamName, teamScore: event.awayScore, teamLogoUrl: event.awayTeamLogoUrl)
+        awayTeamRowView.setupUI(teamName: event.awayTeamName, teamScore: event.awayScore, teamLogoUrl: event.awayTeamLogoURL)
 
         switch event.status {
         case .inProgress:

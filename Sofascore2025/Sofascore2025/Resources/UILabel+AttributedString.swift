@@ -1,11 +1,10 @@
 //
-//  FormattedLabels.swift
+//  UILabel+AttributedString.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 13.03.2025..
 //
 
-import Foundation
 import UIKit
 
 extension UILabel {

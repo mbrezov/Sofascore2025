@@ -12,8 +12,8 @@ class LeagueViewModel: LeagueViewModelProtocol {
 
     private let league: League
 
-    var leagueName: String { league.name }
-    var leagueLogoUrl: URL? { StringFormatterService.stringToURL(league.logoUrl) }
+    var name: String { league.name }
+    var logoURL: URL? { league.logoUrl?.url }
     var country: Country? { league.country }
 
     init(league: League) {

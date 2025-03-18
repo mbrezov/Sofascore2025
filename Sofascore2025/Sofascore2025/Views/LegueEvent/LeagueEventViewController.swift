@@ -48,12 +48,12 @@ class LeagueEventViewController: UIViewController, BaseViewProtocol {
     func setupConstraints() {
         leagueHeaderView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
         }
 
         eventsStackView.snp.makeConstraints {
             $0.top.equalTo(leagueHeaderView.snp.bottom)
-            $0.horizontalEdges.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
         }
     }
 }

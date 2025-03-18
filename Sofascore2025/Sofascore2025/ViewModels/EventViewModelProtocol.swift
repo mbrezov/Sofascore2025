@@ -10,8 +10,8 @@ import SofaAcademic
 
 protocol EventViewModelProtocol {
 
-    var homeTeamLogoUrl: URL? { get}
-    var awayTeamLogoUrl: URL? { get }
+    var homeTeamLogoURL: URL? { get }
+    var awayTeamLogoURL: URL? { get }
     var homeTeamName: String { get }
     var awayTeamName: String { get }
     var leagueName: String? { get }
