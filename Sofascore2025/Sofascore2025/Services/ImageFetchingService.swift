@@ -13,9 +13,7 @@ class ImageFetchingService {
 
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, _ in
             if let data {
-                DispatchQueue.main.async {
-                    completion(data)
-                }
+                completion(data)
             } else {
                 completion(nil)
                 return

@@ -1,5 +1,5 @@
 //
-//  Images+Localizable.swift
+//  UIImage+Assets.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 12.03.2025..
