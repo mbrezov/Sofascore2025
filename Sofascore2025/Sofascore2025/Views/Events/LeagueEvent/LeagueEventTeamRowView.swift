@@ -11,10 +11,13 @@ import UIKit
 
 class LeagueEventTeamRowView: BaseView {
 
+    static var height: CGFloat {
+        Constants.teamImageSize
+    }
+
     private enum Padding {
 
         static let horizontal: CGFloat = 16
-        static let vertical: CGFloat = 10
     }
 
     private enum Constants {
@@ -78,12 +81,12 @@ class LeagueEventTeamRowView: BaseView {
         }
     }
 
-    func setupUI(teamName: String, teamScore: Int?, teamLogoUrl: URL?) {
+    func setupUI(teamName: String, teamScore: Int?, teamLogoURL: URL?) {
         teamNameLabel.text = teamName
         teamNameLabel.setLineHeight(Constants.lineHeight)
         teamScoreLabel.text = teamScore?.description
         teamScoreLabel.setLineHeight(Constants.lineHeight)
 
-        teamImageView.setImageURL(teamLogoUrl)
+        teamImageView.setImageURL(teamLogoURL)
     }
 }

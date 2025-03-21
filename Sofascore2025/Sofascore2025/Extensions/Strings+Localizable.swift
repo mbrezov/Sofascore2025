@@ -12,4 +12,8 @@ extension String {
     static let matchStatusFulltime = "FT"
     static let matchStatusHalftime = "HT"
     static let matchStatusNotStarted = "-"
+
+    static let football = "Football"
+    static let basketball = "Basketball"
+    static let americanFootball = "Am. Football"
 }

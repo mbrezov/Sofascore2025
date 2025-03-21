@@ -1,15 +1,20 @@
 //
-//  LeagueHeaderView.swift
+//  LeagueEventHeaderView.swift
 //  Sofascore2025
 //
-//  Created by Mario Brezovečki on 11.03.2025..
+//  Created by Mario Brezovečki on 19.03.2025..
 //
 
-import SnapKit
-import SofaAcademic
 import UIKit
+import SnapKit
 
-class LeagueHeaderView: BaseView {
+class LeagueEventHeaderView: UICollectionReusableView {
+
+    static let reuseIdentifier = "LeagueEventHeaderView"
+
+    static var height: CGFloat {
+        (2 * Padding.vertical) + Constants.leagueLogoSize
+    }
 
     private enum Padding {
 
@@ -29,22 +34,28 @@ class LeagueHeaderView: BaseView {
     private let leagueCountryLabel = UILabel()
     private let leagueNameLabel = UILabel()
 
-    var viewModel: LeagueViewModel? {
-        didSet {
-            if let league = viewModel {
-                setupUI(league)
-            }
-        }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .surface1
+
+        addViews()
+        styleViews()
+        setupConstraints()
     }
 
-    override func addViews() {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func addViews() {
         addSubview(leagueLogoImageView)
         addSubview(leagueCountryLabel)
         addSubview(pointerRightIcon)
         addSubview(leagueNameLabel)
     }
 
-    override func styleViews() {
+    func styleViews() {
         leagueLogoImageView.contentMode = .scaleAspectFit
 
         leagueCountryLabel.font = .headline
@@ -59,7 +70,7 @@ class LeagueHeaderView: BaseView {
         leagueNameLabel.numberOfLines = 2
     }
 
-    override func setupConstraints() {
+    func setupConstraints() {
         leagueLogoImageView.snp.makeConstraints {
             $0.size.equalTo(Constants.leagueLogoSize)
             $0.leading.equalToSuperview().inset(Padding.horizontal)
@@ -84,7 +95,7 @@ class LeagueHeaderView: BaseView {
         }
     }
 
-    private func setupUI(_ league: LeagueViewModel) {
+    func bind(_ league: LeagueViewModel) {
         leagueNameLabel.text = league.name
         leagueCountryLabel.text = league.country?.name
 

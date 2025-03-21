@@ -1,15 +1,20 @@
 //
-//  LeagueEventView.swift
+//  LeagueEventCell.swift
 //  Sofascore2025
 //
-//  Created by Mario Brezovečki on 11.03.2025..
+//  Created by Mario Brezovečki on 19.03.2025..
 //
 
-import SnapKit
-import SofaAcademic
 import UIKit
+import SnapKit
 
-class LeagueEventView: BaseView {
+class LeagueEventCell: UICollectionViewCell {
+
+    static let reuseIdentifier = "LeagueEventCollectionViewCell"
+
+    static var height: CGFloat {
+        (2 * (Padding.vertical + LeagueEventTeamRowView.height)) + Constants.verticalSpacing
+    }
 
     private enum Padding {
 
@@ -33,23 +38,27 @@ class LeagueEventView: BaseView {
     private let homeTeamRowView = LeagueEventTeamRowView()
     private let awayTeamRowView = LeagueEventTeamRowView()
 
-    var viewModel: EventViewModel? {
-        didSet {
-            if let event = viewModel {
-                setupUI(event)
-            }
-        }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        addViews()
+        styleViews()
+        setupConstraints()
     }
 
-    override func addViews() {
-        addSubview(startTimeLabel)
-        addSubview(statusLabel)
-        addSubview(verticalSeparator)
-        addSubview(homeTeamRowView)
-        addSubview(awayTeamRowView)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
-    override func styleViews() {
+    func addViews() {
+        contentView.addSubview(startTimeLabel)
+        contentView.addSubview(statusLabel)
+        contentView.addSubview(verticalSeparator)
+        contentView.addSubview(homeTeamRowView)
+        contentView.addSubview(awayTeamRowView)
+    }
+
+    func styleViews() {
         startTimeLabel.font = .micro
         startTimeLabel.textColor = .surfaceLv2
         startTimeLabel.textAlignment = .center
@@ -61,7 +70,7 @@ class LeagueEventView: BaseView {
         verticalSeparator.backgroundColor = .surfaceLv4
     }
 
-    override func setupConstraints() {
+    func setupConstraints() {
         startTimeLabel.snp.makeConstraints {
             $0.width.equalTo(Constants.statusLabelWidth)
             $0.leading.equalToSuperview().inset(Padding.matchStatusHorizontal)
@@ -94,15 +103,15 @@ class LeagueEventView: BaseView {
         }
     }
 
-    private func setupUI(_ event: EventViewModel) {
+    func bind(_ event: EventViewModel) {
         startTimeLabel.text = event.startTimestamp
         startTimeLabel.setLineHeight(Constants.lineHeight)
         statusLabel.text = event.matchStatusDescription
         statusLabel.setLineHeight(Constants.lineHeight)
 
-        homeTeamRowView.setupUI(teamName: event.homeTeamName, teamScore: event.homeScore, teamLogoUrl: event.homeTeamLogoURL)
+        homeTeamRowView.setupUI(teamName: event.homeTeamName, teamScore: event.homeScore, teamLogoURL: event.homeTeamLogoURL)
 
-        awayTeamRowView.setupUI(teamName: event.awayTeamName, teamScore: event.awayScore, teamLogoUrl: event.awayTeamLogoURL)
+        awayTeamRowView.setupUI(teamName: event.awayTeamName, teamScore: event.awayScore, teamLogoURL: event.awayTeamLogoURL)
 
         switch event.status {
         case .inProgress:
