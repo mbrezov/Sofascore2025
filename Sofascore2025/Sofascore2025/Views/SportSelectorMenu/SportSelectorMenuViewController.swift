@@ -88,10 +88,9 @@ class SportSelectorMenuViewController: UIViewController, BaseViewProtocol {
 
     @objc private func buttonTapped(_ sender: UIButton) {
         selectedIndex = sender.tag
-        updateSelection()
     }
 
-    func updateSelection() {
+    private func updateSelection() {
         UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: { [weak self] in
             guard let self = self else { return }
             self.updateSelectionViewConstraints(for: self.selectedSegment)
