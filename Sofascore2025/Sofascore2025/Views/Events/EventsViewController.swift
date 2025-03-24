@@ -51,7 +51,7 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(LeagueEventCell.self, forCellWithReuseIdentifier: LeagueEventCell.reuseIdentifier)
-        collectionView.register(LeagueEventHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: LeagueEventHeaderView.reuseIdentifier)
+        collectionView.register(LeagueHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: LeagueHeaderCell.reuseIdentifier)
         collectionView.register(LeagueSectionDividerView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: LeagueSectionDividerView.reuseIdentifier)
 
         collectionView.automaticallyAdjustsScrollIndicatorInsets = false
@@ -104,7 +104,7 @@ extension EventsViewController: UICollectionViewDataSource {
             let leagueId = viewModel?.leagueIDs[indexPath.section]
             guard let league = viewModel?.getLeague(by: leagueId) else { return UICollectionReusableView() }
 
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: LeagueEventHeaderView.reuseIdentifier, for: indexPath) as? LeagueEventHeaderView else { return UICollectionReusableView() }
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: LeagueHeaderCell.reuseIdentifier, for: indexPath) as? LeagueHeaderCell else { return UICollectionReusableView() }
 
             let leagueViewModel = LeagueViewModel(league: league)
             headerView.bind(leagueViewModel)
@@ -134,7 +134,7 @@ extension EventsViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: LeagueEventHeaderView.height)
+        return CGSize(width: collectionView.frame.width, height: LeagueHeaderCell.height)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
