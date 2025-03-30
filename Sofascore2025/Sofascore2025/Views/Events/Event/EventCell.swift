@@ -1,22 +1,18 @@
 //
-//  LeagueEventCell.swift
+//  EventCell.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 19.03.2025..
 //
 
-import UIKit
 import SnapKit
+import UIKit
 
-class LeagueEventCell: UICollectionViewCell {
+class EventCell: UICollectionViewCell {
 
-    static let reuseIdentifier = "LeagueEventCell"
+    static let reuseIdentifier = "EventCell"
 
-    static var height: CGFloat {
-        LeagueEventView.height
-    }
-
-    private let leagueEventView = LeagueEventView()
+    private let eventView = EventView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,17 +25,22 @@ class LeagueEventCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        eventView.prepareForReuse()
+    }
+
     func addViews() {
-        contentView.addSubview(leagueEventView)
+        contentView.addSubview(eventView)
     }
 
     func setupConstraints() {
-        leagueEventView.snp.makeConstraints {
+        eventView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
 
-    func bind(_ event: EventViewModel) {
-        leagueEventView.viewModel = event
+    func bind(_ event: EventViewModelProtocol) {
+        eventView.viewModel = event
     }
 }

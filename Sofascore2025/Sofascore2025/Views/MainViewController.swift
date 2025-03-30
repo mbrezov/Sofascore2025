@@ -11,8 +11,10 @@ import UIKit
 
 class MainViewController: UIViewController, BaseViewProtocol {
 
-    private let eventsViewController = EventsViewController()
-    private let sportSelectorMenuViewController = SportSelectorMenuViewController()
+    private let viewModel = EventsViewModel()
+
+    private lazy var eventsViewController = EventsViewController(viewModel: viewModel)
+    private lazy var sportSelectorMenuViewController = SportSelectorMenuViewController(viewModel: viewModel)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,18 +25,13 @@ class MainViewController: UIViewController, BaseViewProtocol {
     }
 
     func addViews() {
-        addChild(eventsViewController)
-        view.addSubview(eventsViewController.view)
-        eventsViewController.didMove(toParent: self)
-
-        addChild(sportSelectorMenuViewController)
-        view.addSubview(sportSelectorMenuViewController.view)
-        sportSelectorMenuViewController.didMove(toParent: self)
+        addChildController(eventsViewController)
+        addChildController(sportSelectorMenuViewController)
     }
 
     func setupConstraints() {
         sportSelectorMenuViewController.view.snp.makeConstraints {
-            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.top.leading.trailing.equalToSuperview()
         }
 
         eventsViewController.view.snp.makeConstraints {

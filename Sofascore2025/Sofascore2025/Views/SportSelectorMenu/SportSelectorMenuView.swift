@@ -1,14 +1,15 @@
 //
-//  SportSelectorMenuButton.swift.swift
+//  SportSelectorMenuView.swift.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 18.03.2025..
 //
 
-import UIKit
 import SnapKit
+import SofaAcademic
+import UIKit
 
-class SportSelectorMenuButton: UIButton {
+class SportSelectorMenuView: BaseView {
 
     private enum Padding {
 
@@ -20,34 +21,19 @@ class SportSelectorMenuButton: UIButton {
 
         static let iconSize: CGFloat = 16
         static let iconSpacing: CGFloat = 4
-        static let lineHeight: CGFloat = 16
     }
+
+    var onTap: (() -> Void)?
 
     private let iconImageView = UIImageView()
     private let nameLabel = UILabel()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupButton()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupButton()
-    }
-
-    private func setupButton() {
-        addViews()
-        styleViews()
-        setupConstraints()
-    }
-
-    func addViews() {
+    override func addViews() {
         addSubview(iconImageView)
         addSubview(nameLabel)
     }
 
-    func styleViews() {
+    override func styleViews() {
         iconImageView.tintColor = .surface1
         iconImageView.contentMode = .scaleAspectFit
 
@@ -56,7 +42,7 @@ class SportSelectorMenuButton: UIButton {
         nameLabel.textAlignment = .center
     }
 
-    func setupConstraints() {
+    override func setupConstraints() {
         iconImageView.snp.makeConstraints {
             $0.size.equalTo(Constants.iconSize)
             $0.centerX.equalToSuperview()
@@ -69,13 +55,18 @@ class SportSelectorMenuButton: UIButton {
         }
     }
 
-    func setup(name: String, image: UIImage, tag: Int, selector: Selector) {
+    override func setupBinding() {
+        let touchUpInside = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
+        addGestureRecognizer(touchUpInside)
+    }
+
+    func setup(name: String, image: UIImage, onTap: (() -> Void)? = nil) {
         iconImageView.image = image
+        nameLabel.setTextWithLineHeight(name)
+        self.onTap = onTap
+    }
 
-        nameLabel.text = name
-        nameLabel.setLineHeight(Constants.lineHeight)
-
-        self.tag = tag
-        addTarget(target, action: selector, for: .touchUpInside)
+    @objc private func tapped(_ sender: UITapGestureRecognizer) {
+        onTap?()
     }
 }

@@ -1,5 +1,5 @@
 //
-//  LeagueEventTeamRowView.swift
+//  EventTeamRowView.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 12.03.2025..
@@ -9,11 +9,7 @@ import SnapKit
 import SofaAcademic
 import UIKit
 
-class LeagueEventTeamRowView: BaseView {
-
-    static var height: CGFloat {
-        Constants.teamImageSize
-    }
+class EventTeamRowView: BaseView {
 
     private enum Padding {
 
@@ -25,19 +21,6 @@ class LeagueEventTeamRowView: BaseView {
         static let teamImageSize: CGFloat = 16
         static let scoreLabelWidth: CGFloat = 32
         static let teamNameSpacing: CGFloat = 8
-        static let lineHeight: CGFloat = 16
-    }
-
-    var teamNameLabelTextColor: UIColor? {
-        didSet {
-            teamNameLabel.textColor = teamNameLabelTextColor
-        }
-    }
-
-    var teamScoreLabelTextColor: UIColor? {
-        didSet {
-            teamScoreLabel.textColor = teamScoreLabelTextColor
-        }
     }
 
     private let teamImageView = UIImageView()
@@ -81,12 +64,22 @@ class LeagueEventTeamRowView: BaseView {
         }
     }
 
-    func setupUI(teamName: String, teamScore: Int?, teamLogoURL: URL?) {
-        teamNameLabel.text = teamName
-        teamNameLabel.setLineHeight(Constants.lineHeight)
-        teamScoreLabel.text = teamScore?.description
-        teamScoreLabel.setLineHeight(Constants.lineHeight)
+    func configure(teamName: String, teamNameColor: MatchStatusColor, scoreColor: MatchStatusColor, teamScore: Int?, teamLogoURL: URL?) {
+        teamNameLabel.setTextWithLineHeight(teamName)
+
+        if let teamScore = teamScore?.description {
+            teamScoreLabel.setTextWithLineHeight(teamScore)
+        }
+
+        teamNameLabel.textColor = UIColor.mapMatchStatus(from: teamNameColor)
+        teamScoreLabel.textColor = UIColor.mapMatchStatus(from: scoreColor)
 
         teamImageView.setImageURL(teamLogoURL)
+    }
+
+    func prepareForReuse() {
+        teamNameLabel.text = nil
+        teamImageView.image = nil
+        teamScoreLabel.text = nil
     }
 }

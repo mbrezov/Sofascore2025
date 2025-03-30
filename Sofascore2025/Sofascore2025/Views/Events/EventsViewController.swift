@@ -13,27 +13,31 @@ class EventsViewController: UIViewController, BaseViewProtocol {
 
     private enum Constants {
 
-        static let collectionViewInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
+        static let scrollInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
     }
 
-    private let data = Homework3DataSource()
-    private var viewModel: EventsViewModel?
-    private var eventsByLeague: [Int?: [Event]] = [:]
+    private var viewModel: EventsViewModelProtocol
 
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .verticalFlowLayout())
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .verticalCompositionalLayout())
+    private let emptyStateLabel = UILabel()
+
+    init(viewModel: EventsViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .surface1
 
-        viewModel = EventsViewModel(events: data.events())
-        if let viewModel = viewModel {
-            eventsByLeague = viewModel.eventsByLeague
-        }
-
         addViews()
         styleViews()
         setupConstraints()
+        updateCollectionView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -48,15 +52,18 @@ class EventsViewController: UIViewController, BaseViewProtocol {
 
     func styleViews() {
         collectionView.backgroundColor = .surface1
-        collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(LeagueEventCell.self, forCellWithReuseIdentifier: LeagueEventCell.reuseIdentifier)
-        collectionView.register(LeagueHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: LeagueHeaderCell.reuseIdentifier)
-        collectionView.register(LeagueSectionDividerView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: LeagueSectionDividerView.reuseIdentifier)
+        collectionView.register(EventCell.self, forCellWithReuseIdentifier: EventCell.reuseIdentifier)
+        collectionView.register(EventHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: EventHeaderCell.reuseIdentifier)
+        collectionView.register(EventSectionDividerView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: EventSectionDividerView.reuseIdentifier)
 
         collectionView.automaticallyAdjustsScrollIndicatorInsets = false
-        let collectionViewScrollInsets = Constants.collectionViewInsets.bottom + view.safeAreaInsets.bottom
+        let collectionViewScrollInsets = Constants.scrollInsets.bottom + view.safeAreaInsets.bottom
         collectionView.verticalScrollIndicatorInsets.bottom = collectionViewScrollInsets
+
+        emptyStateLabel.text = .emptyStateMessage
+        emptyStateLabel.textAlignment = .center
+        emptyStateLabel.textColor = .surfaceLv2
     }
 
     func setupConstraints() {
@@ -64,84 +71,64 @@ class EventsViewController: UIViewController, BaseViewProtocol {
             $0.edges.equalToSuperview()
         }
     }
+
+    private func updateCollectionView() {
+        viewModel.onEventsReload = { [weak self] in
+            self?.collectionView.reloadData()
+            self?.updateEmptyState()
+        }
+    }
+
+    private func updateEmptyState() {
+        collectionView.backgroundView = viewModel.leagues.isEmpty ? emptyStateLabel : nil
+    }
 }
 
 // MARK: - UICollectionViewDataSource
 
 extension EventsViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return eventsByLeague.keys.count
+        return viewModel.leagues.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let leagueId = viewModel?.leagueIDs[section]
+        let league = viewModel.leagues[section]
 
-        if let eventsForLeague = eventsByLeague[leagueId] {
-            return eventsForLeague.count
-        }
-        return 0
+        return viewModel.events(for: league).count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let leagueId = viewModel?.leagueIDs[indexPath.section]
+        let league = viewModel.leagues[indexPath.section]
+        let event = viewModel.events(for: league)[indexPath.row]
+        let eventViewModel = EventViewModel(event: event)
 
-        if let eventsForLeague = eventsByLeague[leagueId] {
-            let event = eventsForLeague[indexPath.row]
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EventCell.reuseIdentifier, for: indexPath) as? EventCell else { return UICollectionViewCell() }
 
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LeagueEventCell.reuseIdentifier, for: indexPath) as? LeagueEventCell else { return UICollectionViewCell() }
+        cell.bind(eventViewModel)
 
-            let eventViewModel = EventViewModel(event: event)
-            cell.bind(eventViewModel)
-
-            return cell
-        }
-
-        return UICollectionViewCell()
+        return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
-            let leagueId = viewModel?.leagueIDs[indexPath.section]
-            guard let league = viewModel?.getLeague(by: leagueId) else { return UICollectionReusableView() }
-
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: LeagueHeaderCell.reuseIdentifier, for: indexPath) as? LeagueHeaderCell else { return UICollectionReusableView() }
-
+            let league = viewModel.leagues[indexPath.section]
             let leagueViewModel = LeagueViewModel(league: league)
+
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: EventHeaderCell.reuseIdentifier, for: indexPath) as? EventHeaderCell else { return UICollectionReusableView() }
+
             headerView.bind(leagueViewModel)
 
             return headerView
         }
 
         if kind == UICollectionView.elementKindSectionFooter {
-            if indexPath.section == collectionView.numberOfSections - 1 {
-                return UICollectionReusableView()
-            }
+            guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: EventSectionDividerView.reuseIdentifier, for: indexPath) as? EventSectionDividerView else { return UICollectionReusableView() }
 
-            guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: LeagueSectionDividerView.reuseIdentifier, for: indexPath) as? LeagueSectionDividerView else { return UICollectionReusableView() }
+            footerView.isHidden = indexPath.section == collectionView.numberOfSections - 1 ? true : false
 
             return footerView
         }
 
         return UICollectionReusableView()
-    }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension EventsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: LeagueEventCell.height)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: LeagueHeaderCell.height)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return section == collectionView.numberOfSections - 1 ? .zero : CGSize(width: collectionView.frame.width, height: LeagueSectionDividerView.height)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return Constants.collectionViewInsets
     }
 }

@@ -9,9 +9,7 @@ import UIKit
 
 extension UILabel {
 
-    func setLineHeight(_ lineHeight: CGFloat) {
-        guard let labelText = text, !labelText.isEmpty else { return }
-
+    func setTextWithLineHeight(_ text: String, _ lineHeight: CGFloat = 16) {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
@@ -21,6 +19,6 @@ extension UILabel {
             .paragraphStyle: paragraphStyle
         ]
 
-        attributedText = NSAttributedString(string: labelText, attributes: attributes)
+        attributedText = NSAttributedString(string: text, attributes: attributes)
     }
 }

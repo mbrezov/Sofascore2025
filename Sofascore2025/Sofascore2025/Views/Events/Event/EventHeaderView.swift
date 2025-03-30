@@ -1,5 +1,5 @@
 //
-//  LeagueHeaderView.swift
+//  EventHeaderView.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 11.03.2025..
@@ -9,11 +9,7 @@ import SnapKit
 import SofaAcademic
 import UIKit
 
-class LeagueHeaderView: BaseView {
-
-    static var height: CGFloat {
-        (2 * Padding.vertical) + Constants.leagueLogoSize
-    }
+class EventHeaderView: BaseView {
 
     private enum Padding {
 
@@ -33,10 +29,10 @@ class LeagueHeaderView: BaseView {
     private let leagueCountryLabel = UILabel()
     private let leagueNameLabel = UILabel()
 
-    var viewModel: LeagueViewModel? {
+    var viewModel: LeagueViewModelProtocol? {
         didSet {
             if let league = viewModel {
-                setupUI(league)
+                configure(league)
             }
         }
     }
@@ -88,7 +84,7 @@ class LeagueHeaderView: BaseView {
         }
     }
 
-    private func setupUI(_ league: LeagueViewModel) {
+    private func configure(_ league: LeagueViewModelProtocol) {
         leagueNameLabel.text = league.name
         leagueCountryLabel.text = league.country?.name
 

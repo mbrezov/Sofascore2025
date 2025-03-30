@@ -8,10 +8,14 @@
 import Foundation
 import SofaAcademic
 
+enum SportType {
+    case football, basketball, americanFootball
+}
+
 protocol EventsViewModelProtocol {
 
-    var eventsByLeague: [Int?: [Event]] { get }
-    var leagueIDs: [Int?] { get }
-
-    func getLeague(by id: Int?) -> League?
+    var onEventsReload: (() -> Void)? { get set }
+    var leagues: [League] { get }
+    func events(for league: League) -> [Event]
+    func selectSport(_ sport: SportType)
 }

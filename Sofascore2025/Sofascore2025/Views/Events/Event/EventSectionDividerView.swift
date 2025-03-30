@@ -1,5 +1,5 @@
 //
-//  LeagueSectionDividerView.swift
+//  EventSectionDividerView.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 21.03.2025..
@@ -7,11 +7,9 @@
 
 import UIKit
 
-class LeagueSectionDividerView: UICollectionReusableView {
+class EventSectionDividerView: UICollectionReusableView {
 
-    static let reuseIdentifier = "LeagueSectionDividerView"
-
-    static let height: CGFloat = 1
+    static let reuseIdentifier = "EventSectionDividerView"
 
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -16,4 +16,6 @@ extension String {
     static let football = "Football"
     static let basketball = "Basketball"
     static let americanFootball = "Am. Football"
+
+    static let emptyStateMessage = "No events available"
 }

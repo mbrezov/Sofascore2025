@@ -1,22 +1,18 @@
 //
-//  LeagueHeaderCell.swift
+//  EventHeaderCell.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 24.03.2025..
 //
 
-import UIKit
 import SnapKit
+import UIKit
 
-class LeagueHeaderCell: UICollectionViewCell {
+class EventHeaderCell: UICollectionViewCell {
 
-    static let reuseIdentifier = "LeagueHeaderCell"
+    static let reuseIdentifier = "EventHeaderCell"
 
-    static var height: CGFloat {
-        LeagueHeaderView.height
-    }
-
-    private let leagueHeaderView = LeagueHeaderView()
+    private let eventHeaderView = EventHeaderView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,16 +28,16 @@ class LeagueHeaderCell: UICollectionViewCell {
     }
 
     func addViews() {
-        addSubview(leagueHeaderView)
+        addSubview(eventHeaderView)
     }
 
     func setupConstraints() {
-        leagueHeaderView.snp.makeConstraints {
+        eventHeaderView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
 
-    func bind(_ league: LeagueViewModel) {
-        leagueHeaderView.viewModel = league
+    func bind(_ league: LeagueViewModelProtocol) {
+        eventHeaderView.viewModel = league
     }
 }

@@ -38,7 +38,40 @@ class EventViewModel: EventViewModelProtocol {
         }
     }
 
+    var statusColor: MatchStatusColor {
+        status == .inProgress ? .live : .surfaceLv2
+    }
+
+    var homeTeamColor: MatchStatusColor {
+        statusColor(for: homeScore, comparedTo: awayScore)
+    }
+
+    var awayTeamColor: MatchStatusColor {
+        statusColor(for: awayScore, comparedTo: homeScore)
+    }
+
+    var homeScoreColor: MatchStatusColor {
+        statusColor(for: homeScore, comparedTo: awayScore, isScore: true)
+    }
+
+    var awayScoreColor: MatchStatusColor {
+        statusColor(for: awayScore, comparedTo: homeScore, isScore: true)
+    }
+
     init(event: Event) {
         self.event = event
+    }
+
+    private func statusColor(for teamScore: Int?, comparedTo opponentScore: Int?, isScore: Bool = false) -> MatchStatusColor {
+        switch status {
+        case .inProgress:
+            return isScore ? .live : .surfaceLv1
+
+        case .finished:
+            return (teamScore ?? 0) > (opponentScore ?? 0) ? .surfaceLv1 : .surfaceLv2
+
+        default:
+            return .surfaceLv1
+        }
     }
 }

@@ -8,6 +8,10 @@
 import Foundation
 import SofaAcademic
 
+enum MatchStatusColor {
+    case live, surfaceLv1, surfaceLv2
+}
+
 protocol EventViewModelProtocol {
 
     var homeTeamLogoURL: URL? { get }
@@ -17,8 +21,12 @@ protocol EventViewModelProtocol {
     var leagueName: String? { get }
     var status: EventStatus { get }
     var startTimestamp: String { get }
-    var homeScore: Int? { get }
-    var awayScore: Int? { get}
-
     var matchStatusDescription: String { get }
+    var statusColor: MatchStatusColor { get }
+    var homeScore: Int? { get }
+    var awayScore: Int? { get }
+    var homeTeamColor: MatchStatusColor { get }
+    var awayTeamColor: MatchStatusColor { get }
+    var homeScoreColor: MatchStatusColor { get }
+    var awayScoreColor: MatchStatusColor { get }
 }

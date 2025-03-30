@@ -10,21 +10,44 @@ import SofaAcademic
 
 class EventsViewModel: EventsViewModelProtocol {
 
-    private let events: [Event]
+    private let data = Homework3DataSource()
 
-    var eventsByLeague: [Int?: [Event]] {
-        Dictionary(grouping: events, by: { $0.league?.id })
+    var onEventsReload: (() -> Void)?
+
+    private(set) var events: [Event] = [] {
+        didSet {
+            onEventsReload?()
+        }
     }
 
-    var leagueIDs: [Int?] {
-        eventsByLeague.keys.compactMap { $0 }.sorted()
+    var leagues: [League] {
+        leagueIDs.compactMap { id in
+            events.first { $0.league?.id == id }?.league
+        }
     }
 
-    init(events: [Event]) {
-        self.events = events
+    private var leagueIDs: [Int] {
+        return eventsByLeague.keys.sorted()
     }
 
-    func getLeague(by id: Int?) -> League? {
-        events.compactMap(\.league).first(where: { $0.id == id })
+    private var eventsByLeague: [Int: [Event]] {
+        Dictionary(grouping: events, by: { $0.league?.id ?? 0 })
+    }
+
+    func events(for league: League) -> [Event] {
+        return events.filter { $0.league?.id == league.id }
+    }
+
+    func selectSport(_ sport: SportType) {
+        switch sport {
+        case .football:
+            events = data.events()
+
+        case .basketball:
+            events = []
+
+        case .americanFootball:
+            events = []
+        }
     }
 }
