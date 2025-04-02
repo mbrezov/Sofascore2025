@@ -27,7 +27,7 @@ class EventCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        eventView.prepareForReuse()
+        eventView.cleanup()
     }
 
     func addViews() {

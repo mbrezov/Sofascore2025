@@ -64,20 +64,20 @@ class EventTeamRowView: BaseView {
         }
     }
 
-    func configure(teamName: String, teamNameColor: MatchStatusColor, scoreColor: MatchStatusColor, teamScore: Int?, teamLogoURL: URL?) {
-        teamNameLabel.setTextWithLineHeight(teamName)
+    func configure(with teamInfo: EventTeamInfo) {
+        teamNameLabel.setText(teamInfo.name, withLineHeight: 16)
 
-        if let teamScore = teamScore?.description {
-            teamScoreLabel.setTextWithLineHeight(teamScore)
+        if let teamScore = teamInfo.score?.description {
+            teamScoreLabel.setText(teamScore, withLineHeight: 16)
         }
 
-        teamNameLabel.textColor = UIColor.mapMatchStatus(from: teamNameColor)
-        teamScoreLabel.textColor = UIColor.mapMatchStatus(from: scoreColor)
+        teamNameLabel.textColor = teamInfo.style.color
+        teamScoreLabel.textColor = teamInfo.scoreStyle.color
 
-        teamImageView.setImageURL(teamLogoURL)
+        teamImageView.setImageURL(teamInfo.logoURL)
     }
 
-    func prepareForReuse() {
+    func cleanup() {
         teamNameLabel.text = nil
         teamImageView.image = nil
         teamScoreLabel.text = nil

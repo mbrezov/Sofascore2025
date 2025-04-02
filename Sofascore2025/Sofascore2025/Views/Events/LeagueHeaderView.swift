@@ -1,5 +1,5 @@
 //
-//  EventHeaderView.swift
+//  LeagueHeaderView.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 11.03.2025..
@@ -9,7 +9,7 @@ import SnapKit
 import SofaAcademic
 import UIKit
 
-class EventHeaderView: BaseView {
+class LeagueHeaderView: BaseView {
 
     private enum Padding {
 
@@ -86,7 +86,7 @@ class EventHeaderView: BaseView {
 
     private func configure(_ league: LeagueViewModelProtocol) {
         leagueNameLabel.text = league.name
-        leagueCountryLabel.text = league.country?.name
+        leagueCountryLabel.text = league.countryName
 
         leagueLogoImageView.setImageURL(league.logoURL)
     }

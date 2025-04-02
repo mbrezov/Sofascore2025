@@ -37,7 +37,7 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         addViews()
         styleViews()
         setupConstraints()
-        updateCollectionView()
+        setupBinding()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -54,7 +54,7 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         collectionView.backgroundColor = .surface1
         collectionView.dataSource = self
         collectionView.register(EventCell.self, forCellWithReuseIdentifier: EventCell.reuseIdentifier)
-        collectionView.register(EventHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: EventHeaderCell.reuseIdentifier)
+        collectionView.register(LeaguesHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: LeaguesHeaderCell.reuseIdentifier)
         collectionView.register(EventSectionDividerView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: EventSectionDividerView.reuseIdentifier)
 
         collectionView.automaticallyAdjustsScrollIndicatorInsets = false
@@ -72,7 +72,7 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         }
     }
 
-    private func updateCollectionView() {
+    private func setupBinding() {
         viewModel.onEventsReload = { [weak self] in
             self?.collectionView.reloadData()
             self?.updateEmptyState()
@@ -114,7 +114,7 @@ extension EventsViewController: UICollectionViewDataSource {
             let league = viewModel.leagues[indexPath.section]
             let leagueViewModel = LeagueViewModel(league: league)
 
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: EventHeaderCell.reuseIdentifier, for: indexPath) as? EventHeaderCell else { return UICollectionReusableView() }
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: LeaguesHeaderCell.reuseIdentifier, for: indexPath) as? LeaguesHeaderCell else { return UICollectionReusableView() }
 
             headerView.bind(leagueViewModel)
 

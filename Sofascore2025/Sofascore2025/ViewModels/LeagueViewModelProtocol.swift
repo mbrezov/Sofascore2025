@@ -6,11 +6,10 @@
 //
 
 import Foundation
-import SofaAcademic
 
 protocol LeagueViewModelProtocol {
 
     var name: String { get }
     var logoURL: URL? { get }
-    var country: Country? { get }
+    var countryName: String? { get }
 }

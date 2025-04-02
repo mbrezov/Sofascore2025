@@ -18,40 +18,32 @@ class SportSelectorMenuViewController: UIViewController, BaseViewProtocol {
         static let selectionViewHorizontalInset: CGFloat = 8
     }
 
-    private let viewModel: EventsViewModelProtocol
-
     private let stackView = UIStackView()
-    private let segmentItemView1 = SportSelectorMenuView()
-    private let segmentItemView2 = SportSelectorMenuView()
-    private let segmentItemView3 = SportSelectorMenuView()
     private let selectionView = UIView()
 
-    private var segmentMapping: [SportType: UIView] {
-        return [
-            .football: segmentItemView1,
-            .basketball: segmentItemView2,
-            .americanFootball: segmentItemView3
-        ]
-    }
+    private var sportViews: [SportType: SportSelectorMenuView] = [:]
 
-    private var selectedSegment: UIView {
-        guard let segment = segmentMapping[selectedIndex] else {
-            return segmentItemView1
-        }
-        return segment
-    }
+    var onSportSelected: ((SportType) -> Void)?
 
     var selectedIndex: SportType = .football {
-       didSet {
-           updateSelection()
-       }
+        didSet {
+            updateSelection()
+        }
     }
 
-    init(viewModel: EventsViewModelProtocol) {
-        self.viewModel = viewModel
+    init(sports: [SportType] = SportType.allCases) {
         super.init(nibName: nil, bundle: nil)
 
-        viewModel.selectSport(selectedIndex)
+        sports.forEach { sport in
+            let sportView = SportSelectorMenuView()
+            sportView.setup(name: sport.name, image: sport.icon)
+            sportView.onTap = { [weak self] in
+                self?.selectedIndex = sport
+                self?.onSportSelected?(sport)
+            }
+            sportViews[sport] = sportView
+            stackView.addArrangedSubview(sportView)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -65,15 +57,11 @@ class SportSelectorMenuViewController: UIViewController, BaseViewProtocol {
         addViews()
         styleViews()
         setupConstraints()
-        setupBindings()
     }
 
     func addViews() {
         view.addSubview(stackView)
-        stackView.addArrangedSubview(segmentItemView1)
-        stackView.addArrangedSubview(segmentItemView2)
-        stackView.addArrangedSubview(segmentItemView3)
-        stackView.addSubview(selectionView)
+        view.addSubview(selectionView)
     }
 
     func styleViews() {
@@ -83,10 +71,6 @@ class SportSelectorMenuViewController: UIViewController, BaseViewProtocol {
         selectionView.backgroundColor = .surface1
         selectionView.layer.cornerRadius = Constants.cornerRadius
         selectionView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-
-        segmentItemView1.setup(name: .football, image: .icFootball)
-        segmentItemView2.setup(name: .basketball, image: .icBasketball)
-        segmentItemView3.setup(name: .americanFootball, image: .icAmericanFootball)
     }
 
     func setupConstraints() {
@@ -98,7 +82,11 @@ class SportSelectorMenuViewController: UIViewController, BaseViewProtocol {
         updateSelectionViewConstraints(for: selectedSegment)
     }
 
-    func updateSelectionViewConstraints(for selectedSegment: UIView) {
+    private var selectedSegment: UIView {
+        return sportViews[selectedIndex] ?? UIView()
+    }
+
+    private func updateSelectionViewConstraints(for selectedSegment: UIView) {
         selectionView.snp.remakeConstraints {
             $0.height.equalTo(Constants.selectionViewHeight)
             $0.bottom.equalTo(stackView.snp.bottom)
@@ -106,22 +94,7 @@ class SportSelectorMenuViewController: UIViewController, BaseViewProtocol {
         }
     }
 
-    private func setupBindings() {
-        segmentItemView1.onTap = { [weak self] in
-            self?.selectedIndex = .football
-        }
-
-        segmentItemView2.onTap = { [weak self] in
-            self?.selectedIndex = .basketball
-        }
-
-        segmentItemView3.onTap = { [weak self] in
-            self?.selectedIndex = .americanFootball
-        }
-    }
-
     private func updateSelection() {
-        viewModel.selectSport(selectedIndex)
         UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: { [weak self] in
             guard let self = self else { return }
             self.updateSelectionViewConstraints(for: self.selectedSegment)

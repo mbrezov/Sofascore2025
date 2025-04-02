@@ -6,24 +6,26 @@
 //
 
 import Foundation
-import SofaAcademic
 
 class EventViewModel: EventViewModelProtocol {
 
-    private let event: Event
+    private let event: EventInfo
 
-    var homeTeamLogoURL: URL? { event.homeTeam.logoUrl?.url }
-    var awayTeamLogoURL: URL? { event.awayTeam.logoUrl?.url }
-    var homeTeamName: String { event.homeTeam.name }
-    var awayTeamName: String { event.awayTeam.name }
+    var homeTeamInfo: EventTeamInfo { teamInfo(for: event.homeTeam, score: event.homeScore, opponentScore: event.awayScore) }
+    var awayTeamInfo: EventTeamInfo { teamInfo(for: event.awayTeam, score: event.awayScore, opponentScore: event.homeScore) }
+
+    var statusInfo: EventStatusInfo {
+        EventStatusInfo(
+            description: matchStatusDescription,
+            startTimestamp: DateFormatterService.timeFormatted(event.startTimestamp),
+            style: event.status == .inProgress ? .live : .secondary
+        )
+    }
+
     var leagueName: String? { event.league?.name }
-    var status: EventStatus { event.status }
-    var startTimestamp: String { DateFormatterService.timeFormatted(event.startTimestamp) }
-    var homeScore: Int? { event.homeScore }
-    var awayScore: Int? { event.awayScore }
 
-    var matchStatusDescription: String {
-        switch status {
+    private var matchStatusDescription: String {
+        switch event.status {
         case .notStarted:
             return .matchStatusNotStarted
 
@@ -38,40 +40,30 @@ class EventViewModel: EventViewModelProtocol {
         }
     }
 
-    var statusColor: MatchStatusColor {
-        status == .inProgress ? .live : .surfaceLv2
-    }
-
-    var homeTeamColor: MatchStatusColor {
-        statusColor(for: homeScore, comparedTo: awayScore)
-    }
-
-    var awayTeamColor: MatchStatusColor {
-        statusColor(for: awayScore, comparedTo: homeScore)
-    }
-
-    var homeScoreColor: MatchStatusColor {
-        statusColor(for: homeScore, comparedTo: awayScore, isScore: true)
-    }
-
-    var awayScoreColor: MatchStatusColor {
-        statusColor(for: awayScore, comparedTo: homeScore, isScore: true)
-    }
-
-    init(event: Event) {
+    init(event: EventInfo) {
         self.event = event
     }
 
-    private func statusColor(for teamScore: Int?, comparedTo opponentScore: Int?, isScore: Bool = false) -> MatchStatusColor {
-        switch status {
+    private func teamInfo(for team: TeamInfo, score: Int?, opponentScore: Int?) -> EventTeamInfo {
+        EventTeamInfo(
+            logoURL: team.logoURL,
+            name: team.name,
+            score: score,
+            style: statusColor(for: score, comparedTo: opponentScore),
+            scoreStyle: statusColor(for: score, comparedTo: opponentScore, isScore: true)
+        )
+    }
+
+    private func statusColor(for teamScore: Int?, comparedTo opponentScore: Int?, isScore: Bool = false) -> EventStatusStyleInfo {
+        switch event.status {
         case .inProgress:
-            return isScore ? .live : .surfaceLv1
+            return isScore ? .live : .primary
 
         case .finished:
-            return (teamScore ?? 0) > (opponentScore ?? 0) ? .surfaceLv1 : .surfaceLv2
+            return (teamScore ?? 0) > (opponentScore ?? 0) ? .primary : .secondary
 
         default:
-            return .surfaceLv1
+            return .primary
         }
     }
 }

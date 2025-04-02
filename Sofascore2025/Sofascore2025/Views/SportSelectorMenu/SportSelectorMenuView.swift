@@ -62,7 +62,7 @@ class SportSelectorMenuView: BaseView {
 
     func setup(name: String, image: UIImage, onTap: (() -> Void)? = nil) {
         iconImageView.image = image
-        nameLabel.setTextWithLineHeight(name)
+        nameLabel.setText(name, withLineHeight: 16)
         self.onTap = onTap
     }
 

@@ -94,17 +94,18 @@ class EventView: BaseView {
     }
 
     private func configure(_ event: EventViewModelProtocol) {
-        startTimeLabel.setTextWithLineHeight(event.startTimestamp)
-        statusLabel.setTextWithLineHeight(event.matchStatusDescription)
-        statusLabel.textColor = UIColor.mapMatchStatus(from: event.statusColor)
+        let status = event.statusInfo
 
-        homeTeamRowView.configure(teamName: event.homeTeamName, teamNameColor: event.homeTeamColor, scoreColor: event.homeScoreColor, teamScore: event.homeScore, teamLogoURL: event.homeTeamLogoURL)
+        startTimeLabel.setText(status.startTimestamp, withLineHeight: 16)
+        statusLabel.setText(status.description, withLineHeight: 16)
+        statusLabel.textColor = status.style.color
 
-        awayTeamRowView.configure(teamName: event.awayTeamName, teamNameColor: event.awayTeamColor, scoreColor: event.awayScoreColor, teamScore: event.awayScore, teamLogoURL: event.awayTeamLogoURL)
+        homeTeamRowView.configure(with: event.homeTeamInfo)
+        awayTeamRowView.configure(with: event.awayTeamInfo)
     }
 
-    func prepareForReuse() {
-        homeTeamRowView.prepareForReuse()
-        awayTeamRowView.prepareForReuse()
+    func cleanup() {
+        homeTeamRowView.cleanup()
+        awayTeamRowView.cleanup()
     }
 }

@@ -1,5 +1,5 @@
 //
-//  EventHeaderCell.swift
+//  LeaguesHeaderCell.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 24.03.2025..
@@ -8,11 +8,11 @@
 import SnapKit
 import UIKit
 
-class EventHeaderCell: UICollectionViewCell {
+class LeaguesHeaderCell: UICollectionReusableView {
 
-    static let reuseIdentifier = "EventHeaderCell"
+    static let reuseIdentifier = "LeaguesHeaderCell"
 
-    private let eventHeaderView = EventHeaderView()
+    private let eventHeaderView = LeagueHeaderView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)

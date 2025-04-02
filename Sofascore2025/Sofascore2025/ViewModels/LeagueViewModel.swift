@@ -6,17 +6,16 @@
 //
 
 import Foundation
-import SofaAcademic
 
 class LeagueViewModel: LeagueViewModelProtocol {
 
-    private let league: League
+    private let league: LeagueInfo
 
     var name: String { league.name }
-    var logoURL: URL? { league.logoUrl?.url }
-    var country: Country? { league.country }
+    var logoURL: URL? { league.logoURL }
+    var countryName: String? { league.countryName }
 
-    init(league: League) {
+    init(league: LeagueInfo) {
         self.league = league
     }
 }

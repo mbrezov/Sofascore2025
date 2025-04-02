@@ -6,16 +6,16 @@
 //
 
 import Foundation
-import SofaAcademic
 
-enum SportType {
+enum SportType: String, CaseIterable {
+
     case football, basketball, americanFootball
 }
 
 protocol EventsViewModelProtocol {
 
     var onEventsReload: (() -> Void)? { get set }
-    var leagues: [League] { get }
-    func events(for league: League) -> [Event]
+    var leagues: [LeagueInfo] { get }
+    func events(for league: LeagueInfo) -> [EventInfo]
     func selectSport(_ sport: SportType)
 }
