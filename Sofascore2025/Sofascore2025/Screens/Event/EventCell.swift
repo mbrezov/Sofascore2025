@@ -40,7 +40,7 @@ class EventCell: UICollectionViewCell {
         }
     }
 
-    func bind(_ event: EventViewModelProtocol) {
+    func bind(_ event: EventViewModel) {
         eventView.viewModel = event
     }
 }

@@ -11,21 +11,16 @@ import UIKit
 
 class MainViewController: UIViewController, BaseViewProtocol {
 
-    private let viewModel: MainViewModelProtocol
+    private let viewModel: EventsViewModel
     private let eventsViewController: EventsViewController
     private let sportSelectorMenuViewController: SportSelectorMenuViewController
 
-    init(viewModel: MainViewModel = MainViewModel()) {
+    init(viewModel: EventsViewModel = EventsViewModel()) {
         self.viewModel = viewModel
-        self.eventsViewController = EventsViewController(viewModel: viewModel.eventsViewModel)
+        self.eventsViewController = EventsViewController(viewModel: viewModel)
         self.sportSelectorMenuViewController = SportSelectorMenuViewController()
 
         super.init(nibName: nil, bundle: nil)
-
-        sportSelectorMenuViewController.onSportSelected = { [weak self] sport in
-            guard let self = self else { return }
-            self.viewModel.selectSport(sport)
-        }
     }
 
     required init?(coder: NSCoder) {
@@ -38,6 +33,7 @@ class MainViewController: UIViewController, BaseViewProtocol {
 
         addViews()
         setupConstraints()
+        setupBinding()
     }
 
     func addViews() {
@@ -53,6 +49,13 @@ class MainViewController: UIViewController, BaseViewProtocol {
         eventsViewController.view.snp.makeConstraints {
             $0.top.equalTo(sportSelectorMenuViewController.view.snp.bottom)
             $0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+
+    func setupBinding() {
+        sportSelectorMenuViewController.onSportSelected = { [weak self] sport in
+            guard let self = self else { return }
+            self.viewModel.selectSport(sport)
         }
     }
 }

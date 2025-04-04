@@ -29,7 +29,7 @@ class LeagueHeaderView: BaseView {
     private let leagueCountryLabel = UILabel()
     private let leagueNameLabel = UILabel()
 
-    var viewModel: LeagueViewModelProtocol? {
+    var viewModel: LeagueViewModel? {
         didSet {
             if let league = viewModel {
                 configure(league)
@@ -84,7 +84,7 @@ class LeagueHeaderView: BaseView {
         }
     }
 
-    private func configure(_ league: LeagueViewModelProtocol) {
+    private func configure(_ league: LeagueViewModel) {
         leagueNameLabel.text = league.name
         leagueCountryLabel.text = league.countryName
 

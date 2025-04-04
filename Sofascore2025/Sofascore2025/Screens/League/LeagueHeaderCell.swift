@@ -1,5 +1,5 @@
 //
-//  LeaguesHeaderCell.swift
+//  LeagueHeaderCell.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 24.03.2025..
@@ -8,9 +8,9 @@
 import SnapKit
 import UIKit
 
-class LeaguesHeaderCell: UICollectionReusableView {
+class LeagueHeaderCell: UICollectionReusableView {
 
-    static let reuseIdentifier = "LeaguesHeaderCell"
+    static let reuseIdentifier = "LeagueHeaderCell"
 
     private let eventHeaderView = LeagueHeaderView()
 
@@ -37,7 +37,7 @@ class LeaguesHeaderCell: UICollectionReusableView {
         }
     }
 
-    func bind(_ league: LeagueViewModelProtocol) {
+    func bind(_ league: LeagueViewModel) {
         eventHeaderView.viewModel = league
     }
 }

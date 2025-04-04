@@ -32,7 +32,7 @@ class EventView: BaseView {
     private let homeTeamRowView = EventTeamRowView()
     private let awayTeamRowView = EventTeamRowView()
 
-    var viewModel: EventViewModelProtocol? {
+    var viewModel: EventViewModel? {
         didSet {
             if let event = viewModel {
                 configure(event)
@@ -93,10 +93,10 @@ class EventView: BaseView {
         }
     }
 
-    private func configure(_ event: EventViewModelProtocol) {
+    private func configure(_ event: EventViewModel) {
         let status = event.statusInfo
 
-        startTimeLabel.setText(status.startTimestamp, withLineHeight: 16)
+        startTimeLabel.setText(status.startTimeText, withLineHeight: 16)
         statusLabel.setText(status.description, withLineHeight: 16)
         statusLabel.textColor = status.style.color
 

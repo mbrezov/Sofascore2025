@@ -16,12 +16,12 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         static let scrollInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
     }
 
-    private var viewModel: EventsViewModelProtocol
+    private var viewModel: EventsViewModel
 
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .verticalCompositionalLayout())
     private let emptyStateLabel = UILabel()
 
-    init(viewModel: EventsViewModelProtocol) {
+    init(viewModel: EventsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -54,7 +54,7 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         collectionView.backgroundColor = .surface1
         collectionView.dataSource = self
         collectionView.register(EventCell.self, forCellWithReuseIdentifier: EventCell.reuseIdentifier)
-        collectionView.register(LeaguesHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: LeaguesHeaderCell.reuseIdentifier)
+        collectionView.register(LeagueHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: LeagueHeaderCell.reuseIdentifier)
         collectionView.register(EventSectionDividerView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: EventSectionDividerView.reuseIdentifier)
 
         collectionView.automaticallyAdjustsScrollIndicatorInsets = false
@@ -99,8 +99,7 @@ extension EventsViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let league = viewModel.leagues[indexPath.section]
-        let event = viewModel.events(for: league)[indexPath.row]
-        let eventViewModel = EventViewModel(event: event)
+        let eventViewModel = viewModel.events(for: league)[indexPath.row]
 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EventCell.reuseIdentifier, for: indexPath) as? EventCell else { return UICollectionViewCell() }
 
@@ -111,10 +110,9 @@ extension EventsViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
-            let league = viewModel.leagues[indexPath.section]
-            let leagueViewModel = LeagueViewModel(league: league)
+            let leagueViewModel = viewModel.leagues[indexPath.section]
 
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: LeaguesHeaderCell.reuseIdentifier, for: indexPath) as? LeaguesHeaderCell else { return UICollectionReusableView() }
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: LeagueHeaderCell.reuseIdentifier, for: indexPath) as? LeagueHeaderCell else { return UICollectionReusableView() }
 
             headerView.bind(leagueViewModel)
 

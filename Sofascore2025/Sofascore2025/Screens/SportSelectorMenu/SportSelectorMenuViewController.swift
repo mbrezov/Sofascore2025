@@ -82,11 +82,11 @@ class SportSelectorMenuViewController: UIViewController, BaseViewProtocol {
         updateSelectionViewConstraints(for: selectedSegment)
     }
 
-    private var selectedSegment: UIView {
-        return sportViews[selectedIndex] ?? UIView()
+    private var selectedSegment: SportSelectorMenuView {
+        return sportViews[selectedIndex] ?? SportSelectorMenuView()
     }
 
-    private func updateSelectionViewConstraints(for selectedSegment: UIView) {
+    private func updateSelectionViewConstraints(for selectedSegment: SportSelectorMenuView) {
         selectionView.snp.remakeConstraints {
             $0.height.equalTo(Constants.selectionViewHeight)
             $0.bottom.equalTo(stackView.snp.bottom)
