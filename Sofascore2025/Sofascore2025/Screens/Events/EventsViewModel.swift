@@ -14,49 +14,36 @@ class EventsViewModel {
 
     var onEventsReload: (() -> Void)?
 
-    private(set) var rawEvents: [Event] {
-        didSet {
-            onEventsReload?()
-        }
-    }
+    private var events: [EventViewModel] = []
+    private(set) var leagues: [LeagueHeaderViewModel] = []
 
-    private var events: [EventViewModel] {
-        rawEvents.map { EventViewModel(event: $0) }
-    }
-
-    var leagues: [LeagueViewModel] {
-        leagueIDs.compactMap { id in
-            guard let league = rawEvents.first(where: { $0.league?.id == id })?.league else { return nil }
-            return LeagueViewModel(league: league)
-        }
-    }
-
-    private var leagueIDs: [Int] {
-        eventsByLeague.keys.sorted()
-    }
-
-    private var eventsByLeague: [Int: [Event]] {
-        Dictionary(grouping: rawEvents, by: { $0.league?.id ?? 0 })
-    }
-
-    init() {
-        self.rawEvents = dataSource.events()
-    }
-
-    func events(for league: LeagueViewModel) -> [EventViewModel] {
-        return events.filter { $0.leagueId == league.id }
+    func getEvents(for league: LeagueHeaderViewModel) -> [EventViewModel] {
+        events.filter { $0.leagueId == league.id }
     }
 
     func selectSport(_ sport: SportType) {
+        let eventModels: [Event]
+
         switch sport {
         case .football:
-            rawEvents = dataSource.events()
+            eventModels = dataSource.events()
 
         case .basketball:
-            rawEvents = []
+            eventModels = []
 
         case .americanFootball:
-            rawEvents = []
+            eventModels = []
         }
+
+        events = eventModels.map { EventViewModel(event: $0) }
+        let eventsByLeague = Dictionary(grouping: eventModels, by: { $0.league?.id ?? 0 })
+
+        let leagueIDs = eventsByLeague.keys.sorted()
+        leagues = leagueIDs.compactMap { id in
+            guard let league = eventModels.first(where: { $0.league?.id == id })?.league else { return nil }
+            return LeagueHeaderViewModel(league: league)
+        }
+
+        onEventsReload?()
     }
 }

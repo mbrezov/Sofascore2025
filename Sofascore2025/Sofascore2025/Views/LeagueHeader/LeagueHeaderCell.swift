@@ -37,7 +37,7 @@ class LeagueHeaderCell: UICollectionReusableView {
         }
     }
 
-    func bind(_ league: LeagueViewModel) {
+    func bind(_ league: LeagueHeaderViewModel) {
         eventHeaderView.viewModel = league
     }
 }

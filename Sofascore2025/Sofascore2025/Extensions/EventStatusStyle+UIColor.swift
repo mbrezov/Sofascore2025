@@ -1,5 +1,5 @@
 //
-//  EventStatusStyle+Color.swift
+//  EventStatusStyle+UIColor.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 01.04.2025..
@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension EventStatusStyleInfo {
+extension EventStatusStyle {
 
     var color: UIColor {
         switch self {

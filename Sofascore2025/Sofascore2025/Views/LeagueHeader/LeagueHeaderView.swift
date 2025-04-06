@@ -29,7 +29,7 @@ class LeagueHeaderView: BaseView {
     private let leagueCountryLabel = UILabel()
     private let leagueNameLabel = UILabel()
 
-    var viewModel: LeagueViewModel? {
+    var viewModel: LeagueHeaderViewModel? {
         didSet {
             if let league = viewModel {
                 configure(league)
@@ -52,7 +52,7 @@ class LeagueHeaderView: BaseView {
         leagueCountryLabel.numberOfLines = 1
 
         pointerRightIcon.contentMode = .scaleAspectFit
-        pointerRightIcon.image = .pointerRightIcon
+        pointerRightIcon.image = .icPointerRight
 
         leagueNameLabel.font = .headline
         leagueNameLabel.textColor = .surfaceLv2
@@ -84,7 +84,7 @@ class LeagueHeaderView: BaseView {
         }
     }
 
-    private func configure(_ league: LeagueViewModel) {
+    private func configure(_ league: LeagueHeaderViewModel) {
         leagueNameLabel.text = league.name
         leagueCountryLabel.text = league.countryName
 

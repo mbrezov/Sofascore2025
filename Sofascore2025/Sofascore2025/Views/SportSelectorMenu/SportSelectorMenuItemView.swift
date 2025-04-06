@@ -1,5 +1,5 @@
 //
-//  SportSelectorMenuView.swift.swift
+//  SportSelectorMenuItemView.swift.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 18.03.2025..
@@ -9,7 +9,7 @@ import SnapKit
 import SofaAcademic
 import UIKit
 
-class SportSelectorMenuView: BaseView {
+class SportSelectorMenuItemView: BaseView {
 
     private enum Padding {
 
@@ -60,10 +60,9 @@ class SportSelectorMenuView: BaseView {
         addGestureRecognizer(touchUpInside)
     }
 
-    func setup(name: String, image: UIImage, onTap: (() -> Void)? = nil) {
+    func setup(name: String, image: UIImage) {
         iconImageView.image = image
         nameLabel.setText(name, withLineHeight: 16)
-        self.onTap = onTap
     }
 
     @objc private func tapped(_ sender: UITapGestureRecognizer) {

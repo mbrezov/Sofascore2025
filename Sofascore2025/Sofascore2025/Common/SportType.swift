@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SportType: String, CaseIterable {
+enum SportType {
 
     case football, basketball, americanFootball
 }

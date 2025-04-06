@@ -94,12 +94,12 @@ extension EventsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let league = viewModel.leagues[section]
 
-        return viewModel.events(for: league).count
+        return viewModel.getEvents(for: league).count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let league = viewModel.leagues[indexPath.section]
-        let eventViewModel = viewModel.events(for: league)[indexPath.row]
+        let eventViewModel = viewModel.getEvents(for: league)[indexPath.row]
 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EventCell.reuseIdentifier, for: indexPath) as? EventCell else { return UICollectionViewCell() }
 

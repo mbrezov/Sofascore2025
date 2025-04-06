@@ -11,14 +11,16 @@ import UIKit
 
 class MainViewController: UIViewController, BaseViewProtocol {
 
-    private let viewModel: EventsViewModel
+    private let eventsViewModel: EventsViewModel
     private let eventsViewController: EventsViewController
-    private let sportSelectorMenuViewController: SportSelectorMenuViewController
+    private let sportSelectorMenuView: SportSelectorMenuView
 
-    init(viewModel: EventsViewModel = EventsViewModel()) {
-        self.viewModel = viewModel
-        self.eventsViewController = EventsViewController(viewModel: viewModel)
-        self.sportSelectorMenuViewController = SportSelectorMenuViewController()
+    private let sports: [SportType] = [.football, .basketball, .americanFootball]
+
+    init(eventsViewModel: EventsViewModel = EventsViewModel()) {
+        self.eventsViewModel = eventsViewModel
+        self.eventsViewController = EventsViewController(viewModel: eventsViewModel)
+        self.sportSelectorMenuView = SportSelectorMenuView()
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -37,25 +39,27 @@ class MainViewController: UIViewController, BaseViewProtocol {
     }
 
     func addViews() {
+        view.addSubview(sportSelectorMenuView)
         addChildController(eventsViewController)
-        addChildController(sportSelectorMenuViewController)
     }
 
     func setupConstraints() {
-        sportSelectorMenuViewController.view.snp.makeConstraints {
+        sportSelectorMenuView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
         }
 
         eventsViewController.view.snp.makeConstraints {
-            $0.top.equalTo(sportSelectorMenuViewController.view.snp.bottom)
+            $0.top.equalTo(sportSelectorMenuView.snp.bottom)
             $0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
     }
 
     func setupBinding() {
-        sportSelectorMenuViewController.onSportSelected = { [weak self] sport in
+        sportSelectorMenuView.setupSports(with: sports)
+
+        sportSelectorMenuView.onSportSelected = { [weak self] sport in
             guard let self = self else { return }
-            self.viewModel.selectSport(sport)
+            self.eventsViewModel.selectSport(sport)
         }
     }
 }
