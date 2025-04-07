@@ -25,28 +25,19 @@ class SportSelectorMenuView: BaseView {
 
     var onSportSelected: ((SportType) -> Void)?
 
-    private var selectedIndex: SportType = .football {
-        didSet {
-            updateSelection()
-        }
-    }
+    private var selectedIndex: SportType?
 
     private var selectedSegment: SportSelectorMenuItemView {
-        sportViews[selectedIndex] ?? SportSelectorMenuItemView()
+        if let index = selectedIndex, let view = sportViews[index] {
+            return view
+        } else {
+            return SportSelectorMenuItemView()
+        }
     }
 
     override func addViews() {
         addSubview(stackView)
         addSubview(selectionView)
-    }
-
-    override func didMoveToWindow() {
-        super.didMoveToWindow()
-
-        guard window != nil else { return }
-
-        self.updateSelectionViewConstraints(for: selectedSegment)
-        self.onSportSelected?(self.selectedIndex)
     }
 
     override func styleViews() {
@@ -67,7 +58,7 @@ class SportSelectorMenuView: BaseView {
         }
     }
 
-    func setupSports(with sports: [SportType]) {
+    func setupSports(with sports: [SportType], selectedSport: SportType) {
         for sportView in stackView.arrangedSubviews {
             stackView.removeArrangedSubview(sportView)
             sportView.removeFromSuperview()
@@ -78,11 +69,16 @@ class SportSelectorMenuView: BaseView {
             sportView.setup(name: sport.name, image: sport.icon)
             sportView.onTap = { [weak self] in
                 self?.selectedIndex = sport
+                self?.updateSelection(animated: true)
                 self?.onSportSelected?(sport)
             }
             sportViews[sport] = sportView
             stackView.addArrangedSubview(sportView)
         }
+
+        selectedIndex = selectedSport
+        updateSelection(animated: false)
+        onSportSelected?(selectedSport)
     }
 
     private func updateSelectionViewConstraints(for selectedSegment: SportSelectorMenuItemView) {
@@ -93,11 +89,16 @@ class SportSelectorMenuView: BaseView {
         }
     }
 
-    private func updateSelection() {
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: { [weak self] in
-            guard let self = self else { return }
-            self.updateSelectionViewConstraints(for: self.selectedSegment)
-            self.layoutIfNeeded()
-        })
+    private func updateSelection(animated: Bool) {
+        if animated {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: { [weak self] in
+                guard let self = self else { return }
+                self.updateSelectionViewConstraints(for: self.selectedSegment)
+                self.layoutIfNeeded()
+            })
+        } else {
+            updateSelectionViewConstraints(for: selectedSegment)
+            layoutIfNeeded()
+        }
     }
 }

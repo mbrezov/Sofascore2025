@@ -55,11 +55,11 @@ class MainViewController: UIViewController, BaseViewProtocol {
     }
 
     func setupBinding() {
-        sportSelectorMenuView.setupSports(with: sports)
-
         sportSelectorMenuView.onSportSelected = { [weak self] sport in
             guard let self = self else { return }
             self.eventsViewModel.selectSport(sport)
         }
+
+        sportSelectorMenuView.setupSports(with: sports, selectedSport: .football)
     }
 }
