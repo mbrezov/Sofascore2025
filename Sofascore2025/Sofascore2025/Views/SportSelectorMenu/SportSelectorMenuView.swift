@@ -27,12 +27,11 @@ class SportSelectorMenuView: BaseView {
 
     private var selectedIndex: SportType?
 
-    private var selectedSegment: SportSelectorMenuItemView {
-        if let index = selectedIndex, let view = sportViews[index] {
-            return view
-        } else {
-            return SportSelectorMenuItemView()
+    private var selectedSegment: SportSelectorMenuItemView? {
+        if let index = selectedIndex {
+            return sportViews[index]
         }
+        return nil
     }
 
     override func addViews() {
@@ -90,10 +89,12 @@ class SportSelectorMenuView: BaseView {
     }
 
     private func updateSelection(animated: Bool) {
+        guard let selectedSegment = selectedSegment else { return }
+
         if animated {
             UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: { [weak self] in
                 guard let self = self else { return }
-                self.updateSelectionViewConstraints(for: self.selectedSegment)
+                self.updateSelectionViewConstraints(for: selectedSegment)
                 self.layoutIfNeeded()
             })
         } else {

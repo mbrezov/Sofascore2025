@@ -36,6 +36,8 @@ class MainViewController: UIViewController, BaseViewProtocol {
         addViews()
         setupConstraints()
         setupBinding()
+
+        sportSelectorMenuView.setupSports(with: sports, selectedSport: .football)
     }
 
     func addViews() {
@@ -59,7 +61,5 @@ class MainViewController: UIViewController, BaseViewProtocol {
             guard let self = self else { return }
             self.eventsViewModel.selectSport(sport)
         }
-
-        sportSelectorMenuView.setupSports(with: sports, selectedSport: .football)
     }
 }
