@@ -1,5 +1,5 @@
 //
-//  LeagueEventTeamRowView.swift
+//  EventTeamRowView.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 12.03.2025..
@@ -9,12 +9,11 @@ import SnapKit
 import SofaAcademic
 import UIKit
 
-class LeagueEventTeamRowView: BaseView {
+class EventTeamRowView: BaseView {
 
     private enum Padding {
 
         static let horizontal: CGFloat = 16
-        static let vertical: CGFloat = 10
     }
 
     private enum Constants {
@@ -22,19 +21,6 @@ class LeagueEventTeamRowView: BaseView {
         static let teamImageSize: CGFloat = 16
         static let scoreLabelWidth: CGFloat = 32
         static let teamNameSpacing: CGFloat = 8
-        static let lineHeight: CGFloat = 16
-    }
-
-    var teamNameLabelTextColor: UIColor? {
-        didSet {
-            teamNameLabel.textColor = teamNameLabelTextColor
-        }
-    }
-
-    var teamScoreLabelTextColor: UIColor? {
-        didSet {
-            teamScoreLabel.textColor = teamScoreLabelTextColor
-        }
     }
 
     private let teamImageView = UIImageView()
@@ -78,12 +64,22 @@ class LeagueEventTeamRowView: BaseView {
         }
     }
 
-    func setupUI(teamName: String, teamScore: Int?, teamLogoUrl: URL?) {
-        teamNameLabel.text = teamName
-        teamNameLabel.setLineHeight(Constants.lineHeight)
-        teamScoreLabel.text = teamScore?.description
-        teamScoreLabel.setLineHeight(Constants.lineHeight)
+    func configure(with teamInfo: EventTeamInfo) {
+        teamNameLabel.setText(teamInfo.name, withLineHeight: 16)
 
-        teamImageView.setImageURL(teamLogoUrl)
+        if let teamScore = teamInfo.score?.description {
+            teamScoreLabel.setText(teamScore, withLineHeight: 16)
+        }
+
+        teamNameLabel.textColor = teamInfo.style.color
+        teamScoreLabel.textColor = teamInfo.scoreStyle.color
+
+        teamImageView.setImageURL(teamInfo.logoURL)
+    }
+
+    func cleanup() {
+        teamNameLabel.text = nil
+        teamImageView.image = nil
+        teamScoreLabel.text = nil
     }
 }

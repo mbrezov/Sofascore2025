@@ -1,5 +1,5 @@
 //
-//  LeagueEventView.swift
+//  EventView.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 11.03.2025..
@@ -9,7 +9,7 @@ import SnapKit
 import SofaAcademic
 import UIKit
 
-class LeagueEventView: BaseView {
+class EventView: BaseView {
 
     private enum Padding {
 
@@ -24,19 +24,18 @@ class LeagueEventView: BaseView {
         static let separatorWidth: CGFloat = 1
         static let statusLabelWidth: CGFloat = 56
         static let verticalSpacing: CGFloat = 4
-        static let lineHeight: CGFloat = 16
     }
 
     private let startTimeLabel = UILabel()
     private let statusLabel = UILabel()
     private let verticalSeparator = UIView()
-    private let homeTeamRowView = LeagueEventTeamRowView()
-    private let awayTeamRowView = LeagueEventTeamRowView()
+    private let homeTeamRowView = EventTeamRowView()
+    private let awayTeamRowView = EventTeamRowView()
 
     var viewModel: EventViewModel? {
         didSet {
             if let event = viewModel {
-                setupUI(event)
+                configure(event)
             }
         }
     }
@@ -94,35 +93,19 @@ class LeagueEventView: BaseView {
         }
     }
 
-    private func setupUI(_ event: EventViewModel) {
-        startTimeLabel.text = event.startTimestamp
-        startTimeLabel.setLineHeight(Constants.lineHeight)
-        statusLabel.text = event.matchStatusDescription
-        statusLabel.setLineHeight(Constants.lineHeight)
+    private func configure(_ event: EventViewModel) {
+        let status = event.statusInfo
 
-        homeTeamRowView.setupUI(teamName: event.homeTeamName, teamScore: event.homeScore, teamLogoUrl: event.homeTeamLogoURL)
+        startTimeLabel.setText(status.startTimeText, withLineHeight: 16)
+        statusLabel.setText(status.description, withLineHeight: 16)
+        statusLabel.textColor = status.style.color
 
-        awayTeamRowView.setupUI(teamName: event.awayTeamName, teamScore: event.awayScore, teamLogoUrl: event.awayTeamLogoURL)
+        homeTeamRowView.configure(with: event.homeTeamInfo)
+        awayTeamRowView.configure(with: event.awayTeamInfo)
+    }
 
-        switch event.status {
-        case .inProgress:
-            statusLabel.textColor = .live
-            homeTeamRowView.teamScoreLabelTextColor = .live
-            awayTeamRowView.teamScoreLabelTextColor = .live
-
-        case .finished:
-            if let homeScore = event.homeScore, let awayScore = event.awayScore {
-                if homeScore > awayScore {
-                    awayTeamRowView.teamNameLabelTextColor = .surfaceLv2
-                    awayTeamRowView.teamScoreLabelTextColor = .surfaceLv2
-                } else {
-                    homeTeamRowView.teamNameLabelTextColor = .surfaceLv2
-                    homeTeamRowView.teamScoreLabelTextColor = .surfaceLv2
-                }
-            }
-
-        default :
-            break
-        }
+    func cleanup() {
+        homeTeamRowView.cleanup()
+        awayTeamRowView.cleanup()
     }
 }
