@@ -9,13 +9,20 @@ import Foundation
 
 extension String {
 
-    static let matchStatusFulltime = "FT"
-    static let matchStatusHalftime = "HT"
+    static let matchStatusFulltime = "Full Time"
+    static let matchStatusHalftime = "Half Time"
     static let matchStatusNotStarted = "-"
+    static let scoreDash = "-"
 
     static let football = "Football"
     static let basketball = "Basketball"
     static let americanFootball = "Am. Football"
 
     static let emptyStateMessage = "No events available"
+
+    static let settingsTitle = "Settings"
+
+    var round: String {
+        "Round \(self)"
+    }
 }

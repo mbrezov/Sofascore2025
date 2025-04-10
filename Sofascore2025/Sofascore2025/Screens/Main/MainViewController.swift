@@ -11,9 +11,10 @@ import UIKit
 
 class MainViewController: UIViewController, BaseViewProtocol {
 
+    private let headerView = MainHeaderView()
+    private let sportSelectorMenuView: SportSelectorMenuView
     private let eventsViewModel: EventsViewModel
     private let eventsViewController: EventsViewController
-    private let sportSelectorMenuView: SportSelectorMenuView
 
     private let sports: [SportType] = [.football, .basketball, .americanFootball]
 
@@ -29,6 +30,11 @@ class MainViewController: UIViewController, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .surface1
@@ -38,16 +44,22 @@ class MainViewController: UIViewController, BaseViewProtocol {
         setupBinding()
 
         sportSelectorMenuView.setupSports(with: sports, selectedSport: .football)
+
+        headerView.delegate = self
     }
 
     func addViews() {
+        view.addSubview(headerView)
         view.addSubview(sportSelectorMenuView)
         addChildController(eventsViewController)
     }
 
     func setupConstraints() {
+        headerView.constrainToTopOfSuperview()
+
         sportSelectorMenuView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
         }
 
         eventsViewController.view.snp.makeConstraints {
@@ -60,6 +72,25 @@ class MainViewController: UIViewController, BaseViewProtocol {
         sportSelectorMenuView.onSportSelected = { [weak self] sport in
             guard let self = self else { return }
             self.eventsViewModel.selectSport(sport)
+            self.eventsViewController.selectedSport = sport
         }
+    }
+}
+
+// MARK: - Navigation - MainHeaderViewDelegate
+
+extension MainViewController: MainHeaderViewDelegate {
+    func openSettings() {
+        let settingsVC = SettingsViewController()
+        settingsVC.navBar.delegate = self
+        presentFullScreenModal(settingsVC, animated: true)
+    }
+}
+
+// MARK: - Navigation - BackNavigationBarViewDelegate
+
+extension MainViewController: BackNavigationBarViewDelegate {
+    func goBack() {
+        dismissModal(animated: true)
     }
 }

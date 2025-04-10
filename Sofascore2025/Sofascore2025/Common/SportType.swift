@@ -10,4 +10,17 @@ import Foundation
 enum SportType {
 
     case football, basketball, americanFootball
+
+    var rawName: String {
+        switch self {
+        case .football:
+            return "football"
+
+        case .basketball:
+            return "basketball"
+
+        case .americanFootball:
+            return "am-football"
+        }
+    }
 }

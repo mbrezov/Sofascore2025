@@ -6,13 +6,11 @@
 //
 
 import Foundation
-import SofaAcademic
 
 class EventsViewModel {
 
-    private let dataSource = Homework3DataSource()
-
     var onEventsReload: (() -> Void)?
+    var isDataFetching: ((Bool) -> Void)?
 
     private var events: [EventViewModel] = []
     private(set) var leagues: [LeagueHeaderViewModel] = []
@@ -22,28 +20,34 @@ class EventsViewModel {
     }
 
     func selectSport(_ sport: SportType) {
-        let eventModels: [Event]
+        Task { [weak self] in
+            guard let self = self else { return }
 
-        switch sport {
-        case .football:
-            eventModels = dataSource.events()
+            self.isDataFetching?(true)
+            self.leagues = []
 
-        case .basketball:
-            eventModels = []
+            guard let eventModels: [Event] = try? await APIClient.getEvents(for: sport) else {
+                return
+            }
 
-        case .americanFootball:
-            eventModels = []
+            setEvents(with: eventModels)
+            self.isDataFetching?(false)
         }
+    }
 
+    private func setEvents(with eventModels: [Event]) {
         events = eventModels.map { EventViewModel(event: $0) }
         let eventsByLeague = Dictionary(grouping: eventModels, by: { $0.league?.id ?? 0 })
-
         let leagueIDs = eventsByLeague.keys.sorted()
-        leagues = leagueIDs.compactMap { id in
-            guard let league = eventModels.first(where: { $0.league?.id == id })?.league else { return nil }
-            return LeagueHeaderViewModel(league: league)
-        }
 
-        onEventsReload?()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            self.leagues = leagueIDs.compactMap { id in
+                guard let league = eventModels.first(where: { $0.league?.id == id })?.league else { return nil }
+                return LeagueHeaderViewModel(league: league)
+            }
+            self.onEventsReload?()
+        }
     }
 }

@@ -97,7 +97,7 @@ class EventView: BaseView {
         let status = event.statusInfo
 
         startTimeLabel.setText(status.startTimeText, withLineHeight: 16)
-        statusLabel.setText(status.description, withLineHeight: 16)
+        statusLabel.setText(status.description.acronym, withLineHeight: 16)
         statusLabel.textColor = status.style.color
 
         homeTeamRowView.configure(with: event.homeTeamInfo)

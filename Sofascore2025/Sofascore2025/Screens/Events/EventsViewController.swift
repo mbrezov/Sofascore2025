@@ -17,9 +17,11 @@ class EventsViewController: UIViewController, BaseViewProtocol {
     }
 
     private var viewModel: EventsViewModel
+    var selectedSport: SportType?
 
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .verticalCompositionalLayout())
     private let emptyStateLabel = UILabel()
+    private let loadingIndicator = UIActivityIndicatorView(style: .medium)
 
     init(viewModel: EventsViewModel) {
         self.viewModel = viewModel
@@ -53,6 +55,7 @@ class EventsViewController: UIViewController, BaseViewProtocol {
     func styleViews() {
         collectionView.backgroundColor = .surface1
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.register(EventCell.self, forCellWithReuseIdentifier: EventCell.reuseIdentifier)
         collectionView.register(LeagueHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: LeagueHeaderCell.reuseIdentifier)
         collectionView.register(EventSectionDividerView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: EventSectionDividerView.reuseIdentifier)
@@ -64,6 +67,9 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         emptyStateLabel.text = .emptyStateMessage
         emptyStateLabel.textAlignment = .center
         emptyStateLabel.textColor = .surfaceLv2
+
+        loadingIndicator.color = .surfaceLv2
+        loadingIndicator.hidesWhenStopped = true
     }
 
     func setupConstraints() {
@@ -76,6 +82,20 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         viewModel.onEventsReload = { [weak self] in
             self?.collectionView.reloadData()
             self?.updateEmptyState()
+        }
+
+        viewModel.isDataFetching = { [weak self] isLoading in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+
+                if isLoading {
+                    self.loadingIndicator.startAnimating()
+                    self.collectionView.backgroundView = self.loadingIndicator
+                    self.collectionView.reloadData()
+                } else {
+                    self.loadingIndicator.stopAnimating()
+                }
+            }
         }
     }
 
@@ -128,5 +148,39 @@ extension EventsViewController: UICollectionViewDataSource {
         }
 
         return UICollectionReusableView()
+    }
+}
+
+// MARK: - UICollectionViewDelegate - Selection
+
+extension EventsViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let eventDetailsVC = EventDetailsViewController()
+        eventDetailsVC.navBar.delegate = self
+
+        let league = viewModel.leagues[indexPath.section]
+        let event = viewModel.getEvents(for: league)[indexPath.row]
+
+        let eventDetailsViewModel = EventDetailsViewModel(event: event)
+        let round = indexPath.row + 1
+
+        eventDetailsVC.configure(event: eventDetailsViewModel, round: round, sport: selectedSport)
+        pushViewController(to: eventDetailsVC)
+    }
+}
+
+// MARK: - Navigation
+
+extension EventsViewController {
+    private func pushViewController(to viewController: UIViewController) {
+        navigateTo(viewController, animated: true)
+    }
+}
+
+// MARK: - BackNavigationBarViewDelegate
+
+extension EventsViewController: BackNavigationBarViewDelegate {
+    func goBack() {
+        navigateBack(animated: true)
     }
 }
