@@ -10,7 +10,6 @@ import UIKit
 
 extension UIView {
 
-    /// Helper method for setting navbar at the top of superview
     func constrainToTopOfSuperview() {
         self.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()

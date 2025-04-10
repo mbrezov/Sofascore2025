@@ -13,6 +13,7 @@ class MatchHeroStatusUpcomingView: BaseView {
 
     private enum Padding {
 
+        static let top: CGFloat = 8
         static let statusLabelTop: CGFloat = 4
     }
 
@@ -34,7 +35,7 @@ class MatchHeroStatusUpcomingView: BaseView {
 
     override func setupConstraints() {
         startDateLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(8)
+            $0.top.equalToSuperview().inset(Padding.top)
             $0.centerX.equalToSuperview()
         }
 
