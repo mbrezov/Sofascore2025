@@ -108,7 +108,7 @@ class EventDetailsMatchHeroView: BaseView {
         homeTeamImageView.setImageURL(homeTeamInfo.logoURL)
         awayTeamImageView.setImageURL(awayTeamInfo.logoURL)
 
-        homeTeamNameLabel.setText(awayTeamInfo.name, withLineHeight: 16)
+        homeTeamNameLabel.setText(homeTeamInfo.name, withLineHeight: 16)
         awayTeamNameLabel.setText(awayTeamInfo.name, withLineHeight: 16)
 
         if eventDetails.isNotStarted {
