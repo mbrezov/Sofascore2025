@@ -9,11 +9,18 @@ import SnapKit
 import SofaAcademic
 import UIKit
 
+protocol EventDetailsViewControllerDelegate: AnyObject {
+
+    func eventDetailsViewControllerDidPressBack(_ eventDetailsViewController: EventDetailsViewController)
+}
+
 class EventDetailsViewController: UIViewController, BaseViewProtocol {
 
-    let navBar = BackNavigationBarView()
-    private let navbarTitleView = EventDetailsNavbarTitleView()
+    private let navBar = NavigationBarView()
+    private let navBarTitleView = EventDetailsNavBarTitleView()
     private let matchHeaderView = EventDetailsMatchHeroView()
+
+    weak var delegate: EventDetailsViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,12 +28,16 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
         addViews()
         styleViews()
         setupConstraints()
+
+        navBar.delegate = self
     }
 
     func styleViews() {
         view.backgroundColor = .surface
 
-        navBar.configure(tintColor: .surfaceLv1, bgColor: .surface1, titleView: navbarTitleView)
+        navBar.backgroundColor = .surface1
+        navBar.tintColor = .surfaceLv1
+        navBar.setTitleView(with: navBarTitleView)
     }
 
     func addViews() {
@@ -35,17 +46,27 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
     }
 
     func setupConstraints() {
-        navBar.constrainToTopOfSuperview()
+        navBar.snp.makeConstraints {
+            $0.top.directionalHorizontalEdges.equalToSuperview()
+        }
 
         matchHeaderView.snp.makeConstraints {
             $0.top.equalTo(navBar.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
+            $0.directionalHorizontalEdges.equalToSuperview()
         }
     }
 
-    func configure(event: EventDetailsViewModel, round: Int, sport: SportType?) {
-        navbarTitleView.configure(logo: event.leagueLogoURL, sport: sport, country: event.country, leagueName: event.leagueName, round: round)
+    func configure(event: EventDetailsViewModel) {
+        navBarTitleView.configure(logo: event.leagueLogoURL, sport: event.selectedSportText, country: event.country, leagueName: event.leagueName, roundText: event.roundText)
 
-        matchHeaderView.viewModel = event
+        matchHeaderView.configure(homeTeamInfo: event.homeTeamInfo, awayTeamInfo: event.awayTeamInfo, isStarted: event.isNotStarted, dateText: event.dateText, startTimeText: event.startTimeText, statusText: event.statusInfo.description, statusColor: event.statusInfo.color.uiColor)
+    }
+}
+
+// MARK: - NavigationBarViewDelegate
+
+extension EventDetailsViewController: NavigationBarViewDelegate {
+    func navigationBarViewDidPressBack(_ navigationBarView: NavigationBarView) {
+        delegate?.eventDetailsViewControllerDidPressBack(self)
     }
 }

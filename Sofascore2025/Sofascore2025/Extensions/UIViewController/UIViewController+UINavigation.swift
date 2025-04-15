@@ -11,23 +11,19 @@ extension UIViewController {
 
     // MARK: - push/present
 
-    func navigateTo(_ viewController: UIViewController, animated: Bool) {
+    func push(_ viewController: UIViewController, animated: Bool) {
         navigationController?.pushViewController(viewController, animated: animated)
     }
 
-    func presentFullScreenModal(_ viewController: UIViewController, animated: Bool) {
+    func presentFullScreen(_ viewController: UIViewController, animated: Bool) {
         viewController.modalPresentationStyle = .fullScreen
         viewController.modalTransitionStyle = .coverVertical
         present(viewController, animated: animated)
     }
 
-    // MARK: - pop/dismiss
+    // MARK: - pop
 
-    func navigateBack(animated: Bool) {
+    func pop(animated: Bool) {
         navigationController?.popViewController(animated: animated)
-    }
-
-    func dismissModal(animated: Bool) {
-        dismiss(animated: animated)
     }
 }

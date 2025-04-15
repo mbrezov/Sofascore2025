@@ -9,7 +9,7 @@ import Foundation
 
 class EventDetailsViewModel {
 
-    private let event: EventViewModel
+    private let event: Event
 
     let country: String?
     let leagueName: String?
@@ -20,18 +20,22 @@ class EventDetailsViewModel {
     let startTimeText: String
     let statusInfo: EventStatusInfo
     let isNotStarted: Bool
+    let roundText: String
+    let selectedSportText: String?
 
-    init(event: EventViewModel) {
+    init(event: Event, selectedSport: SportType?) {
         self.event = event
 
-        self.country = event.leagueCountry
-        self.leagueName = event.leagueName
-        self.leagueLogoURL = event.logoURL
-        self.homeTeamInfo = event.homeTeamInfo
-        self.awayTeamInfo = event.awayTeamInfo
+        self.country = event.league?.country.name
+        self.leagueName = event.league?.name
+        self.leagueLogoURL = event.league?.logoUrl?.url
+        self.homeTeamInfo = EventTeamInfoMapper.makeTeamInfo(team: event.homeTeam, score: event.homeScore, opponentScore: event.awayScore, eventStatus: EventStatusApiNameMapper.from(apiName: event.status))
+        self.awayTeamInfo = EventTeamInfoMapper.makeTeamInfo(team: event.awayTeam, score: event.awayScore, opponentScore: event.homeScore, eventStatus: EventStatusApiNameMapper.from(apiName: event.status))
         self.dateText = DateFormatterService.fullDateFormatted(event.startTimestamp)
         self.startTimeText = DateFormatterService.timeFormatted(event.startTimestamp)
-        self.statusInfo = event.statusInfo
-        self.isNotStarted = event.statusInfo.status == .notStarted
+        self.statusInfo = EventStatusInfoMapper.makeStatusInfo(from: event)
+        self.isNotStarted = statusInfo.status == .notStarted
+        self.roundText = .roundText(event.id.description)
+        self.selectedSportText = selectedSport?.name
     }
 }

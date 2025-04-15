@@ -30,17 +30,10 @@ class EventDetailsMatchHeroView: BaseView {
     private let awayTeamImageView = UIImageView()
     private let awayTeamNameLabel = UILabel()
     private let awayTeamContrainer = UIView()
+    private let centerHorizontalStackView = UIStackView()
 
     private lazy var statusView = MatchHeroStatusView()
     private lazy var statusUpcomingView = MatchHeroStatusUpcomingView()
-
-    var viewModel: EventDetailsViewModel? {
-        didSet {
-            if let event = viewModel {
-                configure(event)
-            }
-        }
-    }
 
     override func addViews() {
         addSubview(homeTeamContrainer)
@@ -49,6 +42,9 @@ class EventDetailsMatchHeroView: BaseView {
         addSubview(awayTeamContrainer)
         awayTeamContrainer.addSubview(awayTeamImageView)
         awayTeamContrainer.addSubview(awayTeamNameLabel)
+        addSubview(centerHorizontalStackView)
+        centerHorizontalStackView.addArrangedSubview(statusUpcomingView)
+        centerHorizontalStackView.addArrangedSubview(statusView)
     }
 
     override func styleViews() {
@@ -69,78 +65,65 @@ class EventDetailsMatchHeroView: BaseView {
 
     override func setupConstraints() {
         homeTeamContrainer.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).inset(Padding.inset)
-            $0.bottom.leading.equalToSuperview().inset(Padding.inset)
+            $0.directionalVerticalEdges.leading.equalToSuperview().inset(Padding.inset)
         }
 
         homeTeamImageView.snp.makeConstraints {
             $0.size.equalTo(Constants.teamImageSize)
             $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(Padding.teamImageHorizontal)
+            $0.directionalHorizontalEdges.equalToSuperview().inset(Padding.teamImageHorizontal)
         }
 
         homeTeamNameLabel.snp.makeConstraints {
             $0.top.equalTo(homeTeamImageView.snp.bottom).offset(Constants.teamImageSpacing)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.directionalHorizontalEdges.bottom.equalToSuperview()
         }
 
         awayTeamContrainer.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).inset(Padding.inset)
-            $0.bottom.trailing.equalToSuperview().inset(Padding.inset)
+            $0.directionalVerticalEdges.trailing.equalToSuperview().inset(Padding.inset)
         }
 
         awayTeamImageView.snp.makeConstraints {
             $0.size.equalTo(Constants.teamImageSize)
             $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(Padding.teamImageHorizontal)
+            $0.directionalHorizontalEdges.equalToSuperview().inset(Padding.teamImageHorizontal)
         }
 
         awayTeamNameLabel.snp.makeConstraints {
             $0.top.equalTo(homeTeamImageView.snp.bottom).offset(Constants.teamImageSpacing)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.directionalHorizontalEdges.bottom.equalToSuperview()
+        }
+
+        centerHorizontalStackView.snp.makeConstraints {
+            $0.leading.equalTo(homeTeamContrainer.snp.trailing)
+            $0.trailing.equalTo(awayTeamContrainer.snp.leading)
+            $0.top.equalToSuperview().inset(Padding.statusContainerTop)
         }
     }
 
-    private func configure(_ eventDetails: EventDetailsViewModel) {
-        let homeTeamInfo = eventDetails.homeTeamInfo
-        let awayTeamInfo = eventDetails.awayTeamInfo
-
+    func configure(homeTeamInfo: EventTeamInfo, awayTeamInfo: EventTeamInfo, isStarted: Bool, dateText: String, startTimeText: String, statusText: String, statusColor: UIColor) {
         homeTeamImageView.setImageURL(homeTeamInfo.logoURL)
         awayTeamImageView.setImageURL(awayTeamInfo.logoURL)
 
         homeTeamNameLabel.setText(homeTeamInfo.name, withLineHeight: 16)
         awayTeamNameLabel.setText(awayTeamInfo.name, withLineHeight: 16)
 
-        if eventDetails.isNotStarted {
+        if isStarted {
+            statusView.isHidden = true
             statusUpcomingView.configure(
-                dateText: eventDetails.dateText,
-                startTimeText: eventDetails.startTimeText
+                dateText: dateText,
+                timeText: startTimeText
             )
-
-            addStatusContainer(with: statusUpcomingView)
         } else {
+            statusUpcomingView.isHidden = true
             statusView.configure(
                 homeScore: homeTeamInfo.score?.description,
-                homeScoreStyle: homeTeamInfo.scoreStyle.color,
+                homeScoreColor: homeTeamInfo.scoreColor.uiColor,
                 awayScore: awayTeamInfo.score?.description,
-                awayScoreStyle: awayTeamInfo.scoreStyle.color,
-                statusText: eventDetails.statusInfo.description,
-                statusStyle: eventDetails.statusInfo.style.color
+                awayScoreColor: awayTeamInfo.scoreColor.uiColor,
+                statusText: statusText,
+                statusColor: statusColor
             )
-
-            addStatusContainer(with: statusView)
-        }
-    }
-
-    // MARK: - status container setup
-
-    private func addStatusContainer(with container: UIView) {
-        addSubview(container)
-
-        container.snp.makeConstraints {
-            $0.leading.equalTo(homeTeamContrainer.snp.trailing)
-            $0.trailing.equalTo(awayTeamContrainer.snp.leading)
-            $0.top.equalTo(safeAreaInsets).inset(Padding.statusContainerTop)
         }
     }
 }

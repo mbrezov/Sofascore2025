@@ -37,16 +37,20 @@ class MatchHeroStatusUpcomingView: BaseView {
         startDateLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(Padding.top)
             $0.centerX.equalToSuperview()
+            $0.leading.greaterThanOrEqualToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview()
         }
 
         startTimeLabel.snp.makeConstraints {
             $0.top.equalTo(startDateLabel.snp.bottom).offset(Padding.statusLabelTop)
             $0.centerX.bottom.equalToSuperview()
+            $0.leading.greaterThanOrEqualToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview()
         }
     }
 
-    func configure(dateText: String, startTimeText: String) {
+    func configure(dateText: String, timeText: String) {
         startDateLabel.setText(dateText, withLineHeight: 16)
-        startTimeLabel.setText(startTimeText, withLineHeight: 16)
+        startTimeLabel.setText(timeText, withLineHeight: 16)
     }
 }

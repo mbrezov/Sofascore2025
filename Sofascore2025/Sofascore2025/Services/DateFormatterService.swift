@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DateFormatterService {
+enum DateFormatterService {
 
     private static var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()

@@ -10,15 +10,26 @@ import Foundation
 enum APIClient {
 
     static func getEvents(for sport: SportType) async throws -> [Event] {
-        let urlString = "https://sofa-ios-academy-43194eec0621.herokuapp.com/events?sport=\(sport.rawName)"
-        guard let url: URL = .init(string: urlString) else { return [] }
+        let sportName: String = SportTypeApiNameMapper.from(sport: sport)
+        guard let url: URL = APIConfig.makeEventsURL(for: sportName) else {
+            throw APIError.invalidURL
+        }
 
         var request: URLRequest = .init(url: url)
         request.httpMethod = "GET"
 
-        let (data, _) = try await URLSession.shared.data(for: request)
-        let response = try JSONDecoder().decode([Event].self, from: data)
-
-        return response
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            return try JSONDecoder().decode([Event].self, from: data)
+        } catch {
+            if let urlError = error as? URLError {
+                if urlError.code == .notConnectedToInternet {
+                    throw APIError.noInternet
+                }
+            } else if error is DecodingError {
+                throw APIError.decodingFailed
+            }
+            throw APIError.unknown(error)
+        }
     }
 }

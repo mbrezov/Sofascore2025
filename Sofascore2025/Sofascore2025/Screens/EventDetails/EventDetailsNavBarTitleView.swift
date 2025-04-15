@@ -1,5 +1,5 @@
 //
-//  EventDetailsNavbarTitleView.swift
+//  EventDetailsNavBarTitleView.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 09.04.2025..
@@ -9,7 +9,7 @@ import SnapKit
 import SofaAcademic
 import UIKit
 
-class EventDetailsNavbarTitleView: BaseView {
+class EventDetailsNavBarTitleView: BaseView {
 
     private enum Padding {
 
@@ -39,7 +39,7 @@ class EventDetailsNavbarTitleView: BaseView {
 
     override func setupConstraints() {
         logoImageView.snp.makeConstraints {
-            $0.leading.top.bottom.equalToSuperview()
+            $0.leading.directionalVerticalEdges.equalToSuperview()
             $0.size.equalTo(Constants.imageSize)
         }
 
@@ -50,13 +50,11 @@ class EventDetailsNavbarTitleView: BaseView {
         }
     }
 
-    func configure(logo: URL?, sport: SportType?, country: String?, leagueName: String?, round: Int) {
+    func configure(logo: URL?, sport: String?, country: String?, leagueName: String?, roundText: String) {
         logoImageView.setImageURL(logo)
-        let roundText = String(round).round
 
-        if let sport, let country, let leagueName {
-            let titleText = "\(sport.name), \(country), \(leagueName), \(roundText)"
-            titleLabel.setText(titleText, withLineHeight: 16)
-        }
+        let parts: [String] = [sport, country, leagueName, roundText].compactMap { $0 }
+        let title: String = parts.joined(separator: ", ")
+        titleLabel.setText(title, withLineHeight: 16)
     }
 }

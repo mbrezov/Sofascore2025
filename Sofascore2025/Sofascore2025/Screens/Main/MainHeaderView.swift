@@ -9,6 +9,11 @@ import SnapKit
 import SofaAcademic
 import UIKit
 
+protocol MainHeaderViewDelegate: AnyObject {
+
+    func mainHeaderViewDidPressSettings(_ mainHeaderView: MainHeaderView)
+}
+
 class MainHeaderView: BaseView {
 
     private enum Constants {
@@ -55,26 +60,19 @@ class MainHeaderView: BaseView {
         }
 
         tournamentButton.snp.makeConstraints {
-            $0.top.bottom.equalTo(safeAreaLayoutGuide)
+            $0.directionalVerticalEdges.equalTo(safeAreaLayoutGuide)
             $0.trailing.equalTo(settingsButton.snp.leading)
             $0.size.equalTo(Constants.iconSize)
         }
 
         settingsButton.snp.makeConstraints {
-            $0.top.bottom.equalTo(tournamentButton)
+            $0.directionalVerticalEdges.equalTo(tournamentButton)
             $0.trailing.equalToSuperview().inset(Padding.settingsIconRight)
             $0.size.equalTo(Constants.iconSize)
         }
     }
 
     @objc private func opetSettingsTappeed() {
-        delegate?.openSettings()
+        delegate?.mainHeaderViewDidPressSettings(self)
     }
-}
-
-// MARK: - Navigation - MainHeaderViewDelegate
-
-protocol MainHeaderViewDelegate: AnyObject {
-
-    func openSettings()
 }

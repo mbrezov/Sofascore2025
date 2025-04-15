@@ -9,9 +9,15 @@ import SnapKit
 import SofaAcademic
 import UIKit
 
+protocol SettingsViewControllerDelegate: AnyObject {
+
+    func settingsViewControllerDidPressBack(_ settingsViewController: SettingsViewController)
+}
+
 class SettingsViewController: UIViewController, BaseViewProtocol {
 
-    let navBar = BackNavigationBarView()
+    private let navBar = NavigationBarView()
+    weak var delegate: SettingsViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +25,8 @@ class SettingsViewController: UIViewController, BaseViewProtocol {
         addViews()
         styleViews()
         setupConstraints()
+
+        navBar.delegate = self
     }
 
     func addViews() {
@@ -28,10 +36,22 @@ class SettingsViewController: UIViewController, BaseViewProtocol {
     func styleViews() {
         view.backgroundColor = .surface
 
-        navBar.configure(bgColor: .primaryDefault, title: .settingsTitle)
+        navBar.backgroundColor = .primaryDefault
+        navBar.tintColor = .surface1
+        navBar.setTitle(title: .settingsTitle)
     }
 
     func setupConstraints() {
-        navBar.constrainToTopOfSuperview()
+        navBar.snp.makeConstraints {
+            $0.top.directionalHorizontalEdges.equalToSuperview()
+        }
+    }
+}
+
+// MARK: - NavigationBarViewDelegate
+
+extension SettingsViewController: NavigationBarViewDelegate {
+    func navigationBarViewDidPressBack(_ navigationBarView: NavigationBarView) {
+        delegate?.settingsViewControllerDidPressBack(self)
     }
 }

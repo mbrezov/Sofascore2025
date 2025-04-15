@@ -42,6 +42,7 @@ class MainViewController: UIViewController, BaseViewProtocol {
         addViews()
         setupConstraints()
         setupBinding()
+        toastErrorAlert()
 
         sportSelectorMenuView.setupSports(with: sports, selectedSport: .football)
 
@@ -55,24 +56,30 @@ class MainViewController: UIViewController, BaseViewProtocol {
     }
 
     func setupConstraints() {
-        headerView.constrainToTopOfSuperview()
+        headerView.snp.makeConstraints {
+            $0.top.directionalHorizontalEdges.equalToSuperview()
+        }
 
         sportSelectorMenuView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
+            $0.directionalHorizontalEdges.equalToSuperview()
         }
 
         eventsViewController.view.snp.makeConstraints {
             $0.top.equalTo(sportSelectorMenuView.snp.bottom)
-            $0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.bottom.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide)
         }
     }
 
     func setupBinding() {
         sportSelectorMenuView.onSportSelected = { [weak self] sport in
-            guard let self = self else { return }
-            self.eventsViewModel.selectSport(sport)
-            self.eventsViewController.selectedSport = sport
+            self?.eventsViewModel.selectSport(sport)
+        }
+    }
+
+    private func toastErrorAlert() {
+        eventsViewModel.toastErrorAlert = { [weak self] title, message in
+            self?.showAlert(title: title, message: message)
         }
     }
 }
@@ -80,17 +87,17 @@ class MainViewController: UIViewController, BaseViewProtocol {
 // MARK: - Navigation - MainHeaderViewDelegate
 
 extension MainViewController: MainHeaderViewDelegate {
-    func openSettings() {
+    func mainHeaderViewDidPressSettings(_ mainHeaderView: MainHeaderView) {
         let settingsVC = SettingsViewController()
-        settingsVC.navBar.delegate = self
-        presentFullScreenModal(settingsVC, animated: true)
+        settingsVC.delegate = self
+        presentFullScreen(settingsVC, animated: true)
     }
 }
 
-// MARK: - Navigation - BackNavigationBarViewDelegate
+// MARK: - Navigation - SettingsViewControllerDelegate
 
-extension MainViewController: BackNavigationBarViewDelegate {
-    func goBack() {
-        dismissModal(animated: true)
+extension MainViewController: SettingsViewControllerDelegate {
+    func settingsViewControllerDidPressBack(_ settingsViewController: SettingsViewController) {
+        dismiss(animated: true)
     }
 }

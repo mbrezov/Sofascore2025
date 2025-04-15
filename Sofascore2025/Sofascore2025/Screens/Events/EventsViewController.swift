@@ -17,7 +17,6 @@ class EventsViewController: UIViewController, BaseViewProtocol {
     }
 
     private var viewModel: EventsViewModel
-    var selectedSport: SportType?
 
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .verticalCompositionalLayout())
     private let emptyStateLabel = UILabel()
@@ -50,6 +49,7 @@ class EventsViewController: UIViewController, BaseViewProtocol {
 
     func addViews() {
         view.addSubview(collectionView)
+        view.addSubview(loadingIndicator)
     }
 
     func styleViews() {
@@ -76,31 +76,22 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
     }
 
     private func setupBinding() {
-        viewModel.onEventsReload = { [weak self] in
-            self?.collectionView.reloadData()
-            self?.updateEmptyState()
-        }
-
         viewModel.isDataFetching = { [weak self] isLoading in
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-
-                if isLoading {
-                    self.loadingIndicator.startAnimating()
-                    self.collectionView.backgroundView = self.loadingIndicator
-                    self.collectionView.reloadData()
-                } else {
-                    self.loadingIndicator.stopAnimating()
-                }
-            }
+            isLoading ? self?.loadingIndicator.startAnimating() : self?.loadingIndicator.stopAnimating()
+            self?.collectionView.reloadData()
+            self?.updateEmptyState(isLoading)
         }
     }
 
-    private func updateEmptyState() {
-        collectionView.backgroundView = viewModel.leagues.isEmpty ? emptyStateLabel : nil
+    private func updateEmptyState(_ isLoading: Bool) {
+        collectionView.backgroundView = viewModel.leagues.isEmpty && !isLoading ? emptyStateLabel : nil
     }
 }
 
@@ -156,15 +147,14 @@ extension EventsViewController: UICollectionViewDataSource {
 extension EventsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let eventDetailsVC = EventDetailsViewController()
-        eventDetailsVC.navBar.delegate = self
+        eventDetailsVC.delegate = self
 
         let league = viewModel.leagues[indexPath.section]
-        let event = viewModel.getEvents(for: league)[indexPath.row]
+        let eventsViewModel = viewModel.getEvents(for: league)[indexPath.row]
 
-        let eventDetailsViewModel = EventDetailsViewModel(event: event)
-        let round = indexPath.row + 1
+        let eventDetailsViewModel = EventDetailsViewModel(event: eventsViewModel.rawEvent, selectedSport: viewModel.selectedSport)
 
-        eventDetailsVC.configure(event: eventDetailsViewModel, round: round, sport: selectedSport)
+        eventDetailsVC.configure(event: eventDetailsViewModel)
         pushViewController(to: eventDetailsVC)
     }
 }
@@ -173,14 +163,14 @@ extension EventsViewController: UICollectionViewDelegate {
 
 extension EventsViewController {
     private func pushViewController(to viewController: UIViewController) {
-        navigateTo(viewController, animated: true)
+        push(viewController, animated: true)
     }
 }
 
-// MARK: - BackNavigationBarViewDelegate
+// MARK: - NavigationBarViewDelegate
 
-extension EventsViewController: BackNavigationBarViewDelegate {
-    func goBack() {
-        navigateBack(animated: true)
+extension EventsViewController: EventDetailsViewControllerDelegate {
+    func eventDetailsViewControllerDidPressBack(_ eventDetailsViewController: EventDetailsViewController) {
+        pop(animated: true)
     }
 }

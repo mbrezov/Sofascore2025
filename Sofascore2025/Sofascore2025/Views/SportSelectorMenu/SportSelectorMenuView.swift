@@ -53,7 +53,7 @@ class SportSelectorMenuView: BaseView {
     override func setupConstraints() {
         stackView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.directionalHorizontalEdges.bottom.equalToSuperview()
         }
     }
 
@@ -84,7 +84,7 @@ class SportSelectorMenuView: BaseView {
         selectionView.snp.remakeConstraints {
             $0.height.equalTo(Constants.selectionViewHeight)
             $0.bottom.equalTo(stackView.snp.bottom)
-            $0.leading.trailing.equalTo(selectedSegment).inset(Constants.selectionViewHorizontalInset)
+            $0.directionalHorizontalEdges.equalTo(selectedSegment).inset(Constants.selectionViewHorizontalInset)
         }
     }
 
