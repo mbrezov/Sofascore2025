@@ -1,5 +1,5 @@
 //
-//  APIDefintions.swift
+//  APIDefinitions.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 15.04.2025..
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum APIDefintions {
+enum APIDefinitions {
 
     private static let scheme: String = "https"
     private static let baseURL: String = "sofa-ios-academy-43194eec0621.herokuapp.com"
@@ -26,8 +26,8 @@ enum APIDefintions {
 
     static func makeEventsURL(for sportName: String) -> URL? {
         var components = URLComponents()
-        components.scheme = APIDefintions.scheme
-        components.host = APIDefintions.baseURL
+        components.scheme = APIDefinitions.scheme
+        components.host = APIDefinitions.baseURL
         components.path = Endpoints.events
         components.queryItems = [
             URLQueryItem(name: QueryItems.sport, value: sportName)

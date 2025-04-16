@@ -11,7 +11,7 @@ enum APIClient {
 
     static func getEvents(for sportType: SportType) async throws -> [Event] {
         let sportName: String = APIClientMapper.sportAPIName(from: sportType)
-        guard let url: URL = APIDefintions.makeEventsURL(for: sportName) else {
+        guard let url: URL = APIDefinitions.makeEventsURL(for: sportName) else {
             throw APIError.invalidURL
         }
 
