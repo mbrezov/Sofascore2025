@@ -9,9 +9,9 @@ import Foundation
 
 enum APIClient {
 
-    static func getEvents(for sport: SportType) async throws -> [Event] {
-        let sportName: String = SportTypeApiNameMapper.from(sport: sport)
-        guard let url: URL = APIConfig.makeEventsURL(for: sportName) else {
+    static func getEvents(for sportType: SportType) async throws -> [Event] {
+        let sportName: String = APIClientMapper.sportAPIName(from: sportType)
+        guard let url: URL = APIDefintions.makeEventsURL(for: sportName) else {
             throw APIError.invalidURL
         }
 

@@ -19,8 +19,19 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
     private let navBar = NavigationBarView()
     private let navBarTitleView = EventDetailsNavBarTitleView()
     private let matchHeaderView = EventDetailsMatchHeroView()
+    private let eventDetailsViewModel: EventDetailsViewModel
 
     weak var delegate: EventDetailsViewControllerDelegate?
+
+    init(_ eventDetailsViewModel: EventDetailsViewModel) {
+        self.eventDetailsViewModel = eventDetailsViewModel
+        super.init(nibName: nil, bundle: nil)
+        configure(event: eventDetailsViewModel)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +48,7 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
 
         navBar.backgroundColor = .surface1
         navBar.tintColor = .surfaceLv1
-        navBar.setTitleView(with: navBarTitleView)
+        navBar.setTitleView(navBarTitleView)
     }
 
     func addViews() {
@@ -56,10 +67,24 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
         }
     }
 
-    func configure(event: EventDetailsViewModel) {
-        navBarTitleView.configure(logo: event.leagueLogoURL, sport: event.selectedSportText, country: event.country, leagueName: event.leagueName, roundText: event.roundText)
+    private func configure(event: EventDetailsViewModel) {
+        navBarTitleView.configure(
+            logo: event.leagueLogoURL,
+            sport: event.sportTypeText,
+            country: event.country,
+            leagueName: event.leagueName,
+            roundText: event.roundText
+        )
 
-        matchHeaderView.configure(homeTeamInfo: event.homeTeamInfo, awayTeamInfo: event.awayTeamInfo, isStarted: event.isNotStarted, dateText: event.dateText, startTimeText: event.startTimeText, statusText: event.statusInfo.description, statusColor: event.statusInfo.color.uiColor)
+        matchHeaderView.configure(
+            homeTeamInfo: event.homeTeamInfo,
+            awayTeamInfo: event.awayTeamInfo,
+            isStarted: event.isStarted,
+            dateText: event.dateText,
+            startTimeText: event.startTimeText,
+            statusText: event.statusInfo.description,
+            statusColor: event.statusInfo.color.uiColor
+        )
     }
 }
 

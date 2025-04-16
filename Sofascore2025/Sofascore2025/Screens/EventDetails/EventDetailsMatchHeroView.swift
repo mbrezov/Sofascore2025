@@ -101,7 +101,15 @@ class EventDetailsMatchHeroView: BaseView {
         }
     }
 
-    func configure(homeTeamInfo: EventTeamInfo, awayTeamInfo: EventTeamInfo, isStarted: Bool, dateText: String, startTimeText: String, statusText: String, statusColor: UIColor) {
+    func configure(
+        homeTeamInfo: EventTeamInfo,
+        awayTeamInfo: EventTeamInfo,
+        isStarted: Bool,
+        dateText: String,
+        startTimeText: String,
+        statusText: String,
+        statusColor: UIColor
+    ) {
         homeTeamImageView.setImageURL(homeTeamInfo.logoURL)
         awayTeamImageView.setImageURL(awayTeamInfo.logoURL)
 
@@ -109,13 +117,8 @@ class EventDetailsMatchHeroView: BaseView {
         awayTeamNameLabel.setText(awayTeamInfo.name, withLineHeight: 16)
 
         if isStarted {
-            statusView.isHidden = true
-            statusUpcomingView.configure(
-                dateText: dateText,
-                timeText: startTimeText
-            )
-        } else {
             statusUpcomingView.isHidden = true
+            statusView.isHidden = false
             statusView.configure(
                 homeScore: homeTeamInfo.score?.description,
                 homeScoreColor: homeTeamInfo.scoreColor.uiColor,
@@ -123,6 +126,13 @@ class EventDetailsMatchHeroView: BaseView {
                 awayScoreColor: awayTeamInfo.scoreColor.uiColor,
                 statusText: statusText,
                 statusColor: statusColor
+            )
+        } else {
+            statusView.isHidden = true
+            statusUpcomingView.isHidden = false
+            statusUpcomingView.configure(
+                dateText: dateText,
+                timeText: startTimeText
             )
         }
     }

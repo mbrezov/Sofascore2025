@@ -31,8 +31,8 @@ class LeagueHeaderView: BaseView {
 
     var viewModel: LeagueHeaderViewModel? {
         didSet {
-            if let league = viewModel {
-                configure(league)
+            if let leagueHeaderViewModel = viewModel {
+                configure(leagueHeaderViewModel)
             }
         }
     }

@@ -67,7 +67,14 @@ class MatchHeroStatusView: BaseView {
         }
     }
 
-    func configure(homeScore: String?, homeScoreColor: UIColor, awayScore: String?, awayScoreColor: UIColor, statusText: String, statusColor: UIColor) {
+    func configure(
+        homeScore: String?,
+        homeScoreColor: UIColor,
+        awayScore: String?,
+        awayScoreColor: UIColor,
+        statusText: String,
+        statusColor: UIColor
+    ) {
         if let homeScore = homeScore {
             homeTeamScoreLabel.setText(homeScore, withLineHeight: 40)
             homeTeamScoreLabel.textColor = homeScoreColor

@@ -41,7 +41,6 @@
 		72147A8F2DA31706006C9EF4 /* DateFormatterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72147A682DA31706006C9EF4 /* DateFormatterService.swift */; };
 		72147A902DA31706006C9EF4 /* ImageFetchingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72147A692DA31706006C9EF4 /* ImageFetchingService.swift */; };
 		72147A912DA31706006C9EF4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72147A6B2DA31706006C9EF4 /* AppDelegate.swift */; };
-		721E1E1D2DA93E7200FA8043 /* EventStatusApiNameMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721E1E1C2DA93E7200FA8043 /* EventStatusApiNameMapper.swift */; };
 		721E1E212DA9883000FA8043 /* EventStatusColorMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721E1E202DA9883000FA8043 /* EventStatusColorMapper.swift */; };
 		721E1E232DA9889E00FA8043 /* EventTeamInfoMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721E1E222DA9889E00FA8043 /* EventTeamInfoMapper.swift */; };
 		721E1E252DA988E600FA8043 /* EventStatusInfoMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721E1E242DA988E600FA8043 /* EventStatusInfoMapper.swift */; };
@@ -49,11 +48,11 @@
 		722254A12DA551250052B254 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722254A02DA551250052B254 /* SettingsViewController.swift */; };
 		722254A62DA55A150052B254 /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722254A52DA55A150052B254 /* MainHeaderView.swift */; };
 		722254A82DA564010052B254 /* NavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722254A72DA564010052B254 /* NavigationBarView.swift */; };
-		72699D6F2DAE2A89000CA9E2 /* SportTypeApiNameMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72699D6E2DAE2A89000CA9E2 /* SportTypeApiNameMapper.swift */; };
-		72699D712DAE2D0E000CA9E2 /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72699D702DAE2D0E000CA9E2 /* APIConfig.swift */; };
+		72699D712DAE2D0E000CA9E2 /* APIDefintions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72699D702DAE2D0E000CA9E2 /* APIDefintions.swift */; };
 		72699D732DAE3343000CA9E2 /* UIViewController+UIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72699D722DAE3343000CA9E2 /* UIViewController+UIAlert.swift */; };
 		72699D752DAE370F000CA9E2 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72699D742DAE370F000CA9E2 /* APIError.swift */; };
 		72699D772DAE3E9C000CA9E2 /* APIError+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72699D762DAE3E9C000CA9E2 /* APIError+Description.swift */; };
+		727E62762DAF917C0024380D /* APIClientMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727E62752DAF917C0024380D /* APIClientMapper.swift */; };
 		728F503F2D784BFA004F015C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 728F503E2D784BFA004F015C /* SnapKit */; };
 		72BDEBBF2D80303F007351F6 /* SofaAcademic in Frameworks */ = {isa = PBXBuildFile; productRef = 72BDEBBE2D80303F007351F6 /* SofaAcademic */; };
 		72DFAAFC2DA70A5C007A94DC /* MatchHeroStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DFAAFB2DA70A5C007A94DC /* MatchHeroStatusView.swift */; };
@@ -103,7 +102,6 @@
 		72147A6C2DA31706006C9EF4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		72147A6D2DA31706006C9EF4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72147A6E2DA31706006C9EF4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		721E1E1C2DA93E7200FA8043 /* EventStatusApiNameMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventStatusApiNameMapper.swift; sourceTree = "<group>"; };
 		721E1E202DA9883000FA8043 /* EventStatusColorMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventStatusColorMapper.swift; sourceTree = "<group>"; };
 		721E1E222DA9889E00FA8043 /* EventTeamInfoMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTeamInfoMapper.swift; sourceTree = "<group>"; };
 		721E1E242DA988E600FA8043 /* EventStatusInfoMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventStatusInfoMapper.swift; sourceTree = "<group>"; };
@@ -111,11 +109,11 @@
 		722254A02DA551250052B254 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		722254A52DA55A150052B254 /* MainHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderView.swift; sourceTree = "<group>"; };
 		722254A72DA564010052B254 /* NavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarView.swift; sourceTree = "<group>"; };
-		72699D6E2DAE2A89000CA9E2 /* SportTypeApiNameMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportTypeApiNameMapper.swift; sourceTree = "<group>"; };
-		72699D702DAE2D0E000CA9E2 /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfig.swift; sourceTree = "<group>"; };
+		72699D702DAE2D0E000CA9E2 /* APIDefintions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDefintions.swift; sourceTree = "<group>"; };
 		72699D722DAE3343000CA9E2 /* UIViewController+UIAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+UIAlert.swift"; sourceTree = "<group>"; };
 		72699D742DAE370F000CA9E2 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		72699D762DAE3E9C000CA9E2 /* APIError+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIError+Description.swift"; sourceTree = "<group>"; };
+		727E62752DAF917C0024380D /* APIClientMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientMapper.swift; sourceTree = "<group>"; };
 		728F50252D784BDF004F015C /* Sofascore2025.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sofascore2025.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72DFAAFB2DA70A5C007A94DC /* MatchHeroStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchHeroStatusView.swift; sourceTree = "<group>"; };
 		72DFAAFD2DA70A6B007A94DC /* MatchHeroStatusUpcomingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchHeroStatusUpcomingView.swift; sourceTree = "<group>"; };
@@ -326,11 +324,9 @@
 		721E1E1B2DA93E6500FA8043 /* Mappers */ = {
 			isa = PBXGroup;
 			children = (
-				721E1E1C2DA93E7200FA8043 /* EventStatusApiNameMapper.swift */,
 				721E1E202DA9883000FA8043 /* EventStatusColorMapper.swift */,
 				721E1E222DA9889E00FA8043 /* EventTeamInfoMapper.swift */,
 				721E1E242DA988E600FA8043 /* EventStatusInfoMapper.swift */,
-				72699D6E2DAE2A89000CA9E2 /* SportTypeApiNameMapper.swift */,
 			);
 			path = Mappers;
 			sourceTree = "<group>";
@@ -372,8 +368,9 @@
 			isa = PBXGroup;
 			children = (
 				72F99F9E2DA6525B00FB85A2 /* APIClient.swift */,
-				72699D702DAE2D0E000CA9E2 /* APIConfig.swift */,
+				72699D702DAE2D0E000CA9E2 /* APIDefintions.swift */,
 				72699D742DAE370F000CA9E2 /* APIError.swift */,
+				727E62752DAF917C0024380D /* APIClientMapper.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -403,6 +400,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				727E62742DAF86A50024380D /* PBXTargetDependency */,
 			);
 			name = Sofascore2025;
 			packageProductDependencies = (
@@ -440,6 +438,7 @@
 			packageReferences = (
 				728F503D2D784BFA004F015C /* XCRemoteSwiftPackageReference "SnapKit" */,
 				72BDEBBD2D80303F007351F6 /* XCRemoteSwiftPackageReference "academy" */,
+				727E62722DAF86090024380D /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 728F50262D784BDF004F015C /* Products */;
@@ -473,7 +472,6 @@
 			files = (
 				72147A772DA31706006C9EF4 /* SportType.swift in Sources */,
 				72F99F9F2DA6525B00FB85A2 /* APIClient.swift in Sources */,
-				72699D6F2DAE2A89000CA9E2 /* SportTypeApiNameMapper.swift in Sources */,
 				72147A782DA31706006C9EF4 /* SportType+Icon.swift in Sources */,
 				72147A792DA31706006C9EF4 /* SportType+Name.swift in Sources */,
 				72DFAAFC2DA70A5C007A94DC /* MatchHeroStatusView.swift in Sources */,
@@ -481,17 +479,17 @@
 				72147A7A2DA31706006C9EF4 /* EventStatusColor+UIColor.swift in Sources */,
 				72E58CD32DA6A144001A8C20 /* EventDetailsViewModel.swift in Sources */,
 				72147A7B2DA31706006C9EF4 /* String+URL.swift in Sources */,
+				727E62762DAF917C0024380D /* APIClientMapper.swift in Sources */,
 				72F99FA72DA6547700FB85A2 /* Event.swift in Sources */,
 				72147A7C2DA31706006C9EF4 /* String+Localizable.swift in Sources */,
 				72147A7D2DA31706006C9EF4 /* UICollectionViewLayout+Layouts.swift in Sources */,
 				72147A7E2DA31706006C9EF4 /* UIFont+Typography.swift in Sources */,
 				7209C68B2DA533650040B9D3 /* EventDetailsViewController.swift in Sources */,
-				721E1E1D2DA93E7200FA8043 /* EventStatusApiNameMapper.swift in Sources */,
 				721E1E232DA9889E00FA8043 /* EventTeamInfoMapper.swift in Sources */,
 				72147A7F2DA31706006C9EF4 /* UIImageView+URL.swift in Sources */,
 				72147A802DA31706006C9EF4 /* UILabel+AttributedString.swift in Sources */,
 				7209C68D2DA53ADC0040B9D3 /* EventDetailsMatchHeroView.swift in Sources */,
-				72699D712DAE2D0E000CA9E2 /* APIConfig.swift in Sources */,
+				72699D712DAE2D0E000CA9E2 /* APIDefintions.swift in Sources */,
 				72147A812DA31706006C9EF4 /* UIViewController+Child.swift in Sources */,
 				72147A822DA31706006C9EF4 /* EventCell.swift in Sources */,
 				72699D752DAE370F000CA9E2 /* APIError.swift in Sources */,
@@ -526,6 +524,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		727E62742DAF86A50024380D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 727E62732DAF86A50024380D /* SwiftLintBuildToolPlugin */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		72147A6F2DA31706006C9EF4 /* LaunchScreen.storyboard */ = {
@@ -734,6 +739,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		727E62722DAF86090024380D /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.59.1;
+			};
+		};
 		728F503D2D784BFA004F015C /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -753,6 +766,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		727E62732DAF86A50024380D /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 727E62722DAF86090024380D /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
 		728F503E2D784BFA004F015C /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 728F503D2D784BFA004F015C /* XCRemoteSwiftPackageReference "SnapKit" */;

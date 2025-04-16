@@ -15,7 +15,12 @@ enum EventTeamInfoMapper {
             name: team.name,
             score: score,
             color: EventStatusColorMapper.statusColor(for: score, comparedTo: opponentScore, status: eventStatus),
-            scoreColor: EventStatusColorMapper.statusColor(for: score, comparedTo: opponentScore, status: eventStatus, isScore: true)
+            scoreColor: EventStatusColorMapper.statusColor(
+                for: score,
+                comparedTo: opponentScore,
+                status: eventStatus,
+                isScore: true
+            )
         )
     }
 }

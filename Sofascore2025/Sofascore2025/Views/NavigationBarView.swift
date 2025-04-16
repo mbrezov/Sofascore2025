@@ -64,39 +64,41 @@ class NavigationBarView: BaseView {
 
     // MARK: - Setup
 
-    func setTitle(title: String) {
+    func setTitle(_ title: String) {
         let titleLabel = UILabel()
         self.titleLabel = titleLabel
         titleLabel.setText(title, withLineHeight: 28)
         titleLabel.font = .headline1
         titleLabel.textColor = tintColor
         addSubview(titleLabel)
-        setupTitleLabelConstraints()
+        setupTitleLabel()
     }
 
-    func setTitleView(with titleView: UIView) {
-        self.titleView = titleView
-        addSubview(titleView)
-        setupTitleViewConstraints()
-    }
-
-    private func setupTitleViewConstraints() {
+    func setTitleView(_ titleView: UIView?) {
         if let titleView = titleView {
-            titleLabel?.isHidden = true
-            titleView.snp.makeConstraints {
-                $0.leading.equalTo(backButton.snp.trailing).offset(Padding.titleViewLeft)
-                $0.centerY.equalTo(backButton.snp.centerY)
-            }
+            self.titleView = titleView
+            addSubview(titleView)
+            setupTitleView()
         }
     }
 
-    private func setupTitleLabelConstraints() {
-        if let titleLabel = titleLabel {
-            titleLabel.snp.makeConstraints {
+    private func setupTitleLabel() {
+        if titleView == nil {
+            guard let titleLabel = titleLabel else { return }
+            titleLabel.snp.remakeConstraints {
                 $0.leading.equalTo(backButton.snp.trailing).offset(Padding.titleLeft)
                 $0.centerY.equalTo(backButton.snp.centerY)
                 $0.trailing.equalToSuperview().inset(Padding.titleRight)
             }
+        }
+    }
+
+    private func setupTitleView() {
+        guard let titleView = titleView else { return }
+        titleLabel?.removeFromSuperview()
+        titleView.snp.remakeConstraints {
+            $0.leading.equalTo(backButton.snp.trailing).offset(Padding.titleViewLeft)
+            $0.centerY.equalTo(backButton.snp.centerY)
         }
     }
 }

@@ -12,7 +12,7 @@ enum EventStatusInfoMapper {
     static func makeStatusInfo(from event: Event) -> EventStatusInfo {
         let description: String
         let descriptionShort: String
-        let status = EventStatusApiNameMapper.from(apiName: event.status)
+        let status = APIClientMapper.eventStatus(from: event.status)
 
         switch status {
         case .notStarted:
@@ -33,7 +33,7 @@ enum EventStatusInfoMapper {
         }
 
         return EventStatusInfo(
-            status: EventStatusApiNameMapper.from(apiName: event.status),
+            status: APIClientMapper.eventStatus(from: event.status),
             description: description,
             descriptionShort: descriptionShort,
             startTimeText: DateFormatterService.timeFormatted(event.startTimestamp),

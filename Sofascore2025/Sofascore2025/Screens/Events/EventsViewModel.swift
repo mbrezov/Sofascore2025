@@ -11,27 +11,41 @@ class EventsViewModel {
 
     var isDataFetching: ((Bool) -> Void)?
     var toastErrorAlert: ((String, String) -> Void)?
+    var onEventsReload: (() -> Void)?
 
     private var events: [EventViewModel] = []
     private(set) var leagues: [LeagueHeaderViewModel] = []
     private(set) var selectedSport: SportType?
+    private var eventModels: [Event] = []
+
+    func makeEventDetailsViewModel(for eventViewModel: EventViewModel) -> EventDetailsViewModel? {
+        guard let event = eventModels.first(where: { $0.id == eventViewModel.id }) else { return nil }
+        let eventDetailsViewModel = EventDetailsViewModel(
+            event: event,
+            sportType: self.selectedSport
+        )
+        return eventDetailsViewModel
+    }
 
     func getEvents(for league: LeagueHeaderViewModel) -> [EventViewModel] {
         events.filter { $0.leagueId == league.id }
     }
 
-    func selectSport(_ sport: SportType) {
-        self.selectedSport = sport
+    func selectSport(_ sportType: SportType) {
+        self.selectedSport = sportType
         self.isDataFetching?(true)
 
         Task { [weak self] in
             do {
-                let eventModels: [Event] = try await APIClient.getEvents(for: sport)
+                let eventModels: [Event] = try await APIClient.getEvents(for: sportType)
                 self?.finishEventsReload(with: eventModels)
             } catch let error as APIError {
                 switch error {
                 case .noInternet:
-                    self?.finishEventsReload(errorTitle: APIError.noInternet.title, errorMessage: APIError.noInternet.message)
+                    self?.finishEventsReload(
+                        errorTitle: APIError.noInternet.title,
+                        errorMessage: APIError.noInternet.message
+                    )
 
                 case .invalidURL:
                     print(APIError.invalidURL.title, APIError.invalidURL.message)
@@ -46,7 +60,11 @@ class EventsViewModel {
         }
     }
 
-    private func finishEventsReload(with events: [Event]? = nil, errorTitle: String? = nil, errorMessage: String? = nil) {
+    private func finishEventsReload(
+        with events: [Event]? = nil,
+        errorTitle: String? = nil,
+        errorMessage: String? = nil
+    ) {
         DispatchQueue.main.async {
             if let title = errorTitle, let message = errorMessage {
                 self.toastErrorAlert?(title, message)
@@ -59,6 +77,7 @@ class EventsViewModel {
     }
 
     private func setEvents(with eventModels: [Event]) {
+        self.eventModels = eventModels
         events = eventModels.map { EventViewModel(event: $0) }
         let eventsByLeague = Dictionary(grouping: eventModels, by: { $0.league?.id ?? 0 })
         let leagueIDs = eventsByLeague.keys.sorted()
@@ -67,5 +86,6 @@ class EventsViewModel {
             guard let league = eventModels.first(where: { $0.league?.id == id })?.league else { return nil }
             return LeagueHeaderViewModel(league: league)
         }
+        self.onEventsReload?()
     }
 }

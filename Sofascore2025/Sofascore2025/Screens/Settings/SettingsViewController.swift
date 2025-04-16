@@ -38,7 +38,7 @@ class SettingsViewController: UIViewController, BaseViewProtocol {
 
         navBar.backgroundColor = .primaryDefault
         navBar.tintColor = .surface1
-        navBar.setTitle(title: .settingsTitle)
+        navBar.setTitle(.settingsTitle)
     }
 
     func setupConstraints() {

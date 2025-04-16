@@ -32,7 +32,7 @@ class MainHeaderView: BaseView {
     private let logoImageView = UIImageView()
     private let tournamentButton = UIButton()
     private let settingsButton = UIButton()
-    
+
     override func addViews() {
         addSubview(logoImageView)
         addSubview(tournamentButton)

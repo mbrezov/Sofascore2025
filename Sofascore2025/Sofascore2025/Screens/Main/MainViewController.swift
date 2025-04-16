@@ -42,7 +42,6 @@ class MainViewController: UIViewController, BaseViewProtocol {
         addViews()
         setupConstraints()
         setupBinding()
-        toastErrorAlert()
 
         sportSelectorMenuView.setupSports(with: sports, selectedSport: .football)
 
@@ -75,9 +74,7 @@ class MainViewController: UIViewController, BaseViewProtocol {
         sportSelectorMenuView.onSportSelected = { [weak self] sport in
             self?.eventsViewModel.selectSport(sport)
         }
-    }
 
-    private func toastErrorAlert() {
         eventsViewModel.toastErrorAlert = { [weak self] title, message in
             self?.showAlert(title: title, message: message)
         }

@@ -9,7 +9,12 @@ import Foundation
 
 enum EventStatusColorMapper {
 
-    static func statusColor(for score: Int?, comparedTo opponentScore: Int?, status: EventStatus, isScore: Bool = false) -> EventStatusColor {
+    static func statusColor(
+        for score: Int?,
+        comparedTo opponentScore: Int?,
+        status: EventStatus,
+        isScore: Bool = false
+    ) -> EventStatusColor {
         switch status {
         case .inProgress:
             return isScore ? .live : .primary

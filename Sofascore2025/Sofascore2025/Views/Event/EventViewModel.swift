@@ -47,16 +47,22 @@ class EventViewModel {
     let leagueName: String?
     let logoURL: URL?
 
-    var rawEvent: Event {
-        return event
-    }
-
     init(event: Event) {
         self.event = event
 
         self.id = event.id
-        self.homeTeamInfo = EventTeamInfoMapper.makeTeamInfo(team: event.homeTeam, score: event.homeScore, opponentScore: event.awayScore, eventStatus: EventStatusApiNameMapper.from(apiName: event.status))
-        self.awayTeamInfo = EventTeamInfoMapper.makeTeamInfo(team: event.awayTeam, score: event.awayScore, opponentScore: event.homeScore, eventStatus: EventStatusApiNameMapper.from(apiName: event.status))
+        self.homeTeamInfo = EventTeamInfoMapper.makeTeamInfo(
+            team: event.homeTeam,
+            score: event.homeScore,
+            opponentScore: event.awayScore,
+            eventStatus: APIClientMapper.eventStatus(from: event.status)
+        )
+        self.awayTeamInfo = EventTeamInfoMapper.makeTeamInfo(
+            team: event.awayTeam,
+            score: event.awayScore,
+            opponentScore: event.homeScore,
+            eventStatus: APIClientMapper.eventStatus(from: event.status)
+        )
         self.statusInfo = EventStatusInfoMapper.makeStatusInfo(from: event)
         self.leagueId = event.league?.id
         self.leagueName = event.league?.name

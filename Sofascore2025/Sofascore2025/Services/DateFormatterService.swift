@@ -27,7 +27,7 @@ enum DateFormatterService {
         let date = Date(timeIntervalSince1970: TimeInterval(timeStamp))
         return fullDateFormatter.string(from: date)
     }
-    
+
     static func timeFormatted(_ timeStamp: Int) -> String {
         let date = Date(timeIntervalSince1970: TimeInterval(timeStamp))
         return dateFormatter.string(from: date)
