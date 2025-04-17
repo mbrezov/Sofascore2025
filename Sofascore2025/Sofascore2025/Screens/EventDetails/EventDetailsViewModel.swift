@@ -11,8 +11,6 @@ class EventDetailsViewModel {
 
     private let event: Event
 
-    let country: String?
-    let leagueName: String?
     let leagueLogoURL: URL?
     let homeTeamInfo: EventTeamInfo
     let awayTeamInfo: EventTeamInfo
@@ -20,14 +18,11 @@ class EventDetailsViewModel {
     let startTimeText: String
     let statusInfo: EventStatusInfo
     let isStarted: Bool
-    let roundText: String
-    let sportTypeText: String?
+    let leagueDescription: String
 
     init(event: Event, sportType: SportType?) {
         self.event = event
 
-        self.country = event.league?.country.name
-        self.leagueName = event.league?.name
         self.leagueLogoURL = event.league?.logoUrl?.url
         self.homeTeamInfo = EventTeamInfoMapper.makeTeamInfo(
             team: event.homeTeam,
@@ -45,7 +40,14 @@ class EventDetailsViewModel {
         self.startTimeText = DateFormatterService.timeFormatted(event.startTimestamp)
         self.statusInfo = EventStatusInfoMapper.makeStatusInfo(from: event)
         self.isStarted = !(statusInfo.status == .notStarted)
-        self.roundText = .roundText(event.id.description)
-        self.sportTypeText = sportType?.name
+
+        self.leagueDescription = [
+            sportType?.name,
+            event.league?.country.name,
+            event.league?.name,
+            String.roundText(event.id.description)
+        ]
+        .compactMap { $0 }
+        .joined(separator: ", ")
     }
 }

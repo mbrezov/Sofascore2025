@@ -10,19 +10,19 @@ import Foundation
 class EventsViewModel {
 
     var isDataFetching: ((Bool) -> Void)?
-    var toastErrorAlert: ((String, String) -> Void)?
+    var toastErrorAlert: ((String?, String?) -> Void)?
     var onEventsReload: (() -> Void)?
 
     private var events: [EventViewModel] = []
     private(set) var leagues: [LeagueHeaderViewModel] = []
-    private(set) var selectedSport: SportType?
+    private(set) var selectedSportType: SportType?
     private var eventModels: [Event] = []
 
     func makeEventDetailsViewModel(for eventViewModel: EventViewModel) -> EventDetailsViewModel? {
         guard let event = eventModels.first(where: { $0.id == eventViewModel.id }) else { return nil }
         let eventDetailsViewModel = EventDetailsViewModel(
             event: event,
-            sportType: self.selectedSport
+            sportType: self.selectedSportType
         )
         return eventDetailsViewModel
     }
@@ -32,7 +32,7 @@ class EventsViewModel {
     }
 
     func selectSport(_ sportType: SportType) {
-        self.selectedSport = sportType
+        self.selectedSportType = sportType
         self.isDataFetching?(true)
 
         Task { [weak self] in
@@ -66,11 +66,11 @@ class EventsViewModel {
         errorMessage: String? = nil
     ) {
         DispatchQueue.main.async {
-            if let title = errorTitle, let message = errorMessage {
-                self.toastErrorAlert?(title, message)
-                self.setEvents(with: [])
-            } else if let events = events {
+            if let events = events {
                 self.setEvents(with: events)
+            } else {
+                self.setEvents(with: [])
+                self.toastErrorAlert?(errorTitle, errorMessage)
             }
             self.isDataFetching?(false)
         }

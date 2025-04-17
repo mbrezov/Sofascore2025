@@ -30,6 +30,11 @@ enum EventStatusInfoMapper {
         case .finished:
             description = .matchStatusFulltime
             descriptionShort = .matchStatusFulltimeShort
+
+        case .unknown:
+            assertionFailure(.unknownEventStatusErrorMessage)
+            description = .matchStatusUnknown
+            descriptionShort = description
         }
 
         return EventStatusInfo(

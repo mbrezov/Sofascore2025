@@ -26,7 +26,7 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
     init(_ eventDetailsViewModel: EventDetailsViewModel) {
         self.eventDetailsViewModel = eventDetailsViewModel
         super.init(nibName: nil, bundle: nil)
-        configure(event: eventDetailsViewModel)
+        setupUI()
     }
 
     required init?(coder: NSCoder) {
@@ -67,23 +67,20 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
         }
     }
 
-    private func configure(event: EventDetailsViewModel) {
+    private func setupUI() {
         navBarTitleView.configure(
-            logo: event.leagueLogoURL,
-            sport: event.sportTypeText,
-            country: event.country,
-            leagueName: event.leagueName,
-            roundText: event.roundText
+            imageURL: eventDetailsViewModel.leagueLogoURL,
+            title: eventDetailsViewModel.leagueDescription
         )
 
         matchHeaderView.configure(
-            homeTeamInfo: event.homeTeamInfo,
-            awayTeamInfo: event.awayTeamInfo,
-            isStarted: event.isStarted,
-            dateText: event.dateText,
-            startTimeText: event.startTimeText,
-            statusText: event.statusInfo.description,
-            statusColor: event.statusInfo.color.uiColor
+            homeTeamInfo: eventDetailsViewModel.homeTeamInfo,
+            awayTeamInfo: eventDetailsViewModel.awayTeamInfo,
+            isStarted: eventDetailsViewModel.isStarted,
+            dateText: eventDetailsViewModel.dateText,
+            startTimeText: eventDetailsViewModel.startTimeText,
+            statusText: eventDetailsViewModel.statusInfo.description,
+            statusColor: eventDetailsViewModel.statusInfo.color.uiColor
         )
     }
 }

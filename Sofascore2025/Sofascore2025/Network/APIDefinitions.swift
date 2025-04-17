@@ -26,8 +26,8 @@ enum APIDefinitions {
 
     static func makeEventsURL(for sportName: String) -> URL? {
         var components = URLComponents()
-        components.scheme = APIDefinitions.scheme
-        components.host = APIDefinitions.baseURL
+        components.scheme = scheme
+        components.host = baseURL
         components.path = Endpoints.events
         components.queryItems = [
             URLQueryItem(name: QueryItems.sport, value: sportName)

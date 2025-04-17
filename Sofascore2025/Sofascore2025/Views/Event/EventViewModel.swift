@@ -14,7 +14,7 @@ enum EventStatusColor {
 
 enum EventStatus {
 
-    case notStarted, inProgress, halftime, finished
+    case notStarted, inProgress, halftime, finished, unknown
 }
 
 struct EventTeamInfo {

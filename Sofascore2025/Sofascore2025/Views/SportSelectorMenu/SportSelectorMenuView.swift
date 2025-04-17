@@ -57,7 +57,7 @@ class SportSelectorMenuView: BaseView {
         }
     }
 
-    func setupSports(with sports: [SportType], selectedSport: SportType) {
+    func setupSports(with sports: [SportType], selectedSportType: SportType) {
         for sportView in stackView.arrangedSubviews {
             stackView.removeArrangedSubview(sportView)
             sportView.removeFromSuperview()
@@ -75,9 +75,9 @@ class SportSelectorMenuView: BaseView {
             stackView.addArrangedSubview(sportView)
         }
 
-        selectedIndex = selectedSport
+        selectedIndex = selectedSportType
         updateSelection(animated: false)
-        onSportSelected?(selectedSport)
+        onSportSelected?(selectedSportType)
     }
 
     private func updateSelectionViewConstraints(for selectedSegment: SportSelectorMenuItemView) {

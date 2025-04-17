@@ -50,11 +50,8 @@ class EventDetailsNavBarTitleView: BaseView {
         }
     }
 
-    func configure(logo: URL?, sport: String?, country: String?, leagueName: String?, roundText: String) {
-        logoImageView.setImageURL(logo)
-
-        let parts: [String] = [sport, country, leagueName, roundText].compactMap { $0 }
-        let title: String = parts.joined(separator: ", ")
+    func configure(imageURL: URL?, title: String) {
+        logoImageView.setImageURL(imageURL)
         titleLabel.setText(title, withLineHeight: 16)
     }
 }

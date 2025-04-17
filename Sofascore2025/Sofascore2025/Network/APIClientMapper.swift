@@ -24,7 +24,7 @@ enum APIClientMapper {
             return .finished
 
         default:
-            return .notStarted
+            return .unknown
         }
     }
 

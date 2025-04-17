@@ -33,6 +33,8 @@ class LeagueHeaderView: BaseView {
         didSet {
             if let leagueHeaderViewModel = viewModel {
                 configure(leagueHeaderViewModel)
+            } else {
+                cleanup()
             }
         }
     }
@@ -89,5 +91,11 @@ class LeagueHeaderView: BaseView {
         leagueCountryLabel.text = league.countryName
 
         leagueLogoImageView.setImageURL(league.logoURL)
+    }
+
+    func cleanup() {
+        leagueNameLabel.text = nil
+        leagueCountryLabel.text = nil
+        leagueLogoImageView.image = nil
     }
 }

@@ -43,7 +43,7 @@ class MainViewController: UIViewController, BaseViewProtocol {
         setupConstraints()
         setupBinding()
 
-        sportSelectorMenuView.setupSports(with: sports, selectedSport: .football)
+        sportSelectorMenuView.setupSports(with: sports, selectedSportType: .football)
 
         headerView.delegate = self
     }

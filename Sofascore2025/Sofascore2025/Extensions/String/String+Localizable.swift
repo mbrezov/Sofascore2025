@@ -15,6 +15,7 @@ extension String {
     static let matchStatusHalftimeShort = "HT"
     static let matchStatusFulltime = "Full Time"
     static let matchStatusHalftime = "Half Time"
+    static let matchStatusUnknown = "Unknown"
     static let matchStatusNotStarted = "-"
     static let scoreDash = "-"
 
@@ -38,6 +39,7 @@ extension String {
     static let URLErrorMessage = "The request URL is malformed. Please verify endpoint formatting and parameters."
     static let decodingErrorTitle = "Decoding failed"
     static let decodingErrorMessage = "The data received from the server couldn't be read. Please check the API format."
+    static let unknownEventStatusErrorMessage = "Unknown event status"
 
     // MARK: - Screen titles
 

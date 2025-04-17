@@ -75,21 +75,18 @@ class NavigationBarView: BaseView {
     }
 
     func setTitleView(_ titleView: UIView?) {
-        if let titleView = titleView {
-            self.titleView = titleView
-            addSubview(titleView)
-            setupTitleView()
-        }
+        guard let titleView = titleView else { return }
+        self.titleView = titleView
+        addSubview(titleView)
+        setupTitleView()
     }
 
     private func setupTitleLabel() {
-        if titleView == nil {
-            guard let titleLabel = titleLabel else { return }
-            titleLabel.snp.remakeConstraints {
-                $0.leading.equalTo(backButton.snp.trailing).offset(Padding.titleLeft)
-                $0.centerY.equalTo(backButton.snp.centerY)
-                $0.trailing.equalToSuperview().inset(Padding.titleRight)
-            }
+        guard let titleLabel = titleLabel, titleView == nil else { return }
+        titleLabel.snp.remakeConstraints {
+            $0.leading.equalTo(backButton.snp.trailing).offset(Padding.titleLeft)
+            $0.centerY.equalTo(backButton.snp.centerY)
+            $0.trailing.equalToSuperview().inset(Padding.titleRight)
         }
     }
 

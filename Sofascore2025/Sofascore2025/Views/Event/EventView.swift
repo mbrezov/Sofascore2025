@@ -36,6 +36,8 @@ class EventView: BaseView {
         didSet {
             if let event = viewModel {
                 configure(event)
+            } else {
+                cleanup()
             }
         }
     }

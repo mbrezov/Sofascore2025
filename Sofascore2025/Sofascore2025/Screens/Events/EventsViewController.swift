@@ -49,6 +49,7 @@ class EventsViewController: UIViewController, BaseViewProtocol {
 
     func addViews() {
         view.addSubview(collectionView)
+        collectionView.backgroundView = emptyStateLabel
         view.addSubview(loadingIndicator)
     }
 
@@ -58,9 +59,9 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         collectionView.delegate = self
         collectionView.register(EventCell.self, forCellWithReuseIdentifier: EventCell.reuseIdentifier)
         collectionView.register(
-            LeagueHeaderCell.self,
+            LeagueHeaderReusableView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: LeagueHeaderCell.reuseIdentifier
+            withReuseIdentifier: LeagueHeaderReusableView.reuseIdentifier
         )
         collectionView.register(
             EventSectionDividerView.self,
@@ -96,18 +97,17 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         }
 
         viewModel.isDataFetching = { [weak self] isLoading in
+            self?.collectionView.isHidden = isLoading
             if isLoading {
-                self?.collectionView.isHidden = true
                 self?.loadingIndicator.startAnimating()
             } else {
-                self?.collectionView.isHidden = false
                 self?.loadingIndicator.stopAnimating()
             }
         }
     }
 
     private func updateEmptyState() {
-        collectionView.backgroundView = viewModel.leagues.isEmpty ? emptyStateLabel : nil
+        collectionView.backgroundView?.isHidden = !viewModel.leagues.isEmpty
     }
 }
 
@@ -118,14 +118,19 @@ extension EventsViewController: UICollectionViewDataSource {
         return viewModel.leagues.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         let leagueHeaderViewModel = viewModel.leagues[section]
 
         return viewModel.getEvents(for: leagueHeaderViewModel).count
     }
 
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         let leagueHeaderViewModel = viewModel.leagues[indexPath.section]
         let eventViewModel = viewModel.getEvents(for: leagueHeaderViewModel)[indexPath.row]
 
@@ -138,16 +143,18 @@ extension EventsViewController: UICollectionViewDataSource {
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let leagueViewModel = viewModel.leagues[indexPath.section]
 
             guard let headerView = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
-                withReuseIdentifier: LeagueHeaderCell.reuseIdentifier,
-                for: indexPath) as? LeagueHeaderCell else { return UICollectionReusableView() }
+                withReuseIdentifier: LeagueHeaderReusableView.reuseIdentifier,
+                for: indexPath) as? LeagueHeaderReusableView else { return UICollectionReusableView() }
 
             headerView.bind(leagueViewModel)
 
@@ -182,15 +189,7 @@ extension EventsViewController: UICollectionViewDelegate {
         let eventDetailsVC = EventDetailsViewController(eventDetailsViewModel)
         eventDetailsVC.delegate = self
 
-        pushViewController(to: eventDetailsVC)
-    }
-}
-
-// MARK: - Navigation
-
-extension EventsViewController {
-    private func pushViewController(to viewController: UIViewController) {
-        push(viewController, animated: true)
+        push(eventDetailsVC, animated: true)
     }
 }
 
