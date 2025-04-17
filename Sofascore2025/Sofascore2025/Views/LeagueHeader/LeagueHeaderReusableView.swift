@@ -1,5 +1,5 @@
 //
-//  LeagueHeaderCell.swift
+//  LeagueHeaderReusableView.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 24.03.2025..
@@ -8,9 +8,9 @@
 import SnapKit
 import UIKit
 
-class LeagueHeaderCell: UICollectionReusableView {
+class LeagueHeaderReusableView: UICollectionReusableView {
 
-    static let reuseIdentifier = "LeagueHeaderCell"
+    static let reuseIdentifier = "LeagueHeaderReusableView"
 
     private let eventHeaderView = LeagueHeaderView()
 
@@ -25,6 +25,11 @@ class LeagueHeaderCell: UICollectionReusableView {
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        eventHeaderView.cleanup()
     }
 
     func addViews() {

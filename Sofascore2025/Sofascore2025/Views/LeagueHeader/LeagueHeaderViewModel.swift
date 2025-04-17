@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SofaAcademic
 
 class LeagueHeaderViewModel {
 
@@ -23,6 +22,6 @@ class LeagueHeaderViewModel {
         self.id = league.id
         self.name = league.name
         self.logoURL = league.logoUrl?.url
-        self.countryName = league.country?.name
+        self.countryName = league.country.name
     }
 }

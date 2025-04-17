@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DateFormatterService {
+enum DateFormatterService {
 
     private static var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -15,7 +15,19 @@ class DateFormatterService {
         dateFormatter.timeZone = TimeZone.current
         return dateFormatter
     }()
-    
+
+    private static var fullDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy."
+        dateFormatter.timeZone = TimeZone.current
+        return dateFormatter
+    }()
+
+    static func fullDateFormatted(_ timeStamp: Int) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(timeStamp))
+        return fullDateFormatter.string(from: date)
+    }
+
     static func timeFormatted(_ timeStamp: Int) -> String {
         let date = Date(timeIntervalSince1970: TimeInterval(timeStamp))
         return dateFormatter.string(from: date)

@@ -48,7 +48,7 @@ class EventTeamRowView: BaseView {
     override func setupConstraints() {
         teamImageView.snp.makeConstraints {
             $0.size.equalTo(Constants.teamImageSize)
-            $0.top.bottom.leading.equalToSuperview()
+            $0.directionalVerticalEdges.leading.equalToSuperview()
         }
 
         teamNameLabel.snp.makeConstraints {
@@ -71,8 +71,8 @@ class EventTeamRowView: BaseView {
             teamScoreLabel.setText(teamScore, withLineHeight: 16)
         }
 
-        teamNameLabel.textColor = teamInfo.style.color
-        teamScoreLabel.textColor = teamInfo.scoreStyle.color
+        teamNameLabel.textColor = teamInfo.color.uiColor
+        teamScoreLabel.textColor = teamInfo.scoreColor.uiColor
 
         teamImageView.setImageURL(teamInfo.logoURL)
     }
