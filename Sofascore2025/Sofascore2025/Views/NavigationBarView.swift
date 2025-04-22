@@ -34,6 +34,7 @@ class NavigationBarView: BaseView {
 
     private let backButton = UIButton()
 
+    private var title: String?
     private var titleLabel: UILabel?
     private var titleView: UIView?
 
@@ -65,24 +66,39 @@ class NavigationBarView: BaseView {
     // MARK: - Setup
 
     func setTitle(_ title: String) {
-        let titleLabel = UILabel()
-        self.titleLabel = titleLabel
-        titleLabel.setText(title, withLineHeight: 28)
-        titleLabel.font = .headline1
-        titleLabel.textColor = tintColor
-        addSubview(titleLabel)
-        setupTitleLabel()
+        self.title = title
+        titleView = nil
+        updateUI()
     }
 
     func setTitleView(_ titleView: UIView?) {
-        guard let titleView = titleView else { return }
         self.titleView = titleView
-        addSubview(titleView)
-        setupTitleView()
+        title = nil
+        updateUI()
+    }
+
+    private func updateUI() {
+        titleLabel?.removeFromSuperview()
+        titleView?.removeFromSuperview()
+        titleLabel = nil
+
+        if let titleView = titleView {
+            addSubview(titleView)
+            setupTitleView()
+        } else if title != nil {
+            let titleLabel = UILabel()
+            self.titleLabel = titleLabel
+            addSubview(titleLabel)
+            setupTitleLabel()
+        }
     }
 
     private func setupTitleLabel() {
-        guard let titleLabel = titleLabel, titleView == nil else { return }
+        guard let titleLabel = titleLabel, let title = title else { return }
+        titleLabel.setText(title, withLineHeight: 28)
+        titleLabel.font = .headline1
+        titleLabel.textColor = tintColor
+
         titleLabel.snp.remakeConstraints {
             $0.leading.equalTo(backButton.snp.trailing).offset(Padding.titleLeft)
             $0.centerY.equalTo(backButton.snp.centerY)
@@ -92,7 +108,6 @@ class NavigationBarView: BaseView {
 
     private func setupTitleView() {
         guard let titleView = titleView else { return }
-        titleLabel?.removeFromSuperview()
         titleView.snp.remakeConstraints {
             $0.leading.equalTo(backButton.snp.trailing).offset(Padding.titleViewLeft)
             $0.centerY.equalTo(backButton.snp.centerY)
