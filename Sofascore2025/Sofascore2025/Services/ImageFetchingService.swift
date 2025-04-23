@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ImageFetchingService {
+enum ImageFetchingService {
 
     static func fetchImage(from url: URL, completion: @escaping (Data?) -> Void) {
 

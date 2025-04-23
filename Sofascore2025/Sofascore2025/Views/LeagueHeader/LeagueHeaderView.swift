@@ -31,8 +31,10 @@ class LeagueHeaderView: BaseView {
 
     var viewModel: LeagueHeaderViewModel? {
         didSet {
-            if let league = viewModel {
-                configure(league)
+            if let leagueHeaderViewModel = viewModel {
+                configure(leagueHeaderViewModel)
+            } else {
+                cleanup()
             }
         }
     }
@@ -47,14 +49,14 @@ class LeagueHeaderView: BaseView {
     override func styleViews() {
         leagueLogoImageView.contentMode = .scaleAspectFit
 
-        leagueCountryLabel.font = .headline
+        leagueCountryLabel.font = .headline3
         leagueCountryLabel.textColor = .surfaceLv1
         leagueCountryLabel.numberOfLines = 1
 
         pointerRightIcon.contentMode = .scaleAspectFit
         pointerRightIcon.image = .icPointerRight
 
-        leagueNameLabel.font = .headline
+        leagueNameLabel.font = .headline3
         leagueNameLabel.textColor = .surfaceLv2
         leagueNameLabel.numberOfLines = 2
     }
@@ -89,5 +91,11 @@ class LeagueHeaderView: BaseView {
         leagueCountryLabel.text = league.countryName
 
         leagueLogoImageView.setImageURL(league.logoURL)
+    }
+
+    func cleanup() {
+        leagueNameLabel.text = nil
+        leagueCountryLabel.text = nil
+        leagueLogoImageView.image = nil
     }
 }

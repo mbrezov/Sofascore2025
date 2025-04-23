@@ -36,6 +36,8 @@ class EventView: BaseView {
         didSet {
             if let event = viewModel {
                 configure(event)
+            } else {
+                cleanup()
             }
         }
     }
@@ -69,7 +71,7 @@ class EventView: BaseView {
 
         statusLabel.snp.makeConstraints {
             $0.width.equalTo(startTimeLabel.snp.width)
-            $0.leading.trailing.equalTo(startTimeLabel)
+            $0.directionalHorizontalEdges.equalTo(startTimeLabel)
             $0.top.equalTo(startTimeLabel.snp.bottom).offset(Constants.verticalSpacing)
             $0.bottom.equalToSuperview().inset(Padding.vertical)
         }
@@ -88,7 +90,7 @@ class EventView: BaseView {
 
         awayTeamRowView.snp.makeConstraints {
             $0.top.equalTo(homeTeamRowView.snp.bottom).offset(Constants.verticalSpacing)
-            $0.leading.trailing.equalTo(homeTeamRowView)
+            $0.directionalHorizontalEdges.equalTo(homeTeamRowView)
             $0.bottom.equalTo(statusLabel.snp.bottom)
         }
     }
@@ -97,8 +99,9 @@ class EventView: BaseView {
         let status = event.statusInfo
 
         startTimeLabel.setText(status.startTimeText, withLineHeight: 16)
-        statusLabel.setText(status.description, withLineHeight: 16)
-        statusLabel.textColor = status.style.color
+
+        statusLabel.setText(status.descriptionShort, withLineHeight: 16)
+        statusLabel.textColor = status.color.uiColor
 
         homeTeamRowView.configure(with: event.homeTeamInfo)
         awayTeamRowView.configure(with: event.awayTeamInfo)

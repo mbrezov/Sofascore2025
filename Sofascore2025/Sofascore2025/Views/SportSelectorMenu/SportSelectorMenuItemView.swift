@@ -51,7 +51,7 @@ class SportSelectorMenuItemView: BaseView {
 
         nameLabel.snp.makeConstraints {
             $0.top.equalTo(iconImageView.snp.bottom).offset(Constants.iconSpacing)
-            $0.leading.trailing.bottom.equalToSuperview().inset(Padding.labelEdges)
+            $0.directionalHorizontalEdges.bottom.equalToSuperview().inset(Padding.labelEdges)
         }
     }
 

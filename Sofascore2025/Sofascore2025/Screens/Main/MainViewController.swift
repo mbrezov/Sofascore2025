@@ -11,9 +11,10 @@ import UIKit
 
 class MainViewController: UIViewController, BaseViewProtocol {
 
+    private let headerView = MainHeaderView()
+    private let sportSelectorMenuView: SportSelectorMenuView
     private let eventsViewModel: EventsViewModel
     private let eventsViewController: EventsViewController
-    private let sportSelectorMenuView: SportSelectorMenuView
 
     private let sports: [SportType] = [.football, .basketball, .americanFootball]
 
@@ -29,6 +30,11 @@ class MainViewController: UIViewController, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .surface1
@@ -37,29 +43,58 @@ class MainViewController: UIViewController, BaseViewProtocol {
         setupConstraints()
         setupBinding()
 
-        sportSelectorMenuView.setupSports(with: sports, selectedSport: .football)
+        sportSelectorMenuView.setupSports(with: sports, selectedSportType: .football)
+
+        headerView.delegate = self
     }
 
     func addViews() {
+        view.addSubview(headerView)
         view.addSubview(sportSelectorMenuView)
         addChildController(eventsViewController)
     }
 
     func setupConstraints() {
+        headerView.snp.makeConstraints {
+            $0.top.directionalHorizontalEdges.equalToSuperview()
+        }
+
         sportSelectorMenuView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.directionalHorizontalEdges.equalToSuperview()
         }
 
         eventsViewController.view.snp.makeConstraints {
             $0.top.equalTo(sportSelectorMenuView.snp.bottom)
-            $0.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.bottom.directionalHorizontalEdges.equalTo(view.safeAreaLayoutGuide)
         }
     }
 
     func setupBinding() {
         sportSelectorMenuView.onSportSelected = { [weak self] sport in
-            guard let self = self else { return }
-            self.eventsViewModel.selectSport(sport)
+            self?.eventsViewModel.selectSport(sport)
         }
+
+        eventsViewModel.toastErrorAlert = { [weak self] title, message in
+            self?.showAlert(title: title, message: message)
+        }
+    }
+}
+
+// MARK: - Navigation - MainHeaderViewDelegate
+
+extension MainViewController: MainHeaderViewDelegate {
+    func mainHeaderViewDidPressSettings(_ mainHeaderView: MainHeaderView) {
+        let settingsVC = SettingsViewController()
+        settingsVC.delegate = self
+        presentFullScreen(settingsVC, animated: true)
+    }
+}
+
+// MARK: - Navigation - SettingsViewControllerDelegate
+
+extension MainViewController: SettingsViewControllerDelegate {
+    func settingsViewControllerDidPressBack(_ settingsViewController: SettingsViewController) {
+        dismiss(animated: true)
     }
 }
