@@ -65,41 +65,39 @@ class NavigationBarView: BaseView {
 
     // MARK: - Setup
 
-    func setTitle(_ title: String) {
+    func setTitle(_ title: String?) {
+        titleLabel?.removeFromSuperview()
+        titleLabel = nil
         self.title = title
-        titleView = nil
         updateUI()
     }
 
     func setTitleView(_ titleView: UIView?) {
+        self.titleView?.removeFromSuperview()
         self.titleView = titleView
-        title = nil
         updateUI()
     }
 
     private func updateUI() {
-        titleLabel?.removeFromSuperview()
-        titleView?.removeFromSuperview()
-        titleLabel = nil
-
-        if let titleView = titleView {
-            addSubview(titleView)
+        if titleView != nil {
             setupTitleView()
         } else if title != nil {
-            let titleLabel = UILabel()
-            self.titleLabel = titleLabel
-            addSubview(titleLabel)
             setupTitleLabel()
         }
     }
 
     private func setupTitleLabel() {
-        guard let titleLabel = titleLabel, let title = title else { return }
+        guard let title = title else { return }
+
+        let titleLabel = UILabel()
+        self.titleLabel = titleLabel
+        addSubview(titleLabel)
+
         titleLabel.setText(title, withLineHeight: 28)
         titleLabel.font = .headline1
         titleLabel.textColor = tintColor
 
-        titleLabel.snp.remakeConstraints {
+        titleLabel.snp.makeConstraints {
             $0.leading.equalTo(backButton.snp.trailing).offset(Padding.titleLeft)
             $0.centerY.equalTo(backButton.snp.centerY)
             $0.trailing.equalToSuperview().inset(Padding.titleRight)
@@ -108,7 +106,9 @@ class NavigationBarView: BaseView {
 
     private func setupTitleView() {
         guard let titleView = titleView else { return }
-        titleView.snp.remakeConstraints {
+
+        addSubview(titleView)
+        titleView.snp.makeConstraints {
             $0.leading.equalTo(backButton.snp.trailing).offset(Padding.titleViewLeft)
             $0.centerY.equalTo(backButton.snp.centerY)
         }
