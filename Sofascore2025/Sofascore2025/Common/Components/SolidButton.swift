@@ -26,10 +26,6 @@ class SolidButton: UIButton {
         super.init(coder: coder)
     }
 
-    func setTitle(_ title: String?) {
-        setTitle(title, for: .normal)
-    }
-
     private func styleUI() {
         backgroundColor = .primaryDefault
         titleLabel?.font = .headline2

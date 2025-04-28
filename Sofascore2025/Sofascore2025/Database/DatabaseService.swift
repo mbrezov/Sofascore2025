@@ -64,7 +64,7 @@ enum DatabaseService {
         }
     }
 
-    //MARK: - DB save methods
+    // MARK: - DB save methods
 
     private static func writeDBLeague(_ apiLeague: APILeague) {
         let dbLeague = LeagueModelMapper.makeDBLeague(from: apiLeague)

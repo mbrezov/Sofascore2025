@@ -63,7 +63,7 @@ class SettingsViewController: UIViewController, BaseViewProtocol {
         collectionView.dataSource = self
         collectionView.register(SettingsRowCell.self, forCellWithReuseIdentifier: SettingsRowCell.reuseIdentifier)
 
-        logoutButton.setTitle(.logoutButtonTitle)
+        logoutButton.setTitle(.logoutButtonTitle, for: .normal)
     }
 
     func setupConstraints() {

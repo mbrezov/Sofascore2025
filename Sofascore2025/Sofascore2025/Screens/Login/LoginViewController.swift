@@ -64,7 +64,7 @@ class LoginViewController: UIViewController, BaseViewProtocol {
         passwordTextField.preventSpaces()
         passwordTextField.isSecureTextEntry = true
 
-        loginButton.setTitle(.loginButtonTitle)
+        loginButton.setTitle(.loginButtonTitle, for: .normal)
 
         stackView.axis = .vertical
         stackView.spacing = Constants.verticalSpacing
