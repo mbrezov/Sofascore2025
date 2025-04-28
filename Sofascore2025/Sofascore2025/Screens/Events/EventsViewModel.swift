@@ -37,24 +37,15 @@ class EventsViewModel {
 
         Task { [weak self] in
             do {
-                let eventModels: [Event] = try await APIClient.getEvents(for: sportType)
+                let eventModels = try await APIService.fetchEvents(for: sportType)
                 self?.finishEventsReload(with: eventModels)
-            } catch let error as APIError {
-                switch error {
+            } catch let error as APIErrorWithDetails {
+                switch error.type {
                 case .noInternet:
-                    self?.finishEventsReload(
-                        errorTitle: APIError.noInternet.title,
-                        errorMessage: APIError.noInternet.message
-                    )
+                    self?.finishEventsReload(errorTitle: error.title, errorMessage: error.message)
 
-                case .invalidURL:
-                    print(APIError.invalidURL.title, APIError.invalidURL.message)
-
-                case .decodingFailed:
-                    print(APIError.decodingFailed.title, APIError.decodingFailed.message)
-
-                case .unknown(let error):
-                    print(APIError.unknown(error).title, APIError.unknown(error).message)
+                default:
+                    print(error.title, error.message)
                 }
             }
         }

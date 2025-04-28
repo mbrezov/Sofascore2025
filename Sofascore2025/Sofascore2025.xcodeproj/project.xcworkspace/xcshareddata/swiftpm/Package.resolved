@@ -1,5 +1,5 @@
 {
-  "originHash" : "789595fab2515ff02ece3fc6bc13379be291ea37e068ccac436632b1bf822312",
+  "originHash" : "15f53a8c93309742a0fb349ee2e9f7fd500c679c9e2a181a686a8b7274d481f3",
   "pins" : [
     {
       "identity" : "academy",
@@ -8,6 +8,24 @@
       "state" : {
         "branch" : "hw3",
         "revision" : "40141ddad6c9b88b0fd6c00c31406731f2585350"
+      }
+    },
+    {
+      "identity" : "grdb.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/groue/GRDB.swift.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "04e73c26c4ce8218ab85aaf791942bb0b204f330"
+      }
+    },
+    {
+      "identity" : "keychainaccess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
       }
     },
     {
