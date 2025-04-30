@@ -40,12 +40,14 @@ class EventsViewModel {
                 let eventModels = try await APIService.fetchEvents(for: sportType)
                 self?.finishEventsReload(with: eventModels)
             } catch let error as APIErrorWithDetails {
+                let cachedEventModels = DatabaseService.readEvents(for: sportType)
+
                 switch error.type {
                 case .noInternet:
-                    let eventModels = DatabaseService.readEvents(for: sportType)
-                    self?.reloadCachedEvents(with: eventModels, errorTitle: error.title, errorMessage: error.message)
+                    self?.finishEventsReload(with: cachedEventModels, errorTitle: error.title, errorMessage: error.message)
 
                 default:
+                    self?.finishEventsReload(with: cachedEventModels)
                     print(error.title, error.message)
                 }
             }
@@ -58,24 +60,10 @@ class EventsViewModel {
         errorMessage: String? = nil
     ) {
         DispatchQueue.main.async {
-            if let events = events {
-                self.setEvents(with: events)
-            } else {
-                self.setEvents(with: [])
-                self.toastErrorAlert?(errorTitle, errorMessage)
-            }
-            self.isDataFetching?(false)
-        }
-    }
-
-    private func reloadCachedEvents(
-        with events: [Event]?,
-        errorTitle: String?,
-        errorMessage: String?
-    ) {
-        DispatchQueue.main.async {
             self.setEvents(with: events ?? [])
-            self.toastErrorAlert?(errorTitle, errorMessage)
+            if let title = errorTitle, let message = errorMessage {
+                self.toastErrorAlert?(title, message)
+            }
             self.isDataFetching?(false)
         }
     }
