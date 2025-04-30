@@ -12,8 +12,8 @@ enum APIService {
     static func fetchEvents(for sportType: SportType) async throws -> [Event]? {
         do {
             let apiEvents: [APIEvent] = try await APIClient.getEvents(for: sportType)
-            DatabaseService.saveEventsData(apiEvents, sportType)
-            return DatabaseService.readEvents(for: sportType)
+            let events: [Event] = apiEvents.map { EventModelMapper.makeEvent(from: $0) }
+            return DatabaseService.saveEventsData(events, sportType)
         } catch let error as APIError {
             switch error {
             case .noInternet:
@@ -80,7 +80,7 @@ enum APIService {
         let validatedPassword: String
 
         do {
-            (validatedUsername, validatedPassword) = try AuthCredentialsValidatorService.validate(username, password)
+            (validatedUsername, validatedPassword) = try AuthCredentialsValidationService.validate(username, password)
         } catch {
             if let credentialError = error as? AuthCredentialsError {
                 throw APIErrorWithDetails.custom(

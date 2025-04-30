@@ -58,10 +58,10 @@ class LoginViewController: UIViewController, BaseViewProtocol {
         view.backgroundColor = .surface
 
         usernameTextField.placeholder = .usernameTextFieldPlaceholder
-        usernameTextField.preventSpaces()
+        usernameTextField.setPreventsSpaces(true)
 
         passwordTextField.placeholder = .passwordTextFieldPlaceholder
-        passwordTextField.preventSpaces()
+        passwordTextField.setPreventsSpaces(true)
         passwordTextField.isSecureTextEntry = true
 
         loginButton.setTitle(.loginButtonTitle, for: .normal)

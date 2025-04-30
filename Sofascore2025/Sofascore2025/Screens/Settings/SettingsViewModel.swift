@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SettingsRow {
+struct SettingsRowInfo {
 
     let title: String
     let subtitle: String
@@ -15,7 +15,7 @@ struct SettingsRow {
 
 class SettingsViewModel {
 
-    let rows: [SettingsRow]
+    let rows: [SettingsRowInfo]
 
     init() {
         let username = UserDefaultsService.readString(forKey: .userAccountName) ?? .settingsUnavailable
@@ -23,9 +23,9 @@ class SettingsViewModel {
         let leaguesCountText = String(DatabaseService.readLeagues()?.count ?? 0)
 
         self.rows = [
-            SettingsRow(title: .settingsRowUsernameTitle, subtitle: username),
-            SettingsRow(title: .settingsRowEventsCountTitle, subtitle: eventsCountText),
-            SettingsRow(title: .settingsRowLeagueCountTitle, subtitle: leaguesCountText)
+            SettingsRowInfo(title: .settingsRowUsernameTitle, subtitle: username),
+            SettingsRowInfo(title: .settingsRowEventsCountTitle, subtitle: eventsCountText),
+            SettingsRowInfo(title: .settingsRowLeagueCountTitle, subtitle: leaguesCountText)
         ]
     }
 

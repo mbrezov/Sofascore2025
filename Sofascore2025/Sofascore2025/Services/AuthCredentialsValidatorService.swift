@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AuthCredentialsValidatorService {
+enum AuthCredentialsValidationService {
 
     static func validate(
         _ username: String?,

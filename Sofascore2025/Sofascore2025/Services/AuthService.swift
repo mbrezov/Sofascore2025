@@ -9,7 +9,7 @@ import Foundation
 
 enum AuthService {
 
-    static var isAuthed: Bool {
+    static var isAuthorized: Bool {
         KeychainService.loadToken(forKey: .authToken) != nil
     }
 

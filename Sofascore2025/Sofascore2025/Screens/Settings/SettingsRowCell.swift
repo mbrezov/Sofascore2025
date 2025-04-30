@@ -40,7 +40,7 @@ class SettingsRowCell: UICollectionViewCell {
         }
     }
 
-    func bind(_ settingsRow: SettingsRow) {
+    func bind(_ settingsRow: SettingsRowInfo) {
         rowView.configure(settingsRow.title, settingsRow.subtitle)
     }
 }

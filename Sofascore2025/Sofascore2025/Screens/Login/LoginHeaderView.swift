@@ -34,6 +34,7 @@ class LoginHeaderView: BaseView {
         logoImageView.snp.makeConstraints {
             $0.directionalVerticalEdges.equalTo(safeAreaLayoutGuide).inset(Padding.vertical)
             $0.leading.equalToSuperview().inset(Padding.horizontal)
+            $0.trailing.lessThanOrEqualToSuperview().inset(Padding.horizontal)
         }
     }
 }

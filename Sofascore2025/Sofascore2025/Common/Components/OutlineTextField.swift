@@ -6,9 +6,10 @@
 //
 
 import SnapKit
+import SofaAcademic
 import UIKit
 
-class OutlineTextField: UITextField {
+class OutlineTextField: UITextField, BaseViewProtocol {
 
     private enum Padding {
 
@@ -23,7 +24,7 @@ class OutlineTextField: UITextField {
     init() {
         super.init(frame: .zero)
 
-        styleUI()
+        styleViews()
         setupConstraints()
     }
 
@@ -31,7 +32,9 @@ class OutlineTextField: UITextField {
         super.init(coder: coder)
     }
 
-    private func styleUI() {
+    func addViews() {}
+
+    func styleViews() {
         backgroundColor = .surface1
         layer.borderColor = UIColor.surfaceLv2.cgColor
         layer.borderWidth = 1
@@ -40,7 +43,7 @@ class OutlineTextField: UITextField {
         leftViewMode = .always
     }
 
-    private func setupConstraints() {
+    func setupConstraints() {
         self.snp.makeConstraints {
             $0.height.equalTo(Constants.height)
         }

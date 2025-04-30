@@ -36,7 +36,7 @@ class AppRootViewController: UIViewController {
     }
 
     private func makeRootViewController() -> UIViewController {
-        let rootVC = AuthService.isAuthed ? MainViewController() : LoginViewController()
+        let rootVC = AuthService.isAuthorized ? MainViewController() : LoginViewController()
         return UINavigationController(rootViewController: rootVC)
     }
 

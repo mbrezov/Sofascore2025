@@ -9,11 +9,14 @@ import GRDB
 
 enum DatabaseService {
 
-    static func saveEventsData(_ apiEvents: [APIEvent], _ sportType: SportType) {
-        apiEvents.forEach { apiEvent in
-            writeDBLeague(apiEvent.league)
-            writeDBEvent(apiEvent, sportType)
+    static func saveEventsData(_ events: [Event], _ sportType: SportType) -> [Event]? {
+        events.forEach { event in
+            if let league = event.league {
+                writeDBLeague(league)
+            }
+            writeDBEvent(event, sportType)
         }
+        return events
     }
 
     static func readLeagues() -> [League]? {
@@ -66,8 +69,8 @@ enum DatabaseService {
 
     // MARK: - DB save methods
 
-    private static func writeDBLeague(_ apiLeague: APILeague) {
-        let dbLeague = LeagueModelMapper.makeDBLeague(from: apiLeague)
+    private static func writeDBLeague(_ league: League) {
+        let dbLeague = LeagueModelMapper.makeDBLeague(from: league)
         do {
             try DatabaseManager.shared.dbQueue?.write { db in
                 try? dbLeague.insert(db)
@@ -77,8 +80,8 @@ enum DatabaseService {
         }
     }
 
-    private static func writeDBEvent(_ apiEvent: APIEvent, _ sportType: SportType) {
-        let dbEvent = EventModelMapper.makeDBEvent(from: apiEvent, sportType: sportType)
+    private static func writeDBEvent(_ event: Event, _ sportType: SportType) {
+        let dbEvent = EventModelMapper.makeDBEvent(from: event, sportType: sportType)
         do {
             try DatabaseManager.shared.dbQueue?.write { db in
                 try? dbEvent.insert(db)

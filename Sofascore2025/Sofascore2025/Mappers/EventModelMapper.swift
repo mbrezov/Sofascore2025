@@ -31,6 +31,28 @@ enum EventModelMapper {
         )
     }
 
+    static func makeDBEvent(from event: Event, sportType: SportType) -> DBEvent {
+        DBEvent(
+            id: event.id,
+            sportType: APIClientMapper.sportAPIName(from: sportType),
+            homeTeamId: event.homeTeam.id,
+            homeTeamName: event.homeTeam.name,
+            homeTeamLogoUrl: event.homeTeam.logoUrl,
+            awayTeamId: event.awayTeam.id,
+            awayTeamName: event.awayTeam.name,
+            awayTeamLogoUrl: event.awayTeam.logoUrl,
+            startTimestamp: event.startTimestamp,
+            leagueId: event.league?.id ?? 0,
+            leagueName: event.league?.name ?? "Unknown",
+            leagueCountryId: event.league?.country.id ?? 0,
+            leagueCountryName: event.league?.country.name ?? "Unknown",
+            leagueLogoUrl: event.league?.logoUrl ?? "Unknown",
+            status: event.status,
+            homeScore: event.homeScore,
+            awayScore: event.awayScore
+        )
+    }
+
     static func makeEvent(from dbEvent: DBEvent) -> Event {
         Event(
             id: dbEvent.id,
@@ -57,6 +79,35 @@ enum EventModelMapper {
             status: dbEvent.status,
             homeScore: dbEvent.homeScore,
             awayScore: dbEvent.awayScore
+        )
+    }
+
+    static func makeEvent(from apiEvent: APIEvent) -> Event {
+        Event(
+            id: apiEvent.id,
+            homeTeam: Team(
+                id: apiEvent.homeTeam.id,
+                name: apiEvent.homeTeam.name,
+                logoUrl: apiEvent.homeTeam.logoUrl
+            ),
+            awayTeam: Team(
+                id: apiEvent.awayTeam.id,
+                name: apiEvent.awayTeam.name,
+                logoUrl: apiEvent.awayTeam.logoUrl
+            ),
+            startTimestamp: apiEvent.startTimestamp,
+            league: League(
+                id: apiEvent.league.id,
+                name: apiEvent.league.name,
+                country: Country(
+                    id: apiEvent.league.country.id,
+                    name: apiEvent.league.country.name
+                ),
+                logoUrl: apiEvent.league.logoUrl
+            ),
+            status: apiEvent.status,
+            homeScore: apiEvent.homeScore,
+            awayScore: apiEvent.awayScore
         )
     }
 }

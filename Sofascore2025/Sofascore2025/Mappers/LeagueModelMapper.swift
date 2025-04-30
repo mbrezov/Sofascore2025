@@ -19,6 +19,16 @@ enum LeagueModelMapper {
         )
     }
 
+    static func makeDBLeague(from league: League) -> DBLeague {
+        DBLeague(
+            id: league.id,
+            name: league.name,
+            countryId: league.country.id,
+            countryName: league.country.name,
+            logoUrl: league.logoUrl
+        )
+    }
+
     static func makeLeague(from dbLeague: DBLeague) -> League {
         League(
             id: dbLeague.id,

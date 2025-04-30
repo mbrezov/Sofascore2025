@@ -25,22 +25,27 @@ enum APIDefinitions {
         "\(scheme)://\(baseURL)\(Endpoints.events)"
     }
 
-    static func makeEventsURL(for sportName: String) -> URL? {
+    private static func makeURL(
+        _ path: String,
+        queryParameters: (name: String, value: String)? = nil
+    ) -> URL? {
         var components = URLComponents()
         components.scheme = scheme
         components.host = baseURL
-        components.path = Endpoints.events
+        components.path = path
+
+        guard let queryParameters = queryParameters else { return components.url }
         components.queryItems = [
-            URLQueryItem(name: QueryItems.sport, value: sportName)
+            URLQueryItem(name: queryParameters.name, value: queryParameters.value)
         ]
         return components.url
     }
 
+    static func makeEventsURL(for sportName: String) -> URL? {
+        makeURL(Endpoints.events, queryParameters: (QueryItems.sport, sportName))
+    }
+
     static func makeLoginURL() -> URL? {
-        var components = URLComponents()
-        components.scheme = scheme
-        components.host = baseURL
-        components.path = Endpoints.login
-        return components.url
+        makeURL(Endpoints.login)
     }
 }

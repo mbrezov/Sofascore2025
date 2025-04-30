@@ -6,9 +6,10 @@
 //
 
 import SnapKit
+import SofaAcademic
 import UIKit
 
-class SolidButton: UIButton {
+class SolidButton: UIButton, BaseViewProtocol {
 
     private enum Constants {
 
@@ -18,7 +19,7 @@ class SolidButton: UIButton {
     init() {
         super.init(frame: .zero)
 
-        styleUI()
+        styleViews()
         setupConstraints()
     }
 
@@ -26,7 +27,9 @@ class SolidButton: UIButton {
         super.init(coder: coder)
     }
 
-    private func styleUI() {
+    func addViews() {}
+
+    func styleViews() {
         backgroundColor = .primaryDefault
         titleLabel?.font = .headline2
         setTitleColor(.surface1, for: .normal)
@@ -34,7 +37,7 @@ class SolidButton: UIButton {
         clipsToBounds = true
     }
 
-    private func setupConstraints() {
+    func setupConstraints() {
         self.snp.makeConstraints {
             $0.height.equalTo(Constants.height)
         }

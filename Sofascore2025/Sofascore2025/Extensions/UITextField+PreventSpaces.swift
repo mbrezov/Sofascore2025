@@ -9,8 +9,12 @@ import UIKit
 
 extension UITextField {
 
-    func preventSpaces() {
-        self.addTarget(self, action: #selector(checkForSpaces), for: .editingChanged)
+    func setPreventsSpaces(_ prevents: Bool) {
+        if prevents {
+            self.addTarget(self, action: #selector(checkForSpaces), for: .editingChanged)
+        } else {
+            self.removeTarget(self, action: #selector(checkForSpaces), for: .editingChanged)
+        }
     }
 
     @objc private func checkForSpaces() {
