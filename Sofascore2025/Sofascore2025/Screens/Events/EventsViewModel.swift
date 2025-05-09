@@ -39,12 +39,15 @@ class EventsViewModel {
             do {
                 let eventModels = try await APIService.fetchEvents(for: sportType)
                 self?.finishEventsReload(with: eventModels)
-            } catch let error as APIErrorWithDetails {
+            } catch let error as APIError {
                 let cachedEventModels = DatabaseService.readEvents(for: sportType)
-
-                switch error.type {
+                switch error {
                 case .noInternet:
-                    self?.finishEventsReload(with: cachedEventModels, errorTitle: error.title, errorMessage: error.message)
+                    self?.finishEventsReload(
+                        with: cachedEventModels,
+                        errorTitle: error.title,
+                        errorMessage: error.message
+                    )
 
                 default:
                     self?.finishEventsReload(with: cachedEventModels)

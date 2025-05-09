@@ -15,7 +15,7 @@ enum APIClient {
             throw APIError.invalidURL
         }
         guard let token = KeychainService.loadToken(forKey: .authToken) else {
-            throw APIError.unauthorized
+            throw APIError.unauthorizedAccess
         }
 
         var request: URLRequest = .init(url: url)

@@ -66,8 +66,6 @@
 		722E57962DBD4DAE009AE1B2 /* UITextField+PreventSpaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722E57952DBD4DAE009AE1B2 /* UITextField+PreventSpaces.swift */; };
 		724182D42DBF4FA500239325 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724182D32DBF4FA500239325 /* APIService.swift */; };
 		724182D62DBF5FB600239325 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 724182D52DBF5FB600239325 /* .swiftlint.yml */; };
-		724182DF2DBF705200239325 /* APIErrorWithDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724182DE2DBF705200239325 /* APIErrorWithDetails.swift */; };
-		724182E52DBF732200239325 /* APIErrorWithDetails+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724182E42DBF732200239325 /* APIErrorWithDetails+Description.swift */; };
 		726783792DBEBE9A00BAD582 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726783762DBEBE9A00BAD582 /* Country.swift */; };
 		7267837A2DBEBE9A00BAD582 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726783782DBEBE9A00BAD582 /* Event.swift */; };
 		7267837B2DBEBE9A00BAD582 /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726783772DBEBE9A00BAD582 /* League.swift */; };
@@ -163,8 +161,6 @@
 		722E57952DBD4DAE009AE1B2 /* UITextField+PreventSpaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+PreventSpaces.swift"; sourceTree = "<group>"; };
 		724182D32DBF4FA500239325 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		724182D52DBF5FB600239325 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		724182DE2DBF705200239325 /* APIErrorWithDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorWithDetails.swift; sourceTree = "<group>"; };
-		724182E42DBF732200239325 /* APIErrorWithDetails+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIErrorWithDetails+Description.swift"; sourceTree = "<group>"; };
 		726783752DBEBE9A00BAD582 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		726783762DBEBE9A00BAD582 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		726783772DBEBE9A00BAD582 /* League.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = League.swift; sourceTree = "<group>"; };
@@ -444,7 +440,6 @@
 			isa = PBXGroup;
 			children = (
 				72699D762DAE3E9C000CA9E2 /* APIError+Description.swift */,
-				724182E42DBF732200239325 /* APIErrorWithDetails+Description.swift */,
 			);
 			path = APIError;
 			sourceTree = "<group>";
@@ -539,7 +534,6 @@
 				72F99F9E2DA6525B00FB85A2 /* APIClient.swift */,
 				72699D702DAE2D0E000CA9E2 /* APIDefinitions.swift */,
 				72699D742DAE370F000CA9E2 /* APIError.swift */,
-				724182DE2DBF705200239325 /* APIErrorWithDetails.swift */,
 				727E62752DAF917C0024380D /* APIClientMapper.swift */,
 				724182D32DBF4FA500239325 /* APIService.swift */,
 			);
@@ -712,7 +706,6 @@
 				72147A8A2DA31706006C9EF4 /* LeagueHeaderView.swift in Sources */,
 				722254A62DA55A150052B254 /* MainHeaderView.swift in Sources */,
 				72147A8B2DA31706006C9EF4 /* LeagueHeaderViewModel.swift in Sources */,
-				724182DF2DBF705200239325 /* APIErrorWithDetails.swift in Sources */,
 				72F99FA32DA6543600FB85A2 /* APICountry.swift in Sources */,
 				72699D732DAE3343000CA9E2 /* UIViewController+UIAlert.swift in Sources */,
 				72147A8C2DA31706006C9EF4 /* MainViewController.swift in Sources */,
@@ -724,7 +717,6 @@
 				72147A902DA31706006C9EF4 /* ImageFetchingService.swift in Sources */,
 				722254A82DA564010052B254 /* NavigationBarView.swift in Sources */,
 				72BE7E2B2DBBDB9D00579A8C /* DatabaseService.swift in Sources */,
-				724182E52DBF732200239325 /* APIErrorWithDetails+Description.swift in Sources */,
 				721DE68B2DBA561A00589FBE /* Notification+Name.swift in Sources */,
 				72147A912DA31706006C9EF4 /* AppDelegate.swift in Sources */,
 				721DE6932DBAAB3200589FBE /* SettingsViewModel.swift in Sources */,

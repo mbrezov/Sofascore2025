@@ -23,7 +23,10 @@ extension APIError {
         case .unknown:
             return .errorTitle
 
-        case .unauthorized:
+        case .unauthorizedAccess:
+            return .unauthorizedAccessErrorTitle
+
+        case.unauthorized:
             return .unauthorizedErrorTitle
 
         case .invalidResponse:
@@ -51,7 +54,10 @@ extension APIError {
         case .unknown(let error):
             return "\(error.localizedDescription)"
 
-        case .unauthorized:
+        case .unauthorizedAccess:
+            return .unauthorizedAccessErrorMessage
+
+        case.unauthorized:
             return .unauthorizedErrorMessage
 
         case .invalidResponse:

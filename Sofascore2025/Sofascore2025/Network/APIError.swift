@@ -13,6 +13,7 @@ enum APIError: Error {
          noInternet,
          decodingFailed,
          unknown(Error),
+         unauthorizedAccess,
          unauthorized,
          invalidResponse,
          serverError(Int),

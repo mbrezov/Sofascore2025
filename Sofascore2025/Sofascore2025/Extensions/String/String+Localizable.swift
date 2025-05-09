@@ -40,12 +40,14 @@ extension String {
     static let decodingErrorTitle = "Decoding failed"
     static let decodingErrorMessage = "The data received from the server couldn't be read. Please check the API format."
     static let unknownEventStatusErrorMessage = "Unknown event status"
-    static let unauthorizedErrorTitle = "Session Expired"
-    static let unauthorizedErrorMessage = "Please log in again to continue."
+    static let unauthorizedAccessErrorTitle = "Session Expired"
+    static let unauthorizedAccessErrorMessage = "Please log in again to continue."
     static let invalidResponseErrorTitle = "Invalid server response"
     static let invalidResponseErrorMessage = "Something went wrong. Please try again."
     static let validationErrorTitle = "Validation failed"
     static let validationErrorMessage = "Unable to Process Your Request"
+    static let unauthorizedErrorTitle = "Login Failed"
+    static let unauthorizedErrorMessage = "Incorrect username or password. Please try again."
 
     static func serverErrorTitle(_ statusCode: Int) -> String {
         return "Failed to create tables: \(statusCode)"
@@ -89,11 +91,6 @@ extension String {
     static func imageFetchingServiceFetchingError(_ error: Error) -> String {
         return "Failed to fetch image: \(error)"
     }
-
-    // MARK: - Error - Login screen
-
-    static let unauthorizedLoginErrorTitle = "Login Failed"
-    static let unauthorizedLoginErrorMessage = "Incorrect username or password. Please try again."
 
     // MARK: - Settings screen
 
