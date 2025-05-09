@@ -13,7 +13,8 @@ enum APIDefinitions {
     private static let baseURL: String = "sofa-ios-academy-43194eec0621.herokuapp.com"
 
     private enum Endpoints {
-        static let events = "/events"
+        static let events = "/secure/events"
+        static let login = "/login"
     }
 
     private enum QueryItems {
@@ -24,14 +25,27 @@ enum APIDefinitions {
         "\(scheme)://\(baseURL)\(Endpoints.events)"
     }
 
-    static func makeEventsURL(for sportName: String) -> URL? {
+    private static func makeURL(
+        _ path: String,
+        queryParameters: (name: String, value: String)? = nil
+    ) -> URL? {
         var components = URLComponents()
         components.scheme = scheme
         components.host = baseURL
-        components.path = Endpoints.events
+        components.path = path
+
+        guard let queryParameters = queryParameters else { return components.url }
         components.queryItems = [
-            URLQueryItem(name: QueryItems.sport, value: sportName)
+            URLQueryItem(name: queryParameters.name, value: queryParameters.value)
         ]
         return components.url
+    }
+
+    static func makeEventsURL(for sportName: String) -> URL? {
+        makeURL(Endpoints.events, queryParameters: (QueryItems.sport, sportName))
+    }
+
+    static func makeLoginURL() -> URL? {
+        makeURL(Endpoints.login)
     }
 }

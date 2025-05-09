@@ -37,24 +37,21 @@ class EventsViewModel {
 
         Task { [weak self] in
             do {
-                let eventModels: [Event] = try await APIClient.getEvents(for: sportType)
+                let eventModels = try await APIService.fetchEvents(for: sportType)
                 self?.finishEventsReload(with: eventModels)
             } catch let error as APIError {
+                let cachedEventModels = DatabaseService.readEvents(for: sportType)
                 switch error {
                 case .noInternet:
                     self?.finishEventsReload(
-                        errorTitle: APIError.noInternet.title,
-                        errorMessage: APIError.noInternet.message
+                        with: cachedEventModels,
+                        errorTitle: error.title,
+                        errorMessage: error.message
                     )
 
-                case .invalidURL:
-                    print(APIError.invalidURL.title, APIError.invalidURL.message)
-
-                case .decodingFailed:
-                    print(APIError.decodingFailed.title, APIError.decodingFailed.message)
-
-                case .unknown(let error):
-                    print(APIError.unknown(error).title, APIError.unknown(error).message)
+                default:
+                    self?.finishEventsReload(with: cachedEventModels)
+                    print(error.title, error.message)
                 }
             }
         }
@@ -66,11 +63,9 @@ class EventsViewModel {
         errorMessage: String? = nil
     ) {
         DispatchQueue.main.async {
-            if let events = events {
-                self.setEvents(with: events)
-            } else {
-                self.setEvents(with: [])
-                self.toastErrorAlert?(errorTitle, errorMessage)
+            self.setEvents(with: events ?? [])
+            if let title = errorTitle, let message = errorMessage {
+                self.toastErrorAlert?(title, message)
             }
             self.isDataFetching?(false)
         }

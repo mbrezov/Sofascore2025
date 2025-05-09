@@ -13,7 +13,7 @@ enum ImageFetchingService {
 
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             if let error {
-                print("ImageFetchingService error: \(error)")
+                print(String.imageFetchingServiceFetchingError(error))
             }
 
             completion(data)

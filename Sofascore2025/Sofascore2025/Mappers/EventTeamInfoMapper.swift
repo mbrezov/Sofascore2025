@@ -9,7 +9,12 @@ import Foundation
 
 enum EventTeamInfoMapper {
 
-    static func makeTeamInfo(team: Team, score: Int?, opponentScore: Int?, eventStatus: EventStatus) -> EventTeamInfo {
+    static func makeTeamInfo(
+        team: Team,
+        score: Int?,
+        opponentScore: Int?,
+        eventStatus: EventStatus
+    ) -> EventTeamInfo {
         EventTeamInfo(
             logoURL: team.logoUrl?.url,
             name: team.name,

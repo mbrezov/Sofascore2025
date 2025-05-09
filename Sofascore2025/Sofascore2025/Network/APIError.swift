@@ -9,5 +9,13 @@ import Foundation
 
 enum APIError: Error {
 
-    case invalidURL, noInternet, decodingFailed, unknown(Error)
+    case invalidURL,
+         noInternet,
+         decodingFailed,
+         unknown(Error),
+         unauthorizedAccess,
+         unauthorized,
+         invalidResponse,
+         serverError(Int),
+         validationFailed
 }
