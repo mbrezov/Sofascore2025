@@ -18,6 +18,7 @@ extension UIFont {
 
     static let headline = UIFont(name: "Roboto-Bold", size: 32)
     static let headline1 = UIFont(name: "Roboto-Bold", size: 20)
+    static let headline2 = UIFont(name: "Roboto-Bold", size: 16)
     static let headline3 = UIFont(name: "Roboto-Bold", size: 14)
     static let assistive = UIFont(name: "Roboto-Bold", size: 12)
 }

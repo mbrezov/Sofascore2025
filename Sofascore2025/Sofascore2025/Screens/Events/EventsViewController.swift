@@ -72,7 +72,7 @@ class EventsViewController: UIViewController, BaseViewProtocol {
         let collectionViewScrollInsets = Constants.scrollInsets.bottom + view.safeAreaInsets.bottom
         collectionView.verticalScrollIndicatorInsets.bottom = collectionViewScrollInsets
 
-        emptyStateLabel.text = .emptyStateMessage
+        emptyStateLabel.text = .eventsEmptyStateMessage
         emptyStateLabel.textAlignment = .center
         emptyStateLabel.textColor = .surfaceLv2
 

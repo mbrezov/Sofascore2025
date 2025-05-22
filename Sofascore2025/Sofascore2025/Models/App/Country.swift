@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Country: Decodable {
+public struct Country: Codable {
 
     public let id: Int
     public let name: String

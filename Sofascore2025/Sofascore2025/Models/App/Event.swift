@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Event: Decodable {
+public struct Event: Codable {
 
     public let id: Int
     public let homeTeam: Team

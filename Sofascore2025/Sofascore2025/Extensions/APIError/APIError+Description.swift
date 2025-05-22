@@ -22,6 +22,21 @@ extension APIError {
 
         case .unknown:
             return .errorTitle
+
+        case .unauthorizedAccess:
+            return .unauthorizedAccessErrorTitle
+
+        case.unauthorized:
+            return .unauthorizedErrorTitle
+
+        case .invalidResponse:
+            return .invalidResponseErrorTitle
+
+        case .serverError(let statusCode):
+            return .serverErrorMessage(statusCode)
+
+        case .validationFailed:
+            return .validationErrorTitle
         }
     }
 
@@ -38,6 +53,21 @@ extension APIError {
 
         case .unknown(let error):
             return "\(error.localizedDescription)"
+
+        case .unauthorizedAccess:
+            return .unauthorizedAccessErrorMessage
+
+        case.unauthorized:
+            return .unauthorizedErrorMessage
+
+        case .invalidResponse:
+            return .invalidResponseErrorMessage
+
+        case .serverError(let statusCode):
+            return .serverErrorMessage(statusCode)
+
+        case .validationFailed:
+            return .validationErrorMessage
         }
     }
 }
