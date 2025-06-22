@@ -13,9 +13,9 @@ enum LeagueModelMapper {
         DBLeague(
             id: apiLeague.id,
             name: apiLeague.name,
-            countryId: apiLeague.country.id,
-            countryName: apiLeague.country.name,
-            logoUrl: apiLeague.logoUrl
+            countryName: apiLeague.country?.name,
+            logoUrl: apiLeague.logoUrl,
+            seasonId: apiLeague.seasonId
         )
     }
 
@@ -23,9 +23,9 @@ enum LeagueModelMapper {
         DBLeague(
             id: league.id,
             name: league.name,
-            countryId: league.country.id,
             countryName: league.country.name,
-            logoUrl: league.logoUrl
+            logoUrl: league.logoUrl,
+            seasonId: league.seasonId
         )
     }
 
@@ -34,10 +34,22 @@ enum LeagueModelMapper {
             id: dbLeague.id,
             name: dbLeague.name,
             country: Country(
-                id: dbLeague.countryId,
                 name: dbLeague.countryName
             ),
-            logoUrl: dbLeague.logoUrl
+            logoUrl: dbLeague.logoUrl,
+            seasonId: dbLeague.seasonId
+        )
+    }
+
+    static func makeLeague(from apiLeague: APILeague) -> League {
+        League(
+            id: apiLeague.id,
+            name: apiLeague.name,
+            country: Country(
+                name: apiLeague.country?.name
+            ),
+            logoUrl: apiLeague.logoUrl,
+            seasonId: apiLeague.seasonId
         )
     }
 }

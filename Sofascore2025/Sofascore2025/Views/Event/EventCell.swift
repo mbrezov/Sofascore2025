@@ -40,7 +40,13 @@ class EventCell: UICollectionViewCell {
         }
     }
 
-    func bind(_ event: EventViewModel) {
-        eventView.viewModel = event
+    func bind(_ event: EventCellViewModel) {
+        eventView.configure(
+            event.statusInfo.startTimeText,
+            event.statusInfo.descriptionShort,
+            event.statusInfo.color,
+            event.homeTeamInfo,
+            event.awayTeamInfo
+        )
     }
 }

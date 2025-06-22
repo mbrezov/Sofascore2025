@@ -1,5 +1,5 @@
 //
-//  EventSectionDividerView.swift
+//  SectionDividerView.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 21.03.2025..
@@ -7,9 +7,9 @@
 
 import UIKit
 
-class EventSectionDividerView: UICollectionReusableView {
+class SectionDividerView: UICollectionReusableView {
 
-    static let reuseIdentifier = "EventSectionDividerView"
+    static let reuseIdentifier = "SectionDividerView"
 
     override init(frame: CGRect) {
         super.init(frame: frame)

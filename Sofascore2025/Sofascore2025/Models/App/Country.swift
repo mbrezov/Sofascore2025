@@ -9,6 +9,5 @@ import Foundation
 
 public struct Country: Codable {
 
-    public let id: Int
-    public let name: String
+    public let name: String?
 }

@@ -16,8 +16,10 @@ enum EventTeamInfoMapper {
         eventStatus: EventStatus
     ) -> EventTeamInfo {
         EventTeamInfo(
+            id: team.id,
             logoURL: team.logoUrl?.url,
             name: team.name,
+            countryName: team.country.name,
             score: score,
             color: EventStatusColorMapper.statusColor(for: score, comparedTo: opponentScore, status: eventStatus),
             scoreColor: EventStatusColorMapper.statusColor(
@@ -26,6 +28,15 @@ enum EventTeamInfoMapper {
                 status: eventStatus,
                 isScore: true
             )
+        )
+    }
+
+    static func makeTeamInfo(eventTeamInfo: EventTeamInfo) -> Team {
+        Team(
+            id: eventTeamInfo.id,
+            name: eventTeamInfo.name,
+            logoUrl: eventTeamInfo.logoURL?.description,
+            country: Country(name: eventTeamInfo.countryName)
         )
     }
 }

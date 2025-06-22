@@ -78,6 +78,12 @@ class NavigationBarView: BaseView {
         updateUI()
     }
 
+    var titleOpacity: CGFloat = 1.0 {
+        didSet {
+            titleLabel?.alpha = titleOpacity
+        }
+    }
+
     private func updateUI() {
         if titleView != nil {
             setupTitleView()

@@ -29,6 +29,10 @@ extension String {
 
     static let eventsEmptyStateMessage = "No events available"
 
+    // MARK: - EmptyState - EventDetailsIncidents
+    static let incidentsEmptyStateMessage = "No results yet."
+    static let incidentsEmptyStateButtonTitle = "View Tournament Details"
+
     // MARK: - Error - API
 
     static let networkErrorTitle = "You're Offline"
@@ -100,9 +104,41 @@ extension String {
     static let settingsRowLeagueCountTitle = "LEAGUE ROWS"
     static let settingsRowEventsCountTitle = "EVENTS ROWS"
 
+    // MARK: - TeamDetails screen
+    static let teamDetailsTabTitle = "Details"
+    static let teamSquadTabTitle = "Squad"
+    static let unknownCountry = "Unknown country"
+    static let unknownCityName = "Unknown city name"
+
+    // MARK: - TeamDetailsInfo screen
+    static let teamInfoSectionTitle = "Team Info"
+    static let tournamentsSectionTitle = "Tournaments"
+    static let venueSectionTitle = "Venue"
+    static let totalPlayersTitle = "Total Players"
+    static let foreignPlayersTitle = "Foreign Players"
+    static let stadium = "Stadium"
+    static let teamInfoEmptyStateMessage = "No details available"
+
+    // MARK: - TeamDetailsSquad screen
+    static let squadTitle = "Players"
+    static let teamSquadEmptyStateMessage = "No players data available"
+
+    static func coachText(_ value: String) -> String {
+        return "Coach: \(value)"
+    }
+
+    // MARK: - LeagueDetails screen
+    static let leagueMatchesTabTitle = "Matches"
+    static let leagueStandingsTabTitle = "Standings"
+    static let leagueDetailsEmptyStateMessage = "No matches available"
+
+    // MARK: - LeagueDetailsStandings screen
+    static let positionTitle = "#"
+    static let teamTitle = "Team"
+
     // MARK: - Description
 
-    static func roundText(_ value: String) -> String {
+    static func roundText(_ value: Int) -> String {
         return "Round \(value)"
     }
 

@@ -13,13 +13,17 @@ class EventsViewModel {
     var toastErrorAlert: ((String?, String?) -> Void)?
     var onEventsReload: (() -> Void)?
 
-    private var events: [EventViewModel] = []
-    private(set) var leagues: [LeagueHeaderViewModel] = []
+    private var events: [EventCellViewModel] = []
+    private(set) var leagues: [League] = []
     private(set) var selectedSportType: SportType?
     private var eventModels: [Event] = []
 
-    func makeEventDetailsViewModel(for eventViewModel: EventViewModel) -> EventDetailsViewModel? {
-        guard let event = eventModels.first(where: { $0.id == eventViewModel.id }) else { return nil }
+    func makeLeagueHeaderViewModel(from league: League) -> LeagueHeaderViewModel {
+        LeagueHeaderViewModel(league: league)
+    }
+
+    func makeEventDetailsViewModel(for eventCellViewModel: EventCellViewModel) -> EventDetailsViewModel? {
+        guard let event = eventModels.first(where: { $0.id == eventCellViewModel.id }) else { return nil }
         let eventDetailsViewModel = EventDetailsViewModel(
             event: event,
             sportType: self.selectedSportType
@@ -27,7 +31,16 @@ class EventsViewModel {
         return eventDetailsViewModel
     }
 
-    func getEvents(for league: LeagueHeaderViewModel) -> [EventViewModel] {
+    func makeLeagueDetailsViewModel(for leagueId: Int) -> LeagueDetailsViewModel? {
+        guard let league = eventModels.first(where: { $0.league?.id == leagueId })?.league else { return nil }
+        let leaueDetailsViewModel = LeagueDetailsViewModel(
+            league: league,
+            sportType: self.selectedSportType
+        )
+        return leaueDetailsViewModel
+    }
+
+    func getEvents(for league: League) -> [EventCellViewModel] {
         events.filter { $0.leagueId == league.id }
     }
 
@@ -73,13 +86,13 @@ class EventsViewModel {
 
     private func setEvents(with eventModels: [Event]) {
         self.eventModels = eventModels
-        events = eventModels.map { EventViewModel(event: $0) }
+        events = eventModels.map { EventCellViewModel(event: $0) }
         let eventsByLeague = Dictionary(grouping: eventModels, by: { $0.league?.id ?? 0 })
         let leagueIDs = eventsByLeague.keys.sorted()
 
         leagues = leagueIDs.compactMap { id in
             guard let league = eventModels.first(where: { $0.league?.id == id })?.league else { return nil }
-            return LeagueHeaderViewModel(league: league)
+            return league
         }
         self.onEventsReload?()
     }

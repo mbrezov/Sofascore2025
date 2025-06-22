@@ -10,7 +10,9 @@ import Foundation
 class EventDetailsViewModel {
 
     private let event: Event
+    private let sportType: SportType?
 
+    let eventId: Int
     let leagueLogoURL: URL?
     let homeTeamInfo: EventTeamInfo
     let awayTeamInfo: EventTeamInfo
@@ -22,7 +24,7 @@ class EventDetailsViewModel {
 
     init(event: Event, sportType: SportType?) {
         self.event = event
-
+        self.eventId = event.id
         self.leagueLogoURL = event.league?.logoUrl?.url
         self.homeTeamInfo = EventTeamInfoMapper.makeTeamInfo(
             team: event.homeTeam,
@@ -40,14 +42,21 @@ class EventDetailsViewModel {
         self.startTimeText = DateFormatterService.timeFormatted(event.startTimestamp)
         self.statusInfo = EventStatusInfoMapper.makeStatusInfo(from: event)
         self.isStarted = !(statusInfo.status == .notStarted)
-
         self.leagueDescription = [
             sportType?.name,
             event.league?.country.name,
             event.league?.name,
-            String.roundText(event.id.description)
+            event.round.map { String.roundText($0) }
         ]
         .compactMap { $0 }
         .joined(separator: ", ")
+        self.sportType = sportType
+    }
+
+    func makeIncidentsViewModel(for eventId: Int) -> IncidentsViewModel? {
+        let incidentsViewModel = IncidentsViewModel(
+            eventId: eventId, sportType: sportType
+        )
+        return incidentsViewModel
     }
 }
