@@ -1,5 +1,5 @@
 //
-//  EventDetailsMatchHeroView.swift
+//  MatchHeroView.swift
 //  Sofascore2025
 //
 //  Created by Mario Brezovečki on 08.04.2025..
@@ -9,12 +9,13 @@ import SnapKit
 import SofaAcademic
 import UIKit
 
-class EventDetailsMatchHeroView: BaseView {
+class MatchHeroView: BaseView {
 
     private enum Constants {
 
         static let teamImageSize: CGFloat = 40
         static let teamImageSpacing: CGFloat = 8
+        static let shadowHeight: CGFloat = 4
     }
 
     private enum Padding {
@@ -23,6 +24,9 @@ class EventDetailsMatchHeroView: BaseView {
         static let teamImageHorizontal: CGFloat = 28
         static let statusContainerTop: CGFloat = 16
     }
+
+    private var homeTeamInfo: EventTeamInfo?
+    private var awayTeamInfo: EventTeamInfo?
 
     private let homeTeamImageView = UIImageView()
     private let homeTeamNameLabel = UILabel()
@@ -35,13 +39,22 @@ class EventDetailsMatchHeroView: BaseView {
     private lazy var statusView = MatchHeroStatusView()
     private lazy var statusUpcomingView = MatchHeroStatusUpcomingView()
 
+    var teamTapped: ((EventTeamInfo) -> Void)?
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        applyBottomShadow()
+    }
+
     override func addViews() {
         addSubview(homeTeamContrainer)
         homeTeamContrainer.addSubview(homeTeamImageView)
         homeTeamContrainer.addSubview(homeTeamNameLabel)
+
         addSubview(awayTeamContrainer)
         awayTeamContrainer.addSubview(awayTeamImageView)
         awayTeamContrainer.addSubview(awayTeamNameLabel)
+
         addSubview(centerHorizontalStackView)
         centerHorizontalStackView.addArrangedSubview(statusUpcomingView)
         centerHorizontalStackView.addArrangedSubview(statusView)
@@ -101,6 +114,26 @@ class EventDetailsMatchHeroView: BaseView {
         }
     }
 
+    override func setupBinding() {
+        addTapGesture(to: homeTeamContrainer, action: #selector(teamContainerTapped(_:)))
+        addTapGesture(to: awayTeamContrainer, action: #selector(teamContainerTapped(_:)))
+    }
+
+    private func addTapGesture(to view: UIView, action: Selector) {
+        let gesture = UITapGestureRecognizer(target: self, action: action)
+        view.addGestureRecognizer(gesture)
+    }
+
+    @objc private func teamContainerTapped(_ gesture: UITapGestureRecognizer) {
+        guard let tappedView = gesture.view else { return }
+
+        if tappedView === homeTeamContrainer, let homeTeamInfo = homeTeamInfo {
+            teamTapped?(homeTeamInfo)
+        } else if tappedView === awayTeamContrainer, let homeTeamInfo = awayTeamInfo {
+            teamTapped?(homeTeamInfo)
+        }
+    }
+
     func configure(
         homeTeamInfo: EventTeamInfo,
         awayTeamInfo: EventTeamInfo,
@@ -110,6 +143,9 @@ class EventDetailsMatchHeroView: BaseView {
         statusText: String,
         statusColor: UIColor
     ) {
+        self.homeTeamInfo = homeTeamInfo
+        self.awayTeamInfo = awayTeamInfo
+
         homeTeamImageView.setImageURL(homeTeamInfo.logoURL)
         awayTeamImageView.setImageURL(awayTeamInfo.logoURL)
 
@@ -135,5 +171,21 @@ class EventDetailsMatchHeroView: BaseView {
                 timeText: startTimeText
             )
         }
+    }
+
+    private func applyBottomShadow() {
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.12
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 8
+        layer.masksToBounds = false
+
+        let shadowRect = CGRect(
+            x: 0,
+            y: bounds.height - Constants.shadowHeight,
+            width: bounds.width,
+            height: Constants.shadowHeight
+        )
+        layer.shadowPath = UIBezierPath(rect: shadowRect).cgPath
     }
 }

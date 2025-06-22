@@ -36,9 +36,9 @@ final class DatabaseManager {
                 try db.create(table: "dbleague", ifNotExists: true) { table in
                     table.column("id", .integer).primaryKey()
                     table.column("name", .text).notNull()
-                    table.column("countryId", .integer)
                     table.column("countryName", .text)
                     table.column("logoUrl", .text)
+                    table.column("seasonId", .integer)
                 }
 
                 try db.create(table: "dbevent", ifNotExists: true) { table in
@@ -47,18 +47,22 @@ final class DatabaseManager {
                     table.column("homeTeamId", .integer)
                     table.column("homeTeamName", .text)
                     table.column("homeTeamLogoUrl", .text)
+                    table.column("homeTeamCountryName", .text)
                     table.column("awayTeamId", .integer)
                     table.column("awayTeamName", .text)
                     table.column("awayTeamLogoUrl", .text)
+                    table.column("awayTeamCountryName", .text)
                     table.column("startTimestamp", .integer)
+                    table.column("status", .text)
                     table.column("leagueId", .integer)
                     table.column("leagueName", .text)
-                    table.column("leagueCountryId", .integer)
                     table.column("leagueCountryName", .text)
                     table.column("leagueLogoUrl", .text)
-                    table.column("status", .text)
+                    table.column("leagueSeasonId", .integer)
                     table.column("homeScore", .integer)
                     table.column("awayScore", .integer)
+                    table.column("round", .integer)
+                    table.column("incidents", .text)
                 }
             }
         } catch {

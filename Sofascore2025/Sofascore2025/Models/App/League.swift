@@ -13,4 +13,5 @@ public struct League: Codable {
     public let name: String
     public let country: Country
     public let logoUrl: String?
+    public let seasonId: Int?
 }

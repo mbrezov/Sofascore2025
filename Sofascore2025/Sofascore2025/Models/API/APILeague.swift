@@ -11,6 +11,7 @@ public struct APILeague: Codable {
 
     public let id: Int
     public let name: String
-    public let country: APICountry
-    public let logoUrl: String
+    public let country: APICountry?
+    public let logoUrl: String?
+    public let seasonId: Int?
 }

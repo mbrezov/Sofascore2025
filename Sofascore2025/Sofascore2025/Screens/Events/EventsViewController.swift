@@ -64,9 +64,9 @@ class EventsViewController: UIViewController, BaseViewProtocol {
             withReuseIdentifier: LeagueHeaderReusableView.reuseIdentifier
         )
         collectionView.register(
-            EventSectionDividerView.self,
+            SectionDividerView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: EventSectionDividerView.reuseIdentifier
+            withReuseIdentifier: SectionDividerView.reuseIdentifier
         )
         collectionView.automaticallyAdjustsScrollIndicatorInsets = false
         let collectionViewScrollInsets = Constants.scrollInsets.bottom + view.safeAreaInsets.bottom
@@ -122,17 +122,16 @@ extension EventsViewController: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        let leagueHeaderViewModel = viewModel.leagues[section]
-
-        return viewModel.getEvents(for: leagueHeaderViewModel).count
+        let league = viewModel.leagues[section]
+        return viewModel.getEvents(for: league).count
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let leagueHeaderViewModel = viewModel.leagues[indexPath.section]
-        let eventViewModel = viewModel.getEvents(for: leagueHeaderViewModel)[indexPath.row]
+        let league = viewModel.leagues[indexPath.section]
+        let eventViewModel = viewModel.getEvents(for: league)[indexPath.row]
 
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: EventCell.reuseIdentifier,
@@ -149,14 +148,18 @@ extension EventsViewController: UICollectionViewDataSource {
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
-            let leagueViewModel = viewModel.leagues[indexPath.section]
+            let league = viewModel.leagues[indexPath.section]
+            let leagueHeaderViewModel = viewModel.makeLeagueHeaderViewModel(from: league)
 
             guard let headerView = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: LeagueHeaderReusableView.reuseIdentifier,
                 for: indexPath) as? LeagueHeaderReusableView else { return UICollectionReusableView() }
 
-            headerView.bind(leagueViewModel)
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(headerTapped(_:)))
+            headerView.addGestureRecognizer(tapGesture)
+            headerView.tag = indexPath.section
+            headerView.bind(leagueHeaderViewModel)
 
             return headerView
         }
@@ -164,8 +167,8 @@ extension EventsViewController: UICollectionViewDataSource {
         if kind == UICollectionView.elementKindSectionFooter {
             guard let footerView = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
-                withReuseIdentifier: EventSectionDividerView.reuseIdentifier,
-                for: indexPath) as? EventSectionDividerView else { return UICollectionReusableView() }
+                withReuseIdentifier: SectionDividerView.reuseIdentifier,
+                for: indexPath) as? SectionDividerView else { return UICollectionReusableView() }
 
             footerView.isHidden = indexPath.section == collectionView.numberOfSections - 1 ? true : false
 
@@ -174,14 +177,24 @@ extension EventsViewController: UICollectionViewDataSource {
 
         return UICollectionReusableView()
     }
+
+    @objc private func headerTapped(_ gesture: UITapGestureRecognizer) {
+        guard let headerView = gesture.view else { return }
+        let leagueId = viewModel.leagues[headerView.tag].id
+        guard let leagueDetailsViewModel = viewModel.makeLeagueDetailsViewModel(for: leagueId) else { return }
+
+        let leagueDetailsVC = LeagueDetailsViewController(leagueDetailsViewModel)
+        leagueDetailsVC.delegate = self
+        push(leagueDetailsVC, animated: true)
+    }
 }
 
 // MARK: - UICollectionViewDelegate - Selection
 
 extension EventsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let leagueHeaderViewModel = viewModel.leagues[indexPath.section]
-        let eventsViewModel = viewModel.getEvents(for: leagueHeaderViewModel)[indexPath.row]
+        let league = viewModel.leagues[indexPath.section]
+        let eventsViewModel = viewModel.getEvents(for: league)[indexPath.row]
 
         guard let eventDetailsViewModel = viewModel.makeEventDetailsViewModel(for: eventsViewModel)
         else { return }
@@ -197,6 +210,14 @@ extension EventsViewController: UICollectionViewDelegate {
 
 extension EventsViewController: EventDetailsViewControllerDelegate {
     func eventDetailsViewControllerDidPressBack(_ eventDetailsViewController: EventDetailsViewController) {
+        pop(animated: true)
+    }
+}
+
+// MARK: - LeagueDetailsViewControllerDelegate
+
+extension EventsViewController: LeagueDetailsViewControllerDelegate {
+    func leagueDetailsViewControllerDidPressBack(_ leagueDetailsViewController: LeagueDetailsViewController) {
         pop(animated: true)
     }
 }
