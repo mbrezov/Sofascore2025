@@ -32,16 +32,6 @@ class EventView: BaseView {
     private let homeTeamRowView = EventTeamRowView()
     private let awayTeamRowView = EventTeamRowView()
 
-    var viewModel: EventViewModel? {
-        didSet {
-            if let event = viewModel {
-                configure(event)
-            } else {
-                cleanup()
-            }
-        }
-    }
-
     override func addViews() {
         addSubview(startTimeLabel)
         addSubview(statusLabel)
@@ -95,16 +85,20 @@ class EventView: BaseView {
         }
     }
 
-    private func configure(_ event: EventViewModel) {
-        let status = event.statusInfo
+    func configure(
+        _ statusStartTimeText: String,
+        _ statusDescription: String,
+        _ statusColor: EventStatusColor,
+        _ homeTeamInfo: EventTeamInfo,
+        _ awayTeamInfo: EventTeamInfo
+    ) {
+        startTimeLabel.setText(statusStartTimeText, withLineHeight: 16)
 
-        startTimeLabel.setText(status.startTimeText, withLineHeight: 16)
+        statusLabel.setText(statusDescription, withLineHeight: 16)
+        statusLabel.textColor = statusColor.uiColor
 
-        statusLabel.setText(status.descriptionShort, withLineHeight: 16)
-        statusLabel.textColor = status.color.uiColor
-
-        homeTeamRowView.configure(with: event.homeTeamInfo)
-        awayTeamRowView.configure(with: event.awayTeamInfo)
+        homeTeamRowView.configure(with: homeTeamInfo)
+        awayTeamRowView.configure(with: awayTeamInfo)
     }
 
     func cleanup() {

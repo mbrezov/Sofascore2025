@@ -40,4 +40,26 @@ enum APIClientMapper {
             return "am-football"
         }
     }
+
+    static func incidentType(from apiStatus: String) -> IncidentType {
+        switch apiStatus {
+        case "GOAL":
+            return .goal
+
+        case "RED_CARD":
+            return .redCard
+
+        case "YELLOW_CARD":
+            return .yellowCard
+
+        case "PERIOD_END":
+            return .periodEnd
+
+        case "FOUL":
+            return .periodEnd
+
+        default:
+            return .unknown
+        }
+    }
 }

@@ -31,7 +31,6 @@ class LoginViewModel {
 
                 default:
                     print(error.title, error.message)
-                    break
                 }
                 self?.loginDidFinish(errorTitle: error.title, errorMessage: error.message)
             }

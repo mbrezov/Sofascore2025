@@ -18,7 +18,8 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
 
     private let navBar = NavigationBarView()
     private let navBarTitleView = EventDetailsNavBarTitleView()
-    private let matchHeaderView = EventDetailsMatchHeroView()
+    private let matchHeaderView = MatchHeroView()
+    private let incidentsView = IncidentsView()
     private let eventDetailsViewModel: EventDetailsViewModel
 
     weak var delegate: EventDetailsViewControllerDelegate?
@@ -27,6 +28,7 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
         self.eventDetailsViewModel = eventDetailsViewModel
         super.init(nibName: nil, bundle: nil)
         setupUI()
+        setupBinding()
     }
 
     required init?(coder: NSCoder) {
@@ -54,6 +56,7 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
     func addViews() {
         view.addSubview(navBar)
         view.addSubview(matchHeaderView)
+        view.insertSubview(incidentsView, belowSubview: matchHeaderView)
     }
 
     func setupConstraints() {
@@ -64,6 +67,22 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
         matchHeaderView.snp.makeConstraints {
             $0.top.equalTo(navBar.snp.bottom)
             $0.directionalHorizontalEdges.equalToSuperview()
+        }
+
+        incidentsView.snp.makeConstraints {
+            $0.top.equalTo(matchHeaderView.snp.bottom)
+            $0.directionalHorizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
+
+    func setupBinding() {
+        matchHeaderView.teamTapped = { team in
+            let eventTeam = EventTeamInfoMapper.makeTeamInfo(eventTeamInfo: team)
+            let teamDetailsViewModel = TeamDetailsViewModel(team: eventTeam)
+            let teamDetailsVC = TeamDetailsViewController(teamDetailsViewModel)
+            teamDetailsVC.delegate = self
+            self.push(teamDetailsVC, animated: true)
         }
     }
 
@@ -82,6 +101,20 @@ class EventDetailsViewController: UIViewController, BaseViewProtocol {
             statusText: eventDetailsViewModel.statusInfo.description,
             statusColor: eventDetailsViewModel.statusInfo.color.uiColor
         )
+
+       guard let incidentsViewModel = eventDetailsViewModel.makeIncidentsViewModel(
+            for: eventDetailsViewModel.eventId
+       ) else { return }
+
+        incidentsView.configure(with: incidentsViewModel)
+    }
+}
+
+// MARK: - NavigationBarViewDelegate
+
+extension EventDetailsViewController: TeamDetailsViewControllerDelegate {
+    func teamDetailsViewControllerDidPressBack(_ teamDetailsViewController: TeamDetailsViewController) {
+        pop(animated: true)
     }
 }
 
